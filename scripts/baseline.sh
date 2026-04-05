@@ -1,20 +1,19 @@
 #!/bin/bash
 # Run a baseline method from the paper.
-#
-# Baselines are simple reference methods the paper compares against. 
-# Implement this only if applicable, i.e. the paper has baselines.
-# You do not need to implement all baselines to begin — 
-# just enough to validate that the evaluation pipeline works 
-# and provide a reference point. You can decide to expand more baselines later.
-# Each baseline must be actually run and scored through evaluate.sh
-# so the numbers are verified, not self-reported.
-# You can decide what this baseline script should do yourself.
-#
-# Usage:
-#   bash scripts/baseline.sh <name>
-
 set -e
-
+export TMPDIR=/dev/shm
 cd /home/user
 
-# TODO: run baseline
+DATA_DIR="${1:-/home/user/data/common_shapes}"
+OUTPUT_DIR="${2:-/home/user/checkpoints}"
+RUN_NAME="${3:-xatlas_run1}"
+
+mkdir -p "$OUTPUT_DIR"
+
+python3 -m method.pipeline \
+    --data-dir "$DATA_DIR" \
+    --output-dir "$OUTPUT_DIR" \
+    --method xatlas \
+    --name "$RUN_NAME"
+
+bash scripts/evaluate.sh "$RUN_NAME" "$DATA_DIR" "$OUTPUT_DIR"

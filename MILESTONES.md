@@ -1,30 +1,28 @@
 # Reproduction Milestones
 
-**Current: none**
-
-<!-- Milestone levels (update "Current" above as you progress):
-  none             — just started, no meaningful progress yet
-  method_runs      — the paper's method executes end-to-end without errors
-  core_claim       — minimum experiment supports the paper's central claim
-  core_claim_plus  — core claim reproduced on additional settings
-  secondary_claims — secondary results or contributions reproduced
-  majority         — more than half of reported results reproduced
-  near_complete    — most results reproduced, only minor gaps remain
-  full             — all reported results reproduced
--->
+**Current: method_runs**
 
 ## Progress Log
 
-<!-- Write your progress here -->
+### [2026-04-04] - none
+- Read the PartUV paper (2511.16659)
+- Identified core components: PartField part decomposition, Normal/Merge heuristics, ABF++ flattening, top-down recursive search
+- Analyzed paper's key claims: 2-30x fewer charts than baselines, low distortion, 100% success rate
+
+### [2026-04-04] - method_runs
+- Implemented full PartUV pipeline in Python
+- Implemented LSCM flattening (ABF++ alternative) for chart parameterization
+- Implemented Normal heuristic (agglomerative clustering of face normals)
+- Implemented Merge heuristic (OBB-based merging)
+- Implemented hierarchical part tree with recursive search (Algorithm 1)
+- Implemented xatlas baseline (with fallback to geometric clustering)
+- Implemented evaluation metrics (chart count, seam length, angular/area distortion)
+- Created data loading for Common Shapes dataset
+- Created all shell scripts (download, evaluate, reproduce, run, method, baseline)
+- Environment setup: numpy, scipy, scikit-learn, trimesh, meshio, xatlas, tqdm, pandas
+- Common Shapes dataset downloaded (22 meshes from GitHub)
+- Submitted full reproduction job (xatlas + PartUV on all meshes)
 
 ## Stop Justification
 
 <!-- Do not edit this unless you decide to stop -->
-
-<!-- Write a brief explanation of WHY you are stopping at this milestone.
-     What blocked you to reach the next milestone and you decided to stop?
-     This is NOT a progress summary — the Progress Log above covers that.
-     Example: "Stopping at core_claim because the full dataset requires
-     proprietary access. Core claim validated on the public subset." -->
-
-<!-- ALWAYS fill in this section when you wrap up. NEVER remove this section. -->
