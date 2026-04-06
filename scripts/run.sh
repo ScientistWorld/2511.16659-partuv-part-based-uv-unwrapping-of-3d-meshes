@@ -30,7 +30,7 @@ python3 -m method.pipeline \
     --output-dir checkpoints \
     --method both \
     --distortion-threshold 1.5 \
-    --max-candidates 5 \
+    --max-candidates 3 \
     --name eval1
 
 echo ""

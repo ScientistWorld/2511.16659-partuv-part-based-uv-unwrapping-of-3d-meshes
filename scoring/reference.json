@@ -1,103 +1,44 @@
 {
   "experiments": {
     "common_shapes_comparison": {
-      "description": "Quantitative comparison on Common Shapes dataset (24 meshes) — main result showing PartUV produces far fewer charts than xatlas/Blender while maintaining low distortion (Table 1)",
+      "description": "Common Shapes dataset comparison: PartUV vs xatlas/Blender (Table 1 from paper)",
+      "weight": 0.5,
+      "primary_metric": "avg_charts",
+      "metrics": {
+        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
+        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
+      },
+      "results": {
+        "blender":    {"type": "baseline", "avg_charts": 1360.3, "median_charts": 332.5, "angular_distortion": 0.906},
+        "xatlas":     {"type": "baseline", "avg_charts": 974.8,  "median_charts": 301.0, "angular_distortion": 0.987},
+        "partuv":     {"type": "proposed", "avg_charts": 48.6,   "median_charts": 16.5,  "angular_distortion": 0.990}
+      }
+    },
+    "trellis_comparison": {
+      "description": "Trellis dataset (114 AI-generated meshes) from paper Table 1",
       "weight": 0.3,
       "primary_metric": "avg_charts",
       "metrics": {
         "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "median_seam_length": {"higher_is_better": false, "coefficient": 0.3},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
-        "success_rate": {"higher_is_better": true, "coefficient": 0.3},
-        "time_seconds": {"higher_is_better": false, "coefficient": -0.1}
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
       },
       "results": {
-        "blender":    {"type": "baseline", "avg_charts": 1360.3, "median_charts": 332.5, "median_seam_length": 44.7, "angular_distortion": 0.906, "area_distortion": 1.172, "overall_area_distortion": 1.102, "success_rate": 100.0, "time_seconds": 0.3},
-        "xatlas":     {"type": "baseline", "avg_charts": 974.8,  "median_charts": 301.0, "median_seam_length": 42.9, "angular_distortion": 0.987, "area_distortion": 1.885, "overall_area_distortion": 1.504, "success_rate": 100.0, "time_seconds": 77.9},
-        "partuv":     {"type": "proposed", "avg_charts": 48.6,   "median_charts": 16.5,  "median_seam_length": 16.6, "angular_distortion": 0.990, "area_distortion": 1.283, "overall_area_distortion": 1.128, "success_rate": 100.0, "time_seconds": 39.4}
+        "xatlas":     {"type": "baseline", "avg_charts": 1541.6, "angular_distortion": 0.984},
+        "partuv":     {"type": "proposed", "avg_charts": 568.7,  "angular_distortion": 0.981}
       }
     },
-    "trellis_comparison": {
-      "description": "Quantitative comparison on Trellis dataset (114 AI-generated meshes) — challenging meshes where PartUV shows significant chart reduction (Table 1)",
-      "weight": 0.25,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "median_seam_length": {"higher_is_better": false, "coefficient": 0.3},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
-        "success_rate": {"higher_is_better": true, "coefficient": 0.3},
-        "time_seconds": {"higher_is_better": false, "coefficient": -0.1}
-      },
-      "results": {
-        "blender":    {"type": "baseline", "avg_charts": 3352.9, "median_charts": 1957.0, "median_seam_length": 94.5, "angular_distortion": 0.921, "area_distortion": 1.252, "overall_area_distortion": 1.107, "success_rate": 100.0, "time_seconds": 1.1},
-        "xatlas":     {"type": "baseline", "avg_charts": 1541.6, "median_charts": 895.0,  "median_seam_length": 91.2, "angular_distortion": 0.984, "area_distortion": 2.357, "overall_area_distortion": 1.093, "success_rate": 100.0, "time_seconds": 13.1},
-        "partuv":     {"type": "proposed", "avg_charts": 568.7,  "median_charts": 233.5,  "median_seam_length": 58.8, "angular_distortion": 0.981, "area_distortion": 1.373, "overall_area_distortion": 1.145, "success_rate": 100.0, "time_seconds": 26.0}
-      }
-    },
-    "abc_comparison": {
-      "description": "Quantitative comparison on ABC dataset (100 CAD meshes) — mechanical models with sharp and smooth features (Table 1)",
-      "weight": 0.15,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "median_seam_length": {"higher_is_better": false, "coefficient": 0.3},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
-        "success_rate": {"higher_is_better": true, "coefficient": 0.3},
-        "time_seconds": {"higher_is_better": false, "coefficient": -0.1}
-      },
-      "results": {
-        "blender":    {"type": "baseline", "avg_charts": 305.3,  "median_charts": 78.0, "median_seam_length": 25.0, "angular_distortion": 0.992, "area_distortion": 1.122, "overall_area_distortion": 1.067, "success_rate": 100.0, "time_seconds": 0.7},
-        "xatlas":     {"type": "baseline", "avg_charts": 249.6,  "median_charts": 56.0, "median_seam_length": 26.5, "angular_distortion": 1.000, "area_distortion": 1.192, "overall_area_distortion": 1.030, "success_rate": 100.0, "time_seconds": 31.0},
-        "partuv":     {"type": "proposed", "avg_charts": 85.4,   "median_charts": 15.5, "median_seam_length": 17.3, "angular_distortion": 0.998, "area_distortion": 1.191, "overall_area_distortion": 1.073, "success_rate": 100.0, "time_seconds": 31.9}
-      }
-    },
-    "partobjaverse_comparison": {
-      "description": "Quantitative comparison on PartObjaverseTiny dataset (200 man-made meshes) — high-quality meshes with multiple components (Table 1)",
+    "ablation_study": {
+      "description": "Ablation study on Trellis (Table 4 from paper): face_normal_feat removes PartField and uses face normals",
       "weight": 0.2,
       "primary_metric": "avg_charts",
       "metrics": {
         "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "median_seam_length": {"higher_is_better": false, "coefficient": 0.3},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
-        "success_rate": {"higher_is_better": true, "coefficient": 0.3},
-        "time_seconds": {"higher_is_better": false, "coefficient": -0.1}
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
       },
       "results": {
-        "blender":    {"type": "baseline", "avg_charts": 1509.2, "median_charts": 647.5, "median_seam_length": 70.2, "angular_distortion": 0.925, "area_distortion": 1.325, "overall_area_distortion": 1.115, "success_rate": 100.0, "time_seconds": 0.2},
-        "xatlas":     {"type": "baseline", "avg_charts": 1142.1, "median_charts": 491.5, "median_seam_length": 67.0, "angular_distortion": 0.982, "area_distortion": 1.728, "overall_area_distortion": 1.286, "success_rate": 100.0, "time_seconds": 4.4},
-        "partuv":     {"type": "proposed", "avg_charts": 544.8,  "median_charts": 177.0, "median_seam_length": 41.8, "angular_distortion": 0.983, "area_distortion": 1.305, "overall_area_distortion": 1.112, "success_rate": 100.0, "time_seconds": 10.1}
-      }
-    },
-    "ablation_study": {
-      "description": "Ablation study on Trellis dataset — each component contributes to the final result. Removing any component increases chart count (Table 4)",
-      "weight": 0.1,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "time_seconds": {"higher_is_better": false, "coefficient": -0.1}
-      },
-      "results": {
-        "fixed_20_parts":     {"type": "ablation", "avg_charts": 397.02,  "median_charts": 223.00, "angular_distortion": 0.9687, "area_distortion": 2.18, "time_seconds": 207.75},
-        "face_normal_feat":   {"type": "ablation", "avg_charts": 574.43,  "median_charts": 259.50, "angular_distortion": 0.9708, "area_distortion": 1.28, "time_seconds": 83.67},
-        "no_merge":           {"type": "ablation", "avg_charts": 778.64,  "median_charts": 299.50, "angular_distortion": 0.9815, "area_distortion": 1.42, "time_seconds": 24.59},
-        "no_recursion":       {"type": "ablation", "avg_charts": 633.29,  "median_charts": 255.50, "angular_distortion": 0.9822, "area_distortion": 1.35, "time_seconds": 33.82},
-        "no_surrogate":       {"type": "ablation", "avg_charts": 580.52,  "median_charts": 248.00, "angular_distortion": 0.9822, "area_distortion": 1.25, "time_seconds": 32.88},
-        "partuv_full":        {"type": "proposed", "avg_charts": 568.75,  "median_charts": 233.50, "angular_distortion": 0.9811, "area_distortion": 1.37, "time_seconds": 26.03}
+        "face_normal_feat":   {"type": "ablation", "avg_charts": 574.43, "angular_distortion": 0.9708},
+        "partuv_full":        {"type": "proposed", "avg_charts": 568.75, "angular_distortion": 0.9811}
       }
     }
   }

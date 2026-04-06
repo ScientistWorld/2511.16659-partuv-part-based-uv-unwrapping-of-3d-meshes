@@ -30,8 +30,8 @@ def run_partuv(mesh: Mesh, params: Dict[str, Any] = None) -> Dict[str, Any]:
     partuv = PartUV(
         distortion_threshold=tau,
         use_merge_heuristic=params.get('use_merge', False),
-        max_candidates=params.get('max_candidates', 5),
-        max_depth=params.get('max_depth', 12),
+        max_candidates=params.get('max_candidates', 3),
+        max_depth=params.get('max_depth', 8),
         n_threads=params.get('n_threads', 1)
     )
 
@@ -216,7 +216,7 @@ def main():
                         help='Distortion threshold tau')
     parser.add_argument('--use-merge', action='store_true', default=False,
                         help='Use Merge heuristic')
-    parser.add_argument('--max-candidates', type=int, default=5,
+    parser.add_argument('--max-candidates', type=int, default=3,
                         help='Max chart candidates from Normal heuristic')
     parser.add_argument('--n-threads', type=int, default=1,
                         help='Number of threads')
