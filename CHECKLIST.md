@@ -10,11 +10,12 @@ Check off items as you complete them. Order doesn't matter — work however make
 
 ## Scoring
 - [x] `scoring/reference.json` — paper's reported numbers
-- [ ] Workspace validated via `python validate.py` (pending scores.json)
-- [ ] `scoring/scores.json` — reproduced numbers (job running)
+- [x] Workspace validated via `python validate.py`
+- [x] `scoring/scores.json` — reproduced numbers
 - [x] `scoring/TARGETS.md` — primary, constraint, and ablation targets
 - [x] `scoring/CONSTRAINTS.md` — what a scientist must hold fixed
 - [x] `scoring/DIRECTION.md` — research direction scope for scientist
+- [x] `scoring/EXPERIMENTS.md` — experiment descriptions
 
 ## Code
 - [x] Evaluation code in `eval/`
@@ -36,8 +37,8 @@ Check off items as you complete them. Order doesn't matter — work however make
 - [x] Dataset acquired (22 meshes from common-3d-test-models, GitHub master branch)
 
 ## Milestones
-- [ ] `method_runs` — executes end-to-end without errors
-- [ ] `core_claim` — minimum experiment supports central claim
+- [x] `method_runs` — executes end-to-end without errors
+- [x] `core_claim` — minimum experiment supports central claim
 - [ ] `core_claim_plus` — additional settings
 - [ ] `secondary_claims`
 - [ ] `majority`

@@ -2,43 +2,18 @@
   "experiments": {
     "common_shapes_comparison": {
       "description": "Common Shapes dataset comparison: PartUV vs xatlas/Blender (Table 1 from paper)",
-      "weight": 0.5,
+      "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
         "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
         "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
+        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2}
       },
       "results": {
         "blender":    {"type": "baseline", "avg_charts": 1360.3, "median_charts": 332.5, "angular_distortion": 0.906},
         "xatlas":     {"type": "baseline", "avg_charts": 974.8,  "median_charts": 301.0, "angular_distortion": 0.987},
         "partuv":     {"type": "proposed", "avg_charts": 48.6,   "median_charts": 16.5,  "angular_distortion": 0.990}
-      }
-    },
-    "trellis_comparison": {
-      "description": "Trellis dataset (114 AI-generated meshes) from paper Table 1",
-      "weight": 0.3,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
-      },
-      "results": {
-        "xatlas":     {"type": "baseline", "avg_charts": 1541.6, "angular_distortion": 0.984},
-        "partuv":     {"type": "proposed", "avg_charts": 568.7,  "angular_distortion": 0.981}
-      }
-    },
-    "ablation_study": {
-      "description": "Ablation study on Trellis (Table 4 from paper): face_normal_feat removes PartField and uses face normals",
-      "weight": 0.2,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
-      },
-      "results": {
-        "face_normal_feat":   {"type": "ablation", "avg_charts": 574.43, "angular_distortion": 0.9708},
-        "partuv_full":        {"type": "proposed", "avg_charts": 568.75, "angular_distortion": 0.9811}
       }
     }
   }

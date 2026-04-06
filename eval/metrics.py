@@ -12,7 +12,40 @@ import numpy as np
 from typing import Dict, Any, List, Tuple
 
 from data.mesh_loader import Mesh
-from method.lscm_flattening import compute_angular_distortion
+
+
+def compute_angular_distortion(vertices_3d: np.ndarray, uv_coords: np.ndarray,
+                               faces: np.ndarray) -> float:
+    """Compute angular (conformal) distortion.
+
+    Measures how well angles are preserved during UV mapping by comparing
+    the cosine of the angle between triangle edges in 3D vs 2D.
+    Returns mean(1 - |cos_3d - cos_2d|), where 1.0 is perfect preservation.
+    """
+    if len(faces) == 0:
+        return 1.0
+
+    cosines = []
+    for f in faces:
+        v0, v1, v2 = vertices_3d[f[0]], vertices_3d[f[1]], vertices_3d[f[2]]
+        t1_3d = v1 - v0
+        t2_3d = v2 - v0
+
+        u0, u1, u2 = uv_coords[f[0]], uv_coords[f[1]], uv_coords[f[2]]
+        t1_2d = u1 - u0
+        t2_2d = u2 - u0
+
+        def angle_cos(a, b):
+            na, nb = np.linalg.norm(a), np.linalg.norm(b)
+            if na < 1e-10 or nb < 1e-10:
+                return 1.0
+            return np.abs(np.dot(a, b)) / (na * nb)
+
+        cos_3d = angle_cos(t1_3d, t2_3d)
+        cos_2d = angle_cos(t1_2d, t2_2d)
+        cosines.append(1.0 - abs(cos_3d - cos_2d))
+
+    return np.mean(cosines)
 
 
 def compute_seam_length(vertices: np.ndarray, faces: np.ndarray,

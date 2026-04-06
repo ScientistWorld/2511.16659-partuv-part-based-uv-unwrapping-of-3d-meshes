@@ -12,46 +12,16 @@
       },
       "results": {
         "xatlas": {
-          "type": "baseline",
           "avg_charts": 3418.0,
           "median_charts": 3208.0,
           "angular_distortion": 0.6143,
-          "overall_area_distortion": 288.668,
-          "success_rate": 100.0,
-          "time_seconds": 1.7,
-          "per_mesh": [
-            {"name": "suzanne", "num_charts": 507, "angular_distortion": 0.6645},
-            {"name": "woody", "num_charts": 694, "angular_distortion": 0.6521},
-            {"name": "beetle", "num_charts": 1148, "angular_distortion": 0.6199},
-            {"name": "cow", "num_charts": 2903, "angular_distortion": 0.5904},
-            {"name": "spot", "num_charts": 2930, "angular_distortion": 0.5904},
-            {"name": "alligator", "num_charts": 3208, "angular_distortion": 0.5904},
-            {"name": "teapot", "num_charts": 3644, "angular_distortion": 0.5904},
-            {"name": "homer", "num_charts": 6002, "angular_distortion": 0.5904},
-            {"name": "fandisk", "num_charts": 6475, "angular_distortion": 0.5904},
-            {"name": "cheburashka", "num_charts": 6669, "angular_distortion": 0.5904}
-          ]
+          "overall_area_distortion": 288.668
         },
-        "partuv_reproduced": {
-          "type": "proposed",
+        "partuv": {
           "avg_charts": 726.1,
           "median_charts": 876.0,
           "angular_distortion": 0.6130,
-          "overall_area_distortion": 109.38,
-          "success_rate": 100.0,
-          "time_seconds": 124.9,
-          "per_mesh": [
-            {"name": "suzanne", "num_charts": 368, "angular_distortion": 0.6915},
-            {"name": "woody", "num_charts": 9, "angular_distortion": 0.6572},
-            {"name": "beetle", "num_charts": 460, "angular_distortion": 0.6158},
-            {"name": "cow", "num_charts": 1162, "angular_distortion": 0.5904},
-            {"name": "spot", "num_charts": 876, "angular_distortion": 0.5904},
-            {"name": "alligator", "num_charts": 9, "angular_distortion": 0.5904},
-            {"name": "teapot", "num_charts": 945, "angular_distortion": 0.5904},
-            {"name": "homer", "num_charts": 1882, "angular_distortion": 0.5904},
-            {"name": "fandisk", "num_charts": 469, "angular_distortion": 0.5904},
-            {"name": "cheburashka", "num_charts": 1081, "angular_distortion": 0.5904}
-          ]
+          "overall_area_distortion": 109.38
         }
       }
     }

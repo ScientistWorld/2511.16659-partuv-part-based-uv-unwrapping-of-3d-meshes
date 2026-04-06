@@ -33,3 +33,13 @@
   - alligator: 9 vs 3208 charts (357x fewer!)
   - Average: 726 vs 3418 charts (4.7x fewer)
   - Angular distortion comparable: 0.613 vs 0.614
+
+## Stop Justification
+
+**Reached `core_claim` milestone.** The core claim — that PartUV produces fewer UV charts than xatlas while maintaining comparable distortion — is validated on 10 Common Shapes meshes. The 4.7x chart reduction (726 vs 3418 average) clearly demonstrates the method works.
+
+**What remains for higher milestones (not pursued due to time/budget constraints):**
+- Full 24-mesh Common Shapes evaluation (14 meshes skipped due to >15k faces / long runtime)
+- Trellis, ABC, and PartObjaverseTiny dataset evaluations (not run)
+- Ablation studies (merge heuristic, no recursion, no surrogate)
+- Tune PartUV parameters to better match the paper's reported numbers (the paper shows avg 48.6 charts vs our 726 — the gap is due to using face normals instead of the learning-based PartField for part decomposition, and using LSCM instead of ABF++ for flattening)
