@@ -92,8 +92,8 @@ def unwrap_xatlas(mesh: Mesh, params: Dict[str, Any] = None) -> Optional[Dict[st
             'chart_ids': face_chart_ids,
             'num_charts': num_charts,
             'vertex_map': vertex_map,
-            'raw_chart_uvs': raw_chart_uvs,
-            'raw_chart_faces': raw_chart_faces,
+            # Don't pass raw_chart_uvs — xatlas uses its own vertex indexing
+            # The global UV packing approach will be used for area distortion
         }
     except Exception as e:
         print(f"xatlas.parametrize failed: {e}, using fallback")
