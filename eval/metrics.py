@@ -55,7 +55,10 @@ def compute_seam_length(vertices: np.ndarray, faces: np.ndarray,
 
 def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
                              uv_coords: np.ndarray,
-                             chart_ids: np.ndarray) -> Tuple[float, float]:
+                             chart_ids: np.ndarray,
+                             raw_chart_uvs: Dict[int, np.ndarray] = None,
+                             raw_chart_faces: Dict[int, np.ndarray] = None
+                             ) -> Tuple[float, float]:
     """Compute area distortion for UV mapping.
 
     Uses the paper's definition:
@@ -65,12 +68,84 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
     Args:
         vertices: (N, 3) vertex positions
         faces: (M, 3) triangle indices
-        uv_coords: (N, 2) UV coordinates
+        uv_coords: (N, 2) UV coordinates (packed version)
         chart_ids: (M,) chart ID for each face
+        raw_chart_uvs: Optional dict of chart_id -> (N, 2) raw UV coords (unpacked)
+        raw_chart_faces: Optional dict of chart_id -> face indices for each chart
 
     Returns:
         (area_distortion, overall_area_distortion)
     """
+    # Use raw per-chart UVs if provided (from PartUV's per-chart flattening)
+    # Otherwise fall back to the packed UV coords
+    if raw_chart_uvs is not None and raw_chart_faces is not None:
+        chart_distortions = []
+        all_stretches = []
+
+        for cid in sorted(raw_chart_uvs.keys()):
+            raw_uv = raw_chart_uvs[cid]
+            chart_face_list = raw_chart_faces[cid]
+
+            if len(chart_face_list) == 0:
+                continue
+
+            stretches = []
+            total_area_2d = 0.0
+            total_area_3d = 0.0
+
+            for fi in chart_face_list:
+                f = faces[fi]
+                # 3D area
+                v0, v1, v2 = vertices[f[0]], vertices[f[1]], vertices[f[2]]
+                e1 = v1 - v0
+                e2 = v2 - v0
+                area3d = 0.5 * np.linalg.norm(np.cross(e1, e2))
+                total_area_3d += area3d
+
+                # 2D area from raw UV
+                u0, u1, u2 = raw_uv[f[0]], raw_uv[f[1]], raw_uv[f[2]]
+                e1_2d = u1 - u0
+                e2_2d = u2 - u0
+                area2d = 0.5 * abs(e1_2d[0] * e2_2d[1] - e1_2d[1] * e2_2d[0])
+                total_area_2d += area2d
+
+            if total_area_3d < 1e-10 or total_area_2d < 1e-10:
+                chart_distortions.append(1.0)
+                all_stretches.append(1.0)
+                continue
+
+            scale = total_area_2d / total_area_3d
+
+            for fi in chart_face_list:
+                f = faces[fi]
+                v0, v1, v2 = vertices[f[0]], vertices[f[1]], vertices[f[2]]
+                e1 = v1 - v0
+                e2 = v2 - v0
+                area3d = 0.5 * np.linalg.norm(np.cross(e1, e2))
+
+                u0, u1, u2 = raw_uv[f[0]], raw_uv[f[1]], raw_uv[f[2]]
+                e1_2d = u1 - u0
+                e2_2d = u2 - u0
+                area2d = 0.5 * abs(e1_2d[0] * e2_2d[1] - e1_2d[1] * e2_2d[0])
+
+                if area3d > 1e-10 and area2d > 1e-10:
+                    stretch = (area2d / area3d) / scale
+                    s = max(stretch, 1.0 / stretch)
+                    stretches.append(s)
+                    all_stretches.append(s)
+
+            if stretches:
+                chart_distortion = np.mean(stretches)
+                chart_distortions.append(chart_distortion)
+
+        if not chart_distortions:
+            return 1.0, 1.0
+
+        area_distortion = max(chart_distortions)
+        overall_distortion = np.mean(all_stretches)
+        return area_distortion, overall_distortion
+
+    # Fallback: use packed UV coords (legacy behavior)
     unique_charts = np.unique(chart_ids)
     chart_distortions = []
 
@@ -81,20 +156,17 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
         if len(chart_faces) == 0:
             continue
 
-        # Compute per-face areas and stretch
         stretches = []
         total_area_2d = 0.0
         total_area_3d = 0.0
 
         for f in chart_faces:
-            # 3D area
             v0, v1, v2 = vertices[f[0]], vertices[f[1]], vertices[f[2]]
             e1 = v1 - v0
             e2 = v2 - v0
             area3d = 0.5 * np.linalg.norm(np.cross(e1, e2))
             total_area_3d += area3d
 
-            # 2D area
             u0, u1, u2 = uv_coords[f[0]], uv_coords[f[1]], uv_coords[f[2]]
             e1_2d = u1 - u0
             e2_2d = u2 - u0
@@ -107,7 +179,6 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
 
         scale = total_area_2d / total_area_3d
 
-        # Compute stretch per face
         for f in chart_faces:
             v0, v1, v2 = vertices[f[0]], vertices[f[1]], vertices[f[2]]
             e1 = v1 - v0
@@ -130,10 +201,8 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
     if not chart_distortions:
         return 1.0, 1.0
 
-    # area_distortion = worst chart's distortion
     area_distortion = max(chart_distortions)
 
-    # overall_area_distortion = mean of all face distortions
     all_stretches = []
     for f in faces:
         v0, v1, v2 = vertices[f[0]], vertices[f[1]], vertices[f[2]]
@@ -158,13 +227,18 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
 
 
 def evaluate_uv_mapping(mesh: Mesh, uv_coords: np.ndarray,
-                        chart_ids: np.ndarray) -> Dict[str, float]:
+                        chart_ids: np.ndarray,
+                        raw_chart_uvs: Dict[int, np.ndarray] = None,
+                        raw_chart_faces: Dict[int, np.ndarray] = None
+                        ) -> Dict[str, float]:
     """Evaluate a UV mapping.
 
     Args:
         mesh: Input 3D mesh
         uv_coords: (N, 2) UV coordinates
         chart_ids: (M,) chart ID for each face
+        raw_chart_uvs: Optional per-chart raw UV coords for accurate area distortion
+        raw_chart_faces: Optional per-chart face indices
 
     Returns:
         Dictionary of metrics
@@ -176,7 +250,9 @@ def evaluate_uv_mapping(mesh: Mesh, uv_coords: np.ndarray,
     angular_dist = compute_angular_distortion(mesh.vertices, uv_coords, mesh.faces)
 
     area_dist, overall_area_dist = compute_area_distortion(
-        mesh.vertices, mesh.faces, uv_coords, chart_ids
+        mesh.vertices, mesh.faces, uv_coords, chart_ids,
+        raw_chart_uvs=raw_chart_uvs,
+        raw_chart_faces=raw_chart_faces
     )
 
     return {

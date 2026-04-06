@@ -46,20 +46,54 @@ def unwrap_xatlas(mesh: Mesh, params: Dict[str, Any] = None) -> Optional[Dict[st
     # Use parametrize API (xatlas v0.x)
     positions = mesh.vertices.astype(np.float32)
     indices = mesh.faces.astype(np.uint32)
-    normals = mesh.normals().astype(np.float32)
+    # xatlas.parametrize expects vertex normals (not per-face normals)
+    # Compute vertex normals by averaging face normals
+    face_normals = mesh.normals()
+    vertex_normals = np.zeros_like(mesh.vertices)
+    for fi, f in enumerate(mesh.faces):
+        for vi in f:
+            vertex_normals[vi] += face_normals[fi]
+    norms = np.linalg.norm(vertex_normals, axis=1, keepdims=True)
+    norms[norms < 1e-10] = 1.0
+    vertex_normals = (vertex_normals / norms).astype(np.float32)
 
     try:
-        result = xatlas.parametrize(positions, indices, normals)
-        chart_ids = np.array(result[0], dtype=np.int32)
-        vmapping = np.array(result[1], dtype=np.int32)
+        result = xatlas.parametrize(positions, indices, vertex_normals)
+        chart_ids_per_vertex = np.array(result[0], dtype=np.int32)
+        vertex_map = np.array(result[1], dtype=np.int32)  # (n_faces, 3) vertex indices
         uv_coords = np.array(result[2], dtype=np.float64)
-        num_charts = len(set(chart_ids))
+        num_charts = len(set(chart_ids_per_vertex))
+
+        # xatlas returns vertex-chart mapping. Assign each face to the most common chart among its vertices.
+        face_chart_ids = np.zeros(mesh.n_faces, dtype=np.int32)
+        for fi in range(mesh.n_faces):
+            v0, v1, v2 = vertex_map[fi]
+            c0, c1, c2 = chart_ids_per_vertex[v0], chart_ids_per_vertex[v1], chart_ids_per_vertex[v2]
+            # All 3 vertices should be in the same chart
+            if c0 == c1 == c2:
+                face_chart_ids[fi] = c0
+            else:
+                # Majority vote
+                from collections import Counter
+                face_chart_ids[fi] = Counter([c0, c1, c2]).most_common(1)[0][0]
+
+        # Build raw_chart_uvs and raw_chart_faces from xatlas result
+        raw_chart_uvs = {}
+        raw_chart_faces = {}
+        for cid in range(num_charts):
+            mask = face_chart_ids == cid
+            chart_face_indices = np.where(mask)[0]
+            if len(chart_face_indices) > 0:
+                raw_chart_faces[cid] = chart_face_indices
+                raw_chart_uvs[cid] = uv_coords.copy()
 
         return {
             'uv_coords': uv_coords,
-            'chart_ids': chart_ids,
+            'chart_ids': face_chart_ids,
             'num_charts': num_charts,
-            'vertex_map': vmapping,
+            'vertex_map': vertex_map,
+            'raw_chart_uvs': raw_chart_uvs,
+            'raw_chart_faces': raw_chart_faces,
         }
     except Exception as e:
         print(f"xatlas.parametrize failed: {e}, using fallback")
@@ -93,6 +127,8 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
                 'uv_coords': uv,
                 'chart_ids': np.zeros(mesh.n_faces, dtype=np.int32),
                 'num_charts': 1,
+                'raw_chart_uvs': {0: uv},
+                'raw_chart_faces': {0: face_indices},
             }
 
     try:
@@ -109,6 +145,8 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
             'uv_coords': uv,
             'chart_ids': np.zeros(mesh.n_faces, dtype=np.int32),
             'num_charts': 1,
+            'raw_chart_uvs': {0: uv},
+            'raw_chart_faces': {0: face_indices},
         }
 
     # Get connected components within each cluster
@@ -131,20 +169,27 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
     # Flatten all charts together (they share the UV space)
     # For simplicity, flatten each chart and combine
     all_uvs = np.zeros((mesh.n_vertices, 2))
+    raw_chart_uvs = {}
+    raw_chart_faces = {}
+    scale = 1.0 / np.sqrt(len(chart_faces))
 
     for cid, cf in enumerate(chart_faces):
         if len(cf) == 0:
             continue
-        # Scale each chart to avoid overlap
-        scale = 1.0 / np.sqrt(len(chart_faces))
         offset_x = (cid % 8) * scale
         offset_y = (cid // 8) * scale
 
         uv, _ = lscm_flatten(mesh.vertices, mesh.faces, cf)
         all_uvs[np.unique(mesh.faces[cf])] = uv[np.unique(mesh.faces[cf])] * scale + np.array([offset_x, offset_y])
 
+        # Store raw UVs for area distortion computation
+        raw_chart_uvs[cid] = uv
+        raw_chart_faces[cid] = cf
+
     return {
         'uv_coords': all_uvs,
         'chart_ids': chart_ids,
         'num_charts': len(chart_faces),
+        'raw_chart_uvs': raw_chart_uvs,
+        'raw_chart_faces': raw_chart_faces,
     }
