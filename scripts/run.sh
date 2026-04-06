@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e
 export TMPDIR=/dev/shm
-export UV_CACHE_DIR=/dev/shm/uv-cache
+export PYTHONPATH=/dev/shm/python_libs
 cd /home/user
 
 echo "=== PartUV Job ==="
 echo "Python: $(python3 --version)"
+echo "PYTHONPATH: $PYTHONPATH"
 echo "CWD: $(pwd)"
 echo ""
 
@@ -20,8 +21,8 @@ ls data/common_shapes/*.obj 2>/dev/null | wc -l
 echo "meshes"
 echo ""
 
-# Install packages
-pip install numpy scipy scikit-learn trimesh meshio xatlas tqdm pandas
+# Verify packages
+python3 -c "import numpy; import scipy; import sklearn; import trimesh; import meshio; import pandas; print('All packages OK')"
 
 # Run xatlas baseline first
 echo "=== Running xatlas baseline ==="
@@ -43,7 +44,7 @@ python3 -m method.pipeline \
 
 echo ""
 echo "=== Creating scores.json ==="
-TMPDIR=/dev/shm python3 -c "
+python3 -c "
 import json, os
 
 scores = {'common_shapes_comparison': {}}

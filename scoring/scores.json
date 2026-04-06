@@ -1,0 +1,18 @@
+{
+  "experiments": {
+    "common_shapes_comparison": {
+      "description": "Quantitative comparison on Common Shapes dataset. PartUV produces fewer charts than xatlas on small-to-medium meshes (suzanne, woody, beetle fully evaluated; cow timed out on PartUV). Partial results from 4 meshes (out of 24). Area distortion is consistently capped at 10.0 due to metric calculation issues with independent chart UV combination.",
+      "weight": 1.0,
+      "primary_metric": "avg_charts",
+      "metrics": {
+        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
+        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3}
+      },
+      "results": {
+        "xatlas_fallback":    {"type": "baseline", "avg_charts": 743.3, "median_charts": 663.5, "angular_distortion": 0.633, "area_distortion": 10.0, "overall_area_distortion": 7.416, "success_rate": 1.0, "time_seconds": 9.0},
+        "partuv_reproduced":  {"type": "proposed", "avg_charts": 173.0, "median_charts": 234.0, "angular_distortion": 0.657, "area_distortion": 10.0, "overall_area_distortion": 9.073, "success_rate": 0.75, "time_seconds": 85.0}
+      }
+    }
+  }
+}

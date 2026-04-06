@@ -146,7 +146,7 @@ def compute_area_distortion(vertices: np.ndarray, faces: np.ndarray,
         e2_2d = u2 - u0
         area2d = 0.5 * abs(e1_2d[0] * e2_2d[1] - e1_2d[1] * e2_2d[0])
 
-        if area3d > 1e-10:
+        if area3d > 1e-10 and area2d > 1e-10:
             stretch = area2d / area3d
             all_stretches.append(min(max(stretch, 1.0 / stretch), 10.0))
         else:

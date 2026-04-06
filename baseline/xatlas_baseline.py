@@ -43,46 +43,27 @@ def unwrap_xatlas(mesh: Mesh, params: Dict[str, Any] = None) -> Optional[Dict[st
 
     params = params or {}
 
-    # Write mesh to temp file for xatlas
-    tmpdir = tempfile.mkdtemp()
+    # Use parametrize API (xatlas v0.x)
+    positions = mesh.vertices.astype(np.float32)
+    indices = mesh.faces.astype(np.uint32)
+    normals = mesh.normals().astype(np.float32)
+
     try:
-        obj_path = os.path.join(tmpdir, "mesh.obj")
-        write_obj(obj_path, mesh.vertices, mesh.faces)
-
-        # Load mesh into xatlas
-        mesh_data = xatlas.Mesh(obj_path)
-
-        # Generate UV atlas
-        atlas = xatlas.Atlas()
-        atlas.add(mesh_data)
-
-        # Set parameters
-        chart_options = xatlas.ChartOptions()
-        chart_options.k = params.get('k', 16)  # Balance parameter
-        chart_options.max_iterations = params.get('max_iterations', 4096)
-
-        pack_options = xatlas.PackOptions()
-        pack_options.padding = params.get('padding', 1)
-
-        atlas.generate(chart_options=chart_options, pack_options=pack_options)
-
-        # Extract results
-        vmapping = atlas.vertex_mappings[0]
-        chart_ids = atlas.chart_mappings[0]
-        uv_coords = atlas.uvs[0]
-
-        # Get number of charts
+        result = xatlas.parametrize(positions, indices, normals)
+        chart_ids = np.array(result[0], dtype=np.int32)
+        vmapping = np.array(result[1], dtype=np.int32)
+        uv_coords = np.array(result[2], dtype=np.float64)
         num_charts = len(set(chart_ids))
 
         return {
-            'uv_coords': np.array(uv_coords),
-            'chart_ids': np.array(chart_ids, dtype=np.int32),
+            'uv_coords': uv_coords,
+            'chart_ids': chart_ids,
             'num_charts': num_charts,
-            'vertex_map': np.array(vmapping),
+            'vertex_map': vmapping,
         }
-    finally:
-        import shutil
-        shutil.rmtree(tmpdir, ignore_errors=True)
+    except Exception as e:
+        print(f"xatlas.parametrize failed: {e}, using fallback")
+        return unwrap_xatlas_fallback(mesh, params)
 
 
 def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optional[Dict[str, Any]]:

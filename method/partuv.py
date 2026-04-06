@@ -147,7 +147,8 @@ class PartUV:
             return None
 
         face_indices = node.face_indices
-        if len(face_indices) <= 2:
+        if len(face_indices) <= 3:
+            # Very small face set: flatten as one chart
             uv, dist = lscm_flatten(mesh.vertices, mesh.faces, face_indices)
             unique_verts = np.unique(mesh.faces[face_indices])
             chart = UVChart(face_indices=face_indices, uv_coords=uv,
@@ -155,13 +156,15 @@ class PartUV:
             return ChartSet.from_charts([chart])
 
         # Generate candidates using Normal heuristic
-        chart_sets = self._gen_candidates_h1(mesh, face_indices)
+        # For small face sets, only test single-chart
+        small_face_set = len(face_indices) <= 20
+        chart_sets = self._gen_candidates_h1(mesh, face_indices,
+                                            force_single=small_face_set)
 
         valid_sets = []
         for charts_faces in chart_sets:
-            # Evaluate: flatten all charts together
-            total_distortion = 0.0
             valid_charts = []
+            max_chart_dist = 0.0
             for cf in charts_faces:
                 if len(cf) == 0:
                     continue
@@ -170,15 +173,15 @@ class PartUV:
                 chart = UVChart(face_indices=cf, uv_coords=uv,
                               distortion=dist, vertex_indices=unique_verts)
                 valid_charts.append(chart)
-                total_distortion = max(total_distortion, dist)
+                max_chart_dist = max(max_chart_dist, dist)
 
-            if total_distortion <= self.tau:
-                valid_sets.append((valid_charts, total_distortion))
+            # Accept if NO chart exceeds the distortion threshold
+            if max_chart_dist <= self.tau:
+                valid_sets.append((valid_charts, max_chart_dist))
 
         if not valid_sets:
-            # No valid candidate from Normal heuristic -> recurse to children
+            # No valid candidate -> recurse to children
             if node.left is None or node.right is None:
-                # Leaf node but no valid candidate
                 uv, dist = lscm_flatten(mesh.vertices, mesh.faces, face_indices)
                 unique_verts = np.unique(mesh.faces[face_indices])
                 chart = UVChart(face_indices=face_indices, uv_coords=uv,
@@ -240,31 +243,36 @@ class PartUV:
         return best_set
 
     def _gen_candidates_h1(self, mesh: Mesh,
-                           face_indices: np.ndarray) -> List[List[np.ndarray]]:
+                           face_indices: np.ndarray,
+                           force_single: bool = False) -> List[List[np.ndarray]]:
         """Normal heuristic: generate chart decomposition candidates.
 
-        For each n_clusters from 1 to max_candidates:
-        - Cluster faces by normal similarity
-        - Get connected components per cluster
-        - Return as a list of chart decompositions (each is a list of face arrays)
+        Generates candidate decompositions by varying the number of clusters from
+        1 to max_candidates. Each candidate uses connected components within
+        clusters to form charts.
+
+        Args:
+            mesh: The input mesh
+            face_indices: Faces to consider
+            force_single: If True, only return the single-chart candidate
 
         Returns:
-            List of chart decompositions, where each decomposition is a list
-            of face index arrays (one array per chart).
+            List of chart decompositions (each decomposition = list of face arrays).
         """
         if len(face_indices) <= 1:
             return [[face_indices]]
 
         sub_normals = compute_face_normals(mesh.vertices, mesh.faces[face_indices])
 
-        if len(face_indices) <= self.max_candidates:
-            # Return all faces as one chart
-            return [[face_indices]]
+        # Always test the single-chart candidate
+        candidates = [[face_indices]]
 
-        candidates = []
+        if force_single or len(face_indices) <= 3:
+            return candidates
+
         n_to_test = min(self.max_candidates, len(face_indices) - 1)
 
-        for n_clusters in range(1, n_to_test + 1):
+        for n_clusters in range(2, n_to_test + 1):
             try:
                 clustering = AgglomerativeClustering(
                     n_clusters=n_clusters,
@@ -282,15 +290,11 @@ class PartUV:
                 cluster_indices = face_indices[mask]
                 if len(cluster_indices) == 0:
                     continue
-                # Get connected components within this cluster
                 connected = self._get_connected_faces(mesh.faces, cluster_indices)
                 charts_faces.extend(connected)
 
             if charts_faces:
                 candidates.append(charts_faces)
-
-        if not candidates:
-            candidates = [[face_indices]]
 
         return candidates
 
