@@ -17,7 +17,7 @@
 # Putting pip install in %post is the #1 cause of build failures.
 
 Bootstrap: docker-archive
-From: environment/base-uv-python312-bookworm-slim.tar
+From: base-uv-python312-bookworm-slim.tar
 
 %post
     export DEBIAN_FRONTEND=noninteractive

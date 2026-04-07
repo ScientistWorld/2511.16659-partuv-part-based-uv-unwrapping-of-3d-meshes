@@ -46,4 +46,8 @@
 - The first docker-archive attempt failed because the build worker did not have a `/home/user` path during environment assembly, so the absolute archive path in `container.def` was invalid there.
 - Changed `container.def` to reference the archive via the repo-relative path `environment/base-uv-python312-bookworm-slim.tar` and prepared to include that archive in git so the build worker can read it from its checked-out workspace.
 
+### [2026-04-07 23:34] - none
+- The repo-relative `environment/...` path also failed: the builder is resolving the archive path from the `environment/` directory where `container.def` lives, so it looked for `environment/environment/...`.
+- Adjusted `container.def` to use the sibling filename `base-uv-python312-bookworm-slim.tar` directly, which matches the committed archive location next to the definition file.
+
 ## Stop Justification

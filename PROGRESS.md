@@ -13,6 +13,7 @@
 - The environment has been simplified again to minimize container-build surface area: `container.def` now targets `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`, which already includes Python 3.12 and `uv`, and `%post` only installs a small set of runtime shared libraries.
 - The base image is now staged locally as `environment/base-uv-python312-bookworm-slim.tar`, and `container.def` consumes that archive with `Bootstrap: docker-archive` so container builds no longer depend on live registry metadata.
 - The archive source in `container.def` is now repo-relative rather than `/home/user`-absolute, because the build worker resolves local files from its checked-out workspace, not from the interactive login-node path.
+- The builder appears to resolve `docker-archive` paths from the `environment/` directory itself, so the archive reference has been tightened further to the sibling filename `base-uv-python312-bookworm-slim.tar`.
 
 ## Results Achieved
 
@@ -40,6 +41,7 @@
 - The follow-up Quay-based manylinux attempt also failed before `%post`, again during OCI metadata retrieval (`invalid character 's' after top-level value`). The environment has now been moved to a smaller GHCR-hosted Debian image that already carries Python and `uv`.
 - The GHCR direct pull hit the same malformed metadata failure, so the registry itself remains the unstable component. The current workaround is to prefetch that exact image into a local docker archive using `crane` on the login node and build from the archive instead of from the registry.
 - The first docker-archive submission still failed because `container.def` used an absolute `/home/user/...` path, but the builder did not have that path in its own filesystem. The archive source has now been changed to a repo-relative path and will be committed so it exists in the scheduler's checkout.
+- The next attempt showed that the repo-relative `environment/...` path was still one directory too deep for the builder's working directory. The archive reference now points directly at the sibling tarball beside `container.def`.
 
 ## Deviations from Paper
 
