@@ -14,6 +14,7 @@
 
 - No valid reproduction numbers are claimed yet for the paper's actual algorithm.
 - Previous proxy-based scores were invalid for milestone purposes and have been cleared.
+- The audit confirms the active method path is faithful in structure, but there is still no execution evidence for `method_runs` or higher.
 
 ## What Remains
 
@@ -26,6 +27,7 @@
 - The prior implementation substituted PartField with face normals; this invalidated earlier milestone and score claims.
 - `/home/user/shared/models` is read-only in this workspace, so the PartField checkpoint must be cached under the workspace instead.
 - `python validate.py` still fails before the first real run because `scoring/scores.json` is intentionally empty until the official pipeline produces outputs.
+- A legacy `logs/eval_run.log` from the earlier surrogate path is still present and should not be treated as evidence for the current official pipeline.
 
 ## Deviations from Paper
 

@@ -7,7 +7,7 @@ How success is measured. Describe only the metrics, targets, and evaluation proc
 Four metrics are used to evaluate UV unwrapping quality:
 
 1. **Number of Charts** — Count of disconnected UV chart regions covering the mesh. Lower is better. Both average and median across the dataset are reported.
-2. **Seam Length** — Sum of lengths of all chart boundary edges, with UV coordinates normalized to a [0,1] grid. Lower is better; median across the dataset is reported.
+2. **Seam Length** — Sum of lengths of all chart boundary edges, with UV coordinates normalized to a [0,1] grid. Lower is better; aggregate consistently across the dataset using the same convention as the chosen benchmark table.
 3. **Angular (Conformal) Distortion** — Computed as one minus the average cosine between tangent and bitangent vectors of each face. Closer to 1.0 is better (1.0 = perfect angle preservation). Average across the dataset is reported.
 4. **Area (Equiareal) Distortion** — Ratio of 2D chart area to 3D surface area per face, clipped to a maximum of 10. Lower is better. Two variants: (a) "area distortion" — the worst chart in each shape (max across charts), averaged across dataset; (b) "overall area distortion" — average across all faces in all charts.
 5. **Success Rate** — Percentage of meshes successfully processed without timeout or error.
@@ -32,5 +32,5 @@ Target levels (from the paper, approximate ranges):
 1. Load each mesh from the test dataset
 2. Run the UV unwrapping method to generate UV coordinates and chart assignments
 3. Compute all four metrics for each mesh
-4. Aggregate metrics across the dataset: average and median chart count, median seam length, average distortions, success rate
+4. Aggregate metrics across the dataset: average and median chart count, seam length, average distortions, success rate, and runtime using the same aggregation convention throughout the benchmark
 5. For primary comparison, focus on chart count (lower is better) while maintaining distortion below acceptable thresholds

@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Smoke-test the active official PartUV pipeline path in scripts/run.sh to verify that PartField preprocessing and the released PartUV algorithm execute end-to-end on Common Shapes."
+notes: "Audit completed: implementation path is the released PartUV code, but no valid outputs exist yet. Run a fresh 1-GPU smoke test of the official PartField + PartUV pipeline on a 6-mesh Common Shapes subset and write the first real scores.json."

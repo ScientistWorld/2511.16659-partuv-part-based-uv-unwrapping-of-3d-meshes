@@ -46,6 +46,7 @@ def aggregate(results: list[UVEvalResult]) -> dict:
             "success_rate": success_rate,
             "avg_charts": float("inf"),
             "median_charts": float("inf"),
+            "seam_length": float("inf"),
             "angular_distortion": 0.0,
             "area_distortion": float("inf"),
             "overall_area_distortion": float("inf"),
