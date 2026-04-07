@@ -21,7 +21,7 @@ Bootstrap: scratch
 %setup
     mkdir -p "$APPTAINER_ROOTFS"
     curl -L https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz \
-      | tar -xz -C "$APPTAINER_ROOTFS"
+      | tar -xz --no-same-owner --no-same-permissions -C "$APPTAINER_ROOTFS"
 
 %post
     export DEBIAN_FRONTEND=noninteractive

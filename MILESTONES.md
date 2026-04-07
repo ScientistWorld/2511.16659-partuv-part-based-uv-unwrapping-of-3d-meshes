@@ -62,4 +62,8 @@
 - The `arch` bootstrap attempt failed immediately because the build host does not provide `pacstrap`, which Apptainer's Arch bootstrap agent requires.
 - Replaced the bootstrap again with `Bootstrap: scratch` plus a `%setup` step that downloads and untars Canonical's Ubuntu 22.04 core rootfs directly into `$APPTAINER_ROOTFS`, keeping the build off OCI registries and off host-specific bootstrap tools.
 
+### [2026-04-07 23:56] - none
+- The scratch bootstrap reached `%setup`, but tar failed while restoring file owners from the Ubuntu rootfs archive under fakeroot, with repeated `Cannot change ownership ... Invalid argument` errors.
+- Made the rootfs extraction fakeroot-safe by adding `tar --no-same-owner --no-same-permissions`, so the build keeps file contents but stops trying to replay unsupported uid/gid metadata from the downloaded archive.
+
 ## Stop Justification

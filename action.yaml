@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test with a scratch-based container build: %setup downloads Canonical's Ubuntu 22.04 rootfs tarball into $APPTAINER_ROOTFS, and %post installs the minimal runtime packages. This avoids OCI registries, local archive path issues, and the missing pacstrap dependency."
+notes: "Retry the 1-GPU official smoke test with the scratch-based Ubuntu rootfs build, now extracting the rootfs tarball with --no-same-owner --no-same-permissions so %setup can complete under fakeroot on this cluster."
