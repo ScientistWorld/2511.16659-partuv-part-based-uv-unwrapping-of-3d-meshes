@@ -50,4 +50,8 @@
 - The repo-relative `environment/...` path also failed: the builder is resolving the archive path from the `environment/` directory where `container.def` lives, so it looked for `environment/environment/...`.
 - Adjusted `container.def` to use the sibling filename `base-uv-python312-bookworm-slim.tar` directly, which matches the committed archive location next to the definition file.
 
+### [2026-04-07 23:39] - none
+- The sibling-path attempt failed with `open base-uv-python312-bookworm-slim.tar: no such file or directory`, which shows the builder is actually resolving local archive paths from the repo root, not from the `environment/` directory.
+- Restored `container.def` to the repo-root-relative path `environment/base-uv-python312-bookworm-slim.tar`; unlike the first time this path was tried, the tarball is now committed and present in the checkout.
+
 ## Stop Justification

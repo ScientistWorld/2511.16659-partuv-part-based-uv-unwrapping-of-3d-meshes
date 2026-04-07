@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test with container.def reading the sibling docker archive base-uv-python312-bookworm-slim.tar from the environment/ directory. This matches how the builder resolves local archive paths and still avoids any registry fetch."
+notes: "Retry the 1-GPU official smoke test with container.def again pointing at environment/base-uv-python312-bookworm-slim.tar. The tarball is now committed in the checkout, and the latest missing-file error shows the builder resolves local archive paths from repo root."
