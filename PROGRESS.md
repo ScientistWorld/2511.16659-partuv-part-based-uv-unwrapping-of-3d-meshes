@@ -29,6 +29,7 @@
 - `python validate.py` still fails before the first real run because `scoring/scores.json` is intentionally empty until the official pipeline produces outputs.
 - A legacy `logs/eval_run.log` from the earlier surrogate path is still present and should not be treated as evidence for the current official pipeline.
 - The first container build failed before job submission because the Docker Hub pull for the CUDA base image hit an unauthenticated rate limit; the base image source has been switched to `nvcr.io` to avoid that transient infrastructure failure.
+- The second container build also failed during OCI image fetch from the alternate registry. To remove that dependency and avoid a source build, the environment now installs the cached prebuilt `partuv` wheel and uses a plain Ubuntu base image instead of a CUDA-devel image.
 
 ## Deviations from Paper
 

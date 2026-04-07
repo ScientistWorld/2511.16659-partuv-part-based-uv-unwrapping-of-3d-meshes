@@ -17,4 +17,8 @@
 - The first environment build failed before job submission because Apptainer hit Docker Hub's unauthenticated pull rate limit while fetching `nvidia/cuda:12.8.1-devel-ubuntu22.04`.
 - Switched the base image reference in `environment/container.def` to the NGC-hosted `nvcr.io/nvidia/cuda:12.8.1-devel-ubuntu22.04` and resubmitted the same smoke-test plan.
 
+### [2026-04-07 22:34] - none
+- The second environment build also failed before job submission while fetching the alternate registry image, with malformed registry metadata returned during the OCI pull.
+- Removed the need to compile PartUV from source in the container: the environment now installs the cached prebuilt `partuv` wheel and cached `torch_scatter` wheel, and the base image has been simplified to a plain Ubuntu image from a different registry.
+
 ## Stop Justification

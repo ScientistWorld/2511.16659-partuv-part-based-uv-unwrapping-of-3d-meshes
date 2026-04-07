@@ -8,9 +8,11 @@ cd /home/user
 uv pip install --system -U pip setuptools wheel
 uv pip install --system cmake ninja scikit-build-core "pybind11[global]"
 
-# Official PartUV release targets Torch 2.7.1 with CUDA 12.8 wheels.
+# Use prebuilt wheels where available to avoid compiling PartUV from source.
+# Torch keeps the CUDA 12.8 runtime in Python wheels, so the base image does
+# not need to provide a CUDA toolkit.
 uv pip install --system torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
-uv pip install --system torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html
+uv pip install --system /home/user/environment/wheels/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
 
 uv pip install --system \
   boto3 \
@@ -33,4 +35,4 @@ uv pip install --system \
   yacs \
   einops
 
-uv pip install --system --no-build-isolation -e /home/user/method/official_partuv
+uv pip install --system /home/user/environment/wheels/partuv-0.1.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
