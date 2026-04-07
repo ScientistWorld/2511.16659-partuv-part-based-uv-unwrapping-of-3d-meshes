@@ -58,4 +58,8 @@
 - The repo-root-relative archive path still failed even with the tarball committed, which indicates the scheduler's environment build does not make arbitrary sidecar files available to the bootstrap agent.
 - Dropped the local docker-archive workaround entirely and switched `environment/container.def` to Apptainer's built-in `arch` bootstrap agent, which avoids both OCI registry metadata fetches and local archive path resolution.
 
+### [2026-04-07 23:51] - none
+- The `arch` bootstrap attempt failed immediately because the build host does not provide `pacstrap`, which Apptainer's Arch bootstrap agent requires.
+- Replaced the bootstrap again with `Bootstrap: scratch` plus a `%setup` step that downloads and untars Canonical's Ubuntu 22.04 core rootfs directly into `$APPTAINER_ROOTFS`, keeping the build off OCI registries and off host-specific bootstrap tools.
+
 ## Stop Justification

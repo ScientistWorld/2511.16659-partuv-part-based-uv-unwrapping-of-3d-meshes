@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test after replacing the failed docker-archive workaround with Apptainer's arch bootstrap agent. This avoids both the flaky OCI registry fetch path and the scheduler's missing local-archive path handling."
+notes: "Retry the 1-GPU official smoke test with a scratch-based container build: %setup downloads Canonical's Ubuntu 22.04 rootfs tarball into $APPTAINER_ROOTFS, and %post installs the minimal runtime packages. This avoids OCI registries, local archive path issues, and the missing pacstrap dependency."

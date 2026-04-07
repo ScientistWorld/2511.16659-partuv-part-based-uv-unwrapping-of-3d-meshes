@@ -16,6 +16,7 @@
 - The builder appears to resolve `docker-archive` paths from the `environment/` directory itself, so the archive reference has been tightened further to the sibling filename `base-uv-python312-bookworm-slim.tar`.
 - The latest error contradicts that intermediate hypothesis: with the tarball committed, `open base-uv-python312-bookworm-slim.tar: no such file or directory` shows the builder is resolving local archive paths from repo root. `container.def` has therefore been switched back to `environment/base-uv-python312-bookworm-slim.tar`.
 - The archive-based workaround has now been abandoned because even the committed repo-root-relative tarball was unavailable to the bootstrap step. The environment now uses Apptainer's `arch` bootstrap agent instead, trading registry pulls for a distro-native package bootstrap.
+- The environment no longer depends on the Arch bootstrap path either. It now uses `Bootstrap: scratch` and populates the root filesystem in `%setup` from Canonical's Ubuntu 22.04 rootfs tarball, which is a direct HTTP download rather than an OCI registry transaction.
 
 ## Results Achieved
 
@@ -46,6 +47,7 @@
 - The next attempt showed that the repo-relative `environment/...` path was still one directory too deep for the builder's working directory. The archive reference now points directly at the sibling tarball beside `container.def`.
 - That hypothesis turned out to be wrong because it was confounded by the tarball not yet being present in the scheduler checkout. With the tarball now committed, the sibling-path attempt failed, so the correct fix is to keep the committed archive under `environment/` and reference it from repo root.
 - That follow-up fix also failed, which strongly suggests the scheduler's build path is not exposing extra local archive files to the bootstrap stage at all. The new build strategy is to use the `arch` bootstrap agent with package installation in `%post`, and the vendored tarball is being removed again.
+- The Arch attempt failed for a different reason: the host simply lacks `pacstrap`. The current strategy avoids both missing host tooling and registry fetches by downloading an official Ubuntu rootfs tarball in `%setup` and then using `apt-get` inside `%post`.
 
 ## Deviations from Paper
 
