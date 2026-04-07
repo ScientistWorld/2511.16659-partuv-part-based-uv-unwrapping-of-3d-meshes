@@ -30,4 +30,8 @@
 - Another environment build failed before `%post` while pulling the Microsoft Container Registry base image; the failure occurred during OCI blob fetch, not Python package installation.
 - Switched `environment/container.def` from the MCR devcontainer image to `Bootstrap: library` with `ubuntu:22.04`, and restored explicit Python installation in `%post` so the build no longer depends on the flaky OCI registry path.
 
+### [2026-04-07 23:08] - none
+- The `library` bootstrap path also failed before `%post` because this cluster has no default Apptainer library remote configured.
+- Switched `environment/container.def` again to `quay.io/pypa/manylinux_2_28_x86_64:latest`, pinned `/opt/python/cp312-cp312` as the default interpreter, and made `environment/setup.sh` bootstrap `uv` if the base image does not already provide it.
+
 ## Stop Justification

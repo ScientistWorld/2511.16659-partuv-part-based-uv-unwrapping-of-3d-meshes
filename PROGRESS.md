@@ -34,6 +34,7 @@
 - The second container build also failed during OCI image fetch from the alternate registry. To remove that dependency and avoid a source build, the environment now installs the cached prebuilt `partuv` wheel and uses a plain Ubuntu base image instead of a CUDA-devel image.
 - Before this turn, `scripts/reproduce.sh` still invoked `scripts/download.sh`, which would have failed or hung on compute because internet is unavailable there. That submission path has now been corrected.
 - The latest build failure was again pre-`%post`: the scheduler could not fully fetch the MCR devcontainer base image due to an HTTP/2 stream cancellation while downloading a blob. The base image source has been changed again so the next submission exercises a different fetch path.
+- The subsequent `Bootstrap: library` attempt also failed before `%post`, but for a different cluster-level reason: no default Apptainer library remote is configured. The environment has now been moved to a Quay-hosted manylinux image instead.
 
 ## Deviations from Paper
 

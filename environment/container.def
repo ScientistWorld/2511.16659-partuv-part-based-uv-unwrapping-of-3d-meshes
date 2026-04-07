@@ -16,18 +16,16 @@
 # Only OS-level packages (apt-get) belong in %post.
 # Putting pip install in %post is the #1 cause of build failures.
 
-Bootstrap: library
-From: ubuntu:22.04
+Bootstrap: docker
+From: quay.io/pypa/manylinux_2_28_x86_64:latest
 
 %post
-    apt-get update && apt-get install -y --no-install-recommends \
-        build-essential cmake ninja-build pkg-config \
-        python3 python3-pip python3-dev python3-setuptools python3-wheel \
-        curl wget git less nano vim-tiny tmux \
-        libomp-dev libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1 \
-        libcgal-dev libyaml-cpp-dev libtbb-dev && \
-    ln -sf /usr/bin/vim.tiny /usr/bin/vim && \
-    rm -rf /var/lib/apt/lists/*
+    # manylinux ships multiple Python versions under /opt/python.
+    # Pin the default interpreter to CPython 3.12 to match the cached wheels.
+    ln -sf /opt/python/cp312-cp312/bin/python3.12 /usr/local/bin/python3
+    ln -sf /opt/python/cp312-cp312/bin/python3.12 /usr/local/bin/python
+    ln -sf /opt/python/cp312-cp312/bin/pip3.12 /usr/local/bin/pip3
+    ln -sf /opt/python/cp312-cp312/bin/pip3.12 /usr/local/bin/pip
 
     mkdir -p /home/user/data
     chmod 755 /home/user
@@ -35,3 +33,4 @@ From: ubuntu:22.04
 %environment
     export HOME=/home/user
     export PYTHONUNBUFFERED=1
+    export PATH=/opt/python/cp312-cp312/bin:/usr/local/bin:$PATH
