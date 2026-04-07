@@ -26,4 +26,8 @@
 - Added fast preflight checks for the cached Common Shapes data and PartField checkpoint in `scripts/run.sh`.
 - Corrected evaluation aggregation to use median seam length, matching Table 1 and `scoring/reference.json`.
 
+### [2026-04-07 22:58] - none
+- Another environment build failed before `%post` while pulling the Microsoft Container Registry base image; the failure occurred during OCI blob fetch, not Python package installation.
+- Switched `environment/container.def` from the MCR devcontainer image to `Bootstrap: library` with `ubuntu:22.04`, and restored explicit Python installation in `%post` so the build no longer depends on the flaky OCI registry path.
+
 ## Stop Justification

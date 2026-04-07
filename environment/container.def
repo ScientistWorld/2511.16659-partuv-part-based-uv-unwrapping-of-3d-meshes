@@ -16,13 +16,13 @@
 # Only OS-level packages (apt-get) belong in %post.
 # Putting pip install in %post is the #1 cause of build failures.
 
-Bootstrap: docker
-From: mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+Bootstrap: library
+From: ubuntu:22.04
 
 %post
     apt-get update && apt-get install -y --no-install-recommends \
         build-essential cmake ninja-build pkg-config \
-        python3 python3-pip python3-dev python3-numpy \
+        python3 python3-pip python3-dev python3-setuptools python3-wheel \
         curl wget git less nano vim-tiny tmux \
         libomp-dev libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1 \
         libcgal-dev libyaml-cpp-dev libtbb-dev && \

@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Run a fresh 1-GPU smoke test of the official PartField + PartUV pipeline on a 6-mesh Common Shapes subset using only pre-cached local assets; no compute-node downloads. The run should emit the first valid scores.json if the container and wrapper are correct."
+notes: "Retry the 1-GPU official smoke test after changing the environment base image from MCR to Apptainer library ubuntu:22.04. This should bypass the OCI fetch failure and, if the build succeeds, run the no-network 6-mesh Common Shapes smoke test to produce the first valid scores.json."
