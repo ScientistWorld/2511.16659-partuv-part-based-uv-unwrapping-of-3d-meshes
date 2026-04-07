@@ -9,6 +9,7 @@
   - `environment/wheels/torch_scatter-2.1.2+pt27cu128-...whl`
   - `checkpoints/partfield/model_objaverse.ckpt`
 - The active evaluation path now scores Common Shapes outputs with method-agnostic UV metrics: success rate, chart count, seam length, angular distortion, area distortion, overall area distortion, and runtime.
+- The submitted run path is now compute-safe: it only consumes already-cached local assets and no longer tries to download data or checkpoints on the no-internet cluster nodes.
 
 ## Results Achieved
 
@@ -30,6 +31,7 @@
 - A legacy `logs/eval_run.log` from the earlier surrogate path is still present and should not be treated as evidence for the current official pipeline.
 - The first container build failed before job submission because the Docker Hub pull for the CUDA base image hit an unauthenticated rate limit; the base image source has been switched to `nvcr.io` to avoid that transient infrastructure failure.
 - The second container build also failed during OCI image fetch from the alternate registry. To remove that dependency and avoid a source build, the environment now installs the cached prebuilt `partuv` wheel and uses a plain Ubuntu base image instead of a CUDA-devel image.
+- Before this turn, `scripts/reproduce.sh` still invoked `scripts/download.sh`, which would have failed or hung on compute because internet is unavailable there. That submission path has now been corrected.
 
 ## Deviations from Paper
 

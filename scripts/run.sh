@@ -11,6 +11,9 @@ echo "=== PartUV official reproduction smoke run ==="
 echo "Mesh limit: ${PARTUV_LIMIT}"
 echo "Python: $(python3 --version)"
 
+test -f /home/user/checkpoints/partfield/model_objaverse.ckpt
+test -d /home/user/data/common_shapes
+
 bash scripts/reproduce.sh
 
 python3 validate.py --compare

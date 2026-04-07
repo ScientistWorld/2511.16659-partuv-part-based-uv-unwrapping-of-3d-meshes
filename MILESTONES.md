@@ -21,4 +21,9 @@
 - The second environment build also failed before job submission while fetching the alternate registry image, with malformed registry metadata returned during the OCI pull.
 - Removed the need to compile PartUV from source in the container: the environment now installs the cached prebuilt `partuv` wheel and cached `torch_scatter` wheel, and the base image has been simplified to a plain Ubuntu image from a different registry.
 
+### [2026-04-07 22:47] - none
+- Fixed the submitted compute-node workflow so it no longer calls `scripts/download.sh` from `scripts/reproduce.sh`; the job now assumes pre-staged local assets, matching the cluster's no-internet constraint.
+- Added fast preflight checks for the cached Common Shapes data and PartField checkpoint in `scripts/run.sh`.
+- Corrected evaluation aggregation to use median seam length, matching Table 1 and `scoring/reference.json`.
+
 ## Stop Justification

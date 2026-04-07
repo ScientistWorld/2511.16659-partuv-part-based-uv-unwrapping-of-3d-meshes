@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Audit completed: implementation path is the released PartUV code, but no valid outputs exist yet. Run a fresh 1-GPU smoke test of the official PartField + PartUV pipeline on a 6-mesh Common Shapes subset and write the first real scores.json."
+notes: "Run a fresh 1-GPU smoke test of the official PartField + PartUV pipeline on a 6-mesh Common Shapes subset using only pre-cached local assets; no compute-node downloads. The run should emit the first valid scores.json if the container and wrapper are correct."

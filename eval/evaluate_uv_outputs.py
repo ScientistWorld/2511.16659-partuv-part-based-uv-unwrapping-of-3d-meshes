@@ -60,7 +60,8 @@ def aggregate(results: list[UVEvalResult]) -> dict:
         "success_rate": success_rate,
         "avg_charts": float(arr("num_charts").mean()),
         "median_charts": float(np.median(arr("num_charts"))),
-        "seam_length": float(arr("seam_length").mean()),
+        # Table 1 reports median seam length across shapes.
+        "seam_length": float(np.median(arr("seam_length"))),
         "angular_distortion": float(arr("angular_distortion").mean()),
         "area_distortion": float(arr("area_distortion").mean()),
         "overall_area_distortion": float(arr("overall_area_distortion").mean()),
