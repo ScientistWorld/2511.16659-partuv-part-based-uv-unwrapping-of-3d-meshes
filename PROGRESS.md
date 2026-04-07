@@ -15,6 +15,7 @@
 - The archive source in `container.def` is now repo-relative rather than `/home/user`-absolute, because the build worker resolves local files from its checked-out workspace, not from the interactive login-node path.
 - The builder appears to resolve `docker-archive` paths from the `environment/` directory itself, so the archive reference has been tightened further to the sibling filename `base-uv-python312-bookworm-slim.tar`.
 - The latest error contradicts that intermediate hypothesis: with the tarball committed, `open base-uv-python312-bookworm-slim.tar: no such file or directory` shows the builder is resolving local archive paths from repo root. `container.def` has therefore been switched back to `environment/base-uv-python312-bookworm-slim.tar`.
+- The archive-based workaround has now been abandoned because even the committed repo-root-relative tarball was unavailable to the bootstrap step. The environment now uses Apptainer's `arch` bootstrap agent instead, trading registry pulls for a distro-native package bootstrap.
 
 ## Results Achieved
 
@@ -44,6 +45,7 @@
 - The first docker-archive submission still failed because `container.def` used an absolute `/home/user/...` path, but the builder did not have that path in its own filesystem. The archive source has now been changed to a repo-relative path and will be committed so it exists in the scheduler's checkout.
 - The next attempt showed that the repo-relative `environment/...` path was still one directory too deep for the builder's working directory. The archive reference now points directly at the sibling tarball beside `container.def`.
 - That hypothesis turned out to be wrong because it was confounded by the tarball not yet being present in the scheduler checkout. With the tarball now committed, the sibling-path attempt failed, so the correct fix is to keep the committed archive under `environment/` and reference it from repo root.
+- That follow-up fix also failed, which strongly suggests the scheduler's build path is not exposing extra local archive files to the bootstrap stage at all. The new build strategy is to use the `arch` bootstrap agent with package installation in `%post`, and the vendored tarball is being removed again.
 
 ## Deviations from Paper
 

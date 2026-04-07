@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test with container.def again pointing at environment/base-uv-python312-bookworm-slim.tar. The tarball is now committed in the checkout, and the latest missing-file error shows the builder resolves local archive paths from repo root."
+notes: "Retry the 1-GPU official smoke test after replacing the failed docker-archive workaround with Apptainer's arch bootstrap agent. This avoids both the flaky OCI registry fetch path and the scheduler's missing local-archive path handling."

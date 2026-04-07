@@ -16,22 +16,20 @@
 # Only OS-level packages (apt-get) belong in %post.
 # Putting pip install in %post is the #1 cause of build failures.
 
-Bootstrap: docker-archive
-From: environment/base-uv-python312-bookworm-slim.tar
+Bootstrap: arch
 
 %post
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get update
-    apt-get install -y --no-install-recommends \
+    pacman-key --init
+    pacman-key --populate archlinux
+    pacman -Syu --noconfirm --needed \
         git \
-        libgl1 \
-        libglib2.0-0 \
-        libgomp1 \
-        libsm6 \
-        libxext6 \
-        libxrender1
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
+        glib2 \
+        libglvnd \
+        libsm \
+        libxext \
+        libxrender \
+        python \
+        python-pip
 
     mkdir -p /home/user/data
     chmod 755 /home/user
@@ -39,4 +37,4 @@ From: environment/base-uv-python312-bookworm-slim.tar
 %environment
     export HOME=/home/user
     export PYTHONUNBUFFERED=1
-    export PATH=/usr/local/bin:$PATH
+    export PATH=/usr/local/bin:/usr/bin:$PATH

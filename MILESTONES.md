@@ -54,4 +54,8 @@
 - The sibling-path attempt failed with `open base-uv-python312-bookworm-slim.tar: no such file or directory`, which shows the builder is actually resolving local archive paths from the repo root, not from the `environment/` directory.
 - Restored `container.def` to the repo-root-relative path `environment/base-uv-python312-bookworm-slim.tar`; unlike the first time this path was tried, the tarball is now committed and present in the checkout.
 
+### [2026-04-07 23:45] - none
+- The repo-root-relative archive path still failed even with the tarball committed, which indicates the scheduler's environment build does not make arbitrary sidecar files available to the bootstrap agent.
+- Dropped the local docker-archive workaround entirely and switched `environment/container.def` to Apptainer's built-in `arch` bootstrap agent, which avoids both OCI registry metadata fetches and local archive path resolution.
+
 ## Stop Justification

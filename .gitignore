@@ -15,7 +15,6 @@ environment/overlay.img
 environment/.setup_wrapper.sh
 environment/.overlay.log
 environment/*.tar
-!environment/base-uv-python312-bookworm-slim.tar
 environment/wheels/
 tools/
 
