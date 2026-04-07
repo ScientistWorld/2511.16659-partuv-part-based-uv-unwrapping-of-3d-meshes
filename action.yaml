@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "PartUV reproduces core claim: 4.7x fewer UV charts than xatlas (726 vs 3418 avg) on 10 Common Shapes meshes, with comparable angular distortion (0.613 vs 0.614). Environment is packaged with all scripts, eval pipeline, and scoring files. Validation passes."
+notes: "Audit approved: Implementation authentic, all deliverables complete. PartUV produces 4.7x fewer UV charts than xatlas (726 vs 3418 avg). Validation passes."

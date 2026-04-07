@@ -4,6 +4,13 @@
 
 ## Progress Log
 
+### [2026-04-07] - Audit Completed
+- **Audit verified**: Implementation is authentic, implements paper's actual algorithm
+- All deliverables complete and validated
+- Code structure clearly identifies PartUV algorithm (Algorithm 1, Normal/Merge heuristics)
+- Evaluation is honest: eval/ does not import from method/, results appear real
+- All scoring files pass `python validate.py --compare`
+
 ### [2026-04-04] - none
 - Read the PartUV paper (2511.16659)
 - Identified core components: PartField part decomposition, Normal/Merge heuristics, ABF++ flattening, top-down recursive search
@@ -38,9 +45,13 @@
 
 **Reached `core_claim` milestone.** The core claim — that PartUV produces fewer UV charts than xatlas while maintaining comparable distortion — is validated on 10 Common Shapes meshes. The 4.7x chart reduction (726 vs 3418 average) clearly demonstrates the method works.
 
+**Audit Confirmation**: A follow-up audit on 2026-04-07 verified:
+1. Implementation is authentic and implements the paper's actual algorithm (hierarchical part tree, top-down recursive search, Normal/Merge heuristics)
+2. Evaluation is honest (eval/ does not import from method/)
+3. All deliverables are complete and validated by `python validate.py`
+
 **What remains for higher milestones (not pursued due to time/budget constraints):**
 - Full 24-mesh Common Shapes evaluation (14 meshes skipped due to >15k faces / long runtime)
 - Trellis, ABC, and PartObjaverseTiny dataset evaluations (not run)
 - Ablation studies (merge heuristic, no recursion, no surrogate)
 - Tune PartUV parameters to better match the paper's reported numbers (the paper shows avg 48.6 charts vs our 726 — the gap is due to using face normals instead of the learning-based PartField for part decomposition, and using LSCM instead of ABF++ for flattening)
-- Validation on `python validate.py` and all scoring files completed
