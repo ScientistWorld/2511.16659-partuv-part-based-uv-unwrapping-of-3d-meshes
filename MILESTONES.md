@@ -34,4 +34,8 @@
 - The `library` bootstrap path also failed before `%post` because this cluster has no default Apptainer library remote configured.
 - Switched `environment/container.def` again to `quay.io/pypa/manylinux_2_28_x86_64:latest`, pinned `/opt/python/cp312-cp312` as the default interpreter, and made `environment/setup.sh` bootstrap `uv` if the base image does not already provide it.
 
+### [2026-04-07 23:17] - none
+- The Quay-based build also failed before `%post`, with malformed registry metadata returned during the OCI fetch; the failure is still in external image retrieval rather than the Python environment.
+- Switched `environment/container.def` to `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`, which already provides Python 3.12 and `uv`, and reduced `%post` to a small set of Debian runtime libraries needed by the cached wheels.
+
 ## Stop Justification

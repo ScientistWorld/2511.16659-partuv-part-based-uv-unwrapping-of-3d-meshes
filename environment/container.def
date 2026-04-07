@@ -17,15 +17,21 @@
 # Putting pip install in %post is the #1 cause of build failures.
 
 Bootstrap: docker
-From: quay.io/pypa/manylinux_2_28_x86_64:latest
+From: ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 %post
-    # manylinux ships multiple Python versions under /opt/python.
-    # Pin the default interpreter to CPython 3.12 to match the cached wheels.
-    ln -sf /opt/python/cp312-cp312/bin/python3.12 /usr/local/bin/python3
-    ln -sf /opt/python/cp312-cp312/bin/python3.12 /usr/local/bin/python
-    ln -sf /opt/python/cp312-cp312/bin/pip3.12 /usr/local/bin/pip3
-    ln -sf /opt/python/cp312-cp312/bin/pip3.12 /usr/local/bin/pip
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        git \
+        libgl1 \
+        libglib2.0-0 \
+        libgomp1 \
+        libsm6 \
+        libxext6 \
+        libxrender1
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 
     mkdir -p /home/user/data
     chmod 755 /home/user
@@ -33,4 +39,4 @@ From: quay.io/pypa/manylinux_2_28_x86_64:latest
 %environment
     export HOME=/home/user
     export PYTHONUNBUFFERED=1
-    export PATH=/opt/python/cp312-cp312/bin:/usr/local/bin:$PATH
+    export PATH=/usr/local/bin:$PATH

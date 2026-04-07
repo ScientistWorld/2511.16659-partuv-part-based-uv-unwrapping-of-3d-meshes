@@ -10,7 +10,7 @@
   - `checkpoints/partfield/model_objaverse.ckpt`
 - The active evaluation path now scores Common Shapes outputs with method-agnostic UV metrics: success rate, chart count, seam length, angular distortion, area distortion, overall area distortion, and runtime.
 - The submitted run path is now compute-safe: it only consumes already-cached local assets and no longer tries to download data or checkpoints on the no-internet cluster nodes.
-- The environment has been retargeted away from Microsoft Container Registry. `container.def` now uses Apptainer's library bootstrap on `ubuntu:22.04` to avoid repeated OCI fetch failures before `%post`.
+- The environment has been simplified again to minimize container-build surface area: `container.def` now targets `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`, which already includes Python 3.12 and `uv`, and `%post` only installs a small set of runtime shared libraries.
 
 ## Results Achieved
 
@@ -34,7 +34,8 @@
 - The second container build also failed during OCI image fetch from the alternate registry. To remove that dependency and avoid a source build, the environment now installs the cached prebuilt `partuv` wheel and uses a plain Ubuntu base image instead of a CUDA-devel image.
 - Before this turn, `scripts/reproduce.sh` still invoked `scripts/download.sh`, which would have failed or hung on compute because internet is unavailable there. That submission path has now been corrected.
 - The latest build failure was again pre-`%post`: the scheduler could not fully fetch the MCR devcontainer base image due to an HTTP/2 stream cancellation while downloading a blob. The base image source has been changed again so the next submission exercises a different fetch path.
-- The subsequent `Bootstrap: library` attempt also failed before `%post`, but for a different cluster-level reason: no default Apptainer library remote is configured. The environment has now been moved to a Quay-hosted manylinux image instead.
+- The subsequent `Bootstrap: library` attempt also failed before `%post`, but for a different cluster-level reason: no default Apptainer library remote is configured.
+- The follow-up Quay-based manylinux attempt also failed before `%post`, again during OCI metadata retrieval (`invalid character 's' after top-level value`). The environment has now been moved to a smaller GHCR-hosted Debian image that already carries Python and `uv`.
 
 ## Deviations from Paper
 

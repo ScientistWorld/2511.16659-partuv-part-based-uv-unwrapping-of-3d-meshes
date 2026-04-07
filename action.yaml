@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test after switching the environment base again, now to Quay's manylinux_2_28_x86_64 image with Python 3.12 pinned and setup.sh able to bootstrap uv. This avoids both the flaky MCR blob path and the missing Apptainer library remote."
+notes: "Retry the 1-GPU official smoke test after replacing the Quay-based image with ghcr.io/astral-sh/uv:python3.12-bookworm-slim. This keeps the build on a smaller Debian base that already provides Python and uv, leaving only minimal runtime apt packages in %post."
