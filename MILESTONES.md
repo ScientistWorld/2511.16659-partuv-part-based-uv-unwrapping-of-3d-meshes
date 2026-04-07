@@ -38,4 +38,8 @@
 - The Quay-based build also failed before `%post`, with malformed registry metadata returned during the OCI fetch; the failure is still in external image retrieval rather than the Python environment.
 - Switched `environment/container.def` to `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`, which already provides Python 3.12 and `uv`, and reduced `%post` to a small set of Debian runtime libraries needed by the cached wheels.
 
+### [2026-04-07 23:22] - none
+- The GHCR-based attempt hit the same malformed-registry-response failure before `%post`, confirming the issue is the build-time registry fetch rather than a particular image choice.
+- Downloaded the 66 MB `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` image into `/home/user/environment/base-uv-python312-bookworm-slim.tar` with `crane`, and switched `environment/container.def` to `Bootstrap: docker-archive` so Apptainer reads the base image from the local workspace instead of querying a registry.
+
 ## Stop Justification

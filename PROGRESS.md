@@ -11,6 +11,7 @@
 - The active evaluation path now scores Common Shapes outputs with method-agnostic UV metrics: success rate, chart count, seam length, angular distortion, area distortion, overall area distortion, and runtime.
 - The submitted run path is now compute-safe: it only consumes already-cached local assets and no longer tries to download data or checkpoints on the no-internet cluster nodes.
 - The environment has been simplified again to minimize container-build surface area: `container.def` now targets `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`, which already includes Python 3.12 and `uv`, and `%post` only installs a small set of runtime shared libraries.
+- The base image is now staged locally as `environment/base-uv-python312-bookworm-slim.tar`, and `container.def` consumes that archive with `Bootstrap: docker-archive` so container builds no longer depend on live registry metadata.
 
 ## Results Achieved
 
@@ -36,6 +37,7 @@
 - The latest build failure was again pre-`%post`: the scheduler could not fully fetch the MCR devcontainer base image due to an HTTP/2 stream cancellation while downloading a blob. The base image source has been changed again so the next submission exercises a different fetch path.
 - The subsequent `Bootstrap: library` attempt also failed before `%post`, but for a different cluster-level reason: no default Apptainer library remote is configured.
 - The follow-up Quay-based manylinux attempt also failed before `%post`, again during OCI metadata retrieval (`invalid character 's' after top-level value`). The environment has now been moved to a smaller GHCR-hosted Debian image that already carries Python and `uv`.
+- The GHCR direct pull hit the same malformed metadata failure, so the registry itself remains the unstable component. The current workaround is to prefetch that exact image into a local docker archive using `crane` on the login node and build from the archive instead of from the registry.
 
 ## Deviations from Paper
 

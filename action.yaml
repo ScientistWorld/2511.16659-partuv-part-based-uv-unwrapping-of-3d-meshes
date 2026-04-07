@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: true
 milestone: none
-notes: "Retry the 1-GPU official smoke test after replacing the Quay-based image with ghcr.io/astral-sh/uv:python3.12-bookworm-slim. This keeps the build on a smaller Debian base that already provides Python and uv, leaving only minimal runtime apt packages in %post."
+notes: "Retry the 1-GPU official smoke test with the container base staged locally as /home/user/environment/base-uv-python312-bookworm-slim.tar and container.def switched to docker-archive bootstrap. This removes live registry metadata fetches from the build path."
