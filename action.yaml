@@ -1,5 +1,3 @@
-action: submit
-gpus: 1
-test: true
+action: done
 milestone: none
-notes: "Retry the 1-GPU official smoke test with the scratch-based Ubuntu rootfs build, now extracting the rootfs tarball with --no-same-owner --no-same-permissions so %setup can complete under fakeroot on this cluster."
+notes: "System stopped the paper after 10 consecutive environment build/setup failures. No valid run of the official PartUV pipeline was launched, so the milestone remains none."

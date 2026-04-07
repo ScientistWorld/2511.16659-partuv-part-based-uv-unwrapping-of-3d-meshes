@@ -31,6 +31,11 @@
 - Run the official PartField preprocessing + PartUV pipeline on at least one Common Shapes mesh.
 - Extend evaluation and baseline comparison to support a defensible `core_claim`.
 
+## Final Status
+
+- Stopped by the system after 10 consecutive environment build/setup failures.
+- No valid compute run was launched, so the official PartUV method was not executed in this environment.
+
 ## Issues Encountered
 
 - The prior implementation substituted PartField with face normals; this invalidated earlier milestone and score claims.

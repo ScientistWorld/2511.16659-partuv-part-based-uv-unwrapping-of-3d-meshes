@@ -67,3 +67,6 @@
 - Made the rootfs extraction fakeroot-safe by adding `tar --no-same-owner --no-same-permissions`, so the build keeps file contents but stops trying to replay unsupported uid/gid metadata from the downloaded archive.
 
 ## Stop Justification
+- The system halted this paper after 10 consecutive environment build failures.
+- No compute job ever started, so no milestone above `none` is justified.
+- The most advanced environment path reached a scratch bootstrap that could download the Ubuntu rootfs, but the project was stopped before a successful container build and before any execution of the official PartUV pipeline.
