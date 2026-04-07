@@ -13,4 +13,8 @@
 - Verified that no valid run artifacts or reproduced scores exist yet: `scoring/scores.json` is empty and there are no `final_components.obj` outputs under `checkpoints/`.
 - Fixed evaluation contract consistency so failed runs still emit the full metric schema and the briefing matches the benchmark aggregation convention.
 
+### [2026-04-07 22:26] - none
+- The first environment build failed before job submission because Apptainer hit Docker Hub's unauthenticated pull rate limit while fetching `nvidia/cuda:12.8.1-devel-ubuntu22.04`.
+- Switched the base image reference in `environment/container.def` to the NGC-hosted `nvcr.io/nvidia/cuda:12.8.1-devel-ubuntu22.04` and resubmitted the same smoke-test plan.
+
 ## Stop Justification
