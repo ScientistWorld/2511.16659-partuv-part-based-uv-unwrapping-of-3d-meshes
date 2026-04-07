@@ -1,23 +1,36 @@
 #!/bin/bash
-# Install Python packages into the container overlay.
-#
-# IMPORTANT: Use TMPDIR=/dev/shm because /tmp is a 64MB tmpfs that fills up.
 set -e
 export TMPDIR=/dev/shm
 export UV_CACHE_DIR=/dev/shm/uv-cache
 
 cd /home/user
 
-# Core scientific computing
-pip install numpy scipy scikit-learn
+uv pip install --system -U pip setuptools wheel
+uv pip install --system cmake ninja scikit-build-core "pybind11[global]"
 
-# Mesh processing
-pip install trimesh meshio
+# Official PartUV release targets Torch 2.7.1 with CUDA 12.8 wheels.
+uv pip install --system torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
+uv pip install --system torch-scatter -f https://data.pyg.org/whl/torch-2.7.1+cu128.html
 
-# xatlas for UV unwrapping baseline
-pip install xatlas
+uv pip install --system \
+  boto3 \
+  h5py \
+  libigl \
+  lightning==2.2 \
+  loguru \
+  meshio \
+  open3d \
+  opencv-python \
+  pandas \
+  plyfile \
+  pyyaml \
+  scikit-image \
+  scikit-learn \
+  seaborn \
+  tqdm \
+  trimesh==4.9.0 \
+  xatlas \
+  yacs \
+  einops
 
-# Progress bars
-pip install tqdm pandas
-
-echo "Environment setup complete"
+uv pip install --system --no-build-isolation -e /home/user/method/official_partuv

@@ -1,8 +1,5 @@
-# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends. Sleeping blocks the entire pipeline.
-action: pending
+action: submit
 gpus: 1
-test: false
-milestone: method_runs
-notes: ""
+test: true
+milestone: none
+notes: "Smoke-test the active official PartUV pipeline path in scripts/run.sh to verify that PartField preprocessing and the released PartUV algorithm execute end-to-end on Common Shapes."

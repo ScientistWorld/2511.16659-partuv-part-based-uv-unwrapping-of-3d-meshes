@@ -14,6 +14,7 @@ environment/container.sif
 environment/overlay.img
 environment/.setup_wrapper.sh
 environment/.overlay.log
+environment/wheels/
 
 # Swarm/worker artifacts
 trajectory/

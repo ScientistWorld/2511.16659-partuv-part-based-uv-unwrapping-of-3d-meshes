@@ -5,15 +5,49 @@
       "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
+        "success_rate": {"higher_is_better": true, "coefficient": 0.5},
         "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2}
+        "median_charts": {"higher_is_better": false, "coefficient": 0.4},
+        "seam_length": {"higher_is_better": false, "coefficient": 0.3},
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.4},
+        "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
+        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
+        "avg_time": {"higher_is_better": false, "coefficient": 0.1}
       },
       "results": {
-        "blender":    {"type": "baseline", "avg_charts": 1360.3, "median_charts": 332.5, "angular_distortion": 0.906},
-        "xatlas":     {"type": "baseline", "avg_charts": 974.8,  "median_charts": 301.0, "angular_distortion": 0.987},
-        "partuv":     {"type": "proposed", "avg_charts": 48.6,   "median_charts": 16.5,  "angular_distortion": 0.990}
+        "blender": {
+          "type": "baseline",
+          "success_rate": 100.0,
+          "avg_charts": 1360.3,
+          "median_charts": 332.5,
+          "seam_length": 44.7,
+          "angular_distortion": 0.906,
+          "area_distortion": 1.172,
+          "overall_area_distortion": 1.102,
+          "avg_time": 0.3
+        },
+        "xatlas": {
+          "type": "baseline",
+          "success_rate": 100.0,
+          "avg_charts": 974.8,
+          "median_charts": 301.0,
+          "seam_length": 42.9,
+          "angular_distortion": 0.987,
+          "area_distortion": 1.885,
+          "overall_area_distortion": 1.504,
+          "avg_time": 77.9
+        },
+        "partuv": {
+          "type": "proposed",
+          "success_rate": 100.0,
+          "avg_charts": 48.6,
+          "median_charts": 16.5,
+          "seam_length": 16.6,
+          "angular_distortion": 0.990,
+          "area_distortion": 1.283,
+          "overall_area_distortion": 1.128,
+          "avg_time": 39.4
+        }
       }
     }
   }

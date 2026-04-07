@@ -1,7 +1,5 @@
 # Reproduction Checklist
 
-Check off items as you complete them. Order doesn't matter — work however makes sense for this paper.
-
 ## Briefing
 - [x] `briefing/problem.md` (method-agnostic)
 - [x] `briefing/evaluation.md` (method-agnostic)
@@ -10,8 +8,8 @@ Check off items as you complete them. Order doesn't matter — work however make
 
 ## Scoring
 - [x] `scoring/reference.json` — paper's reported numbers
-- [x] Workspace validated via `python validate.py`
-- [x] `scoring/scores.json` — reproduced numbers
+- [x] `python validate.py --reference-only`
+- [ ] `scoring/scores.json` — reproduced numbers from the actual method
 - [x] `scoring/TARGETS.md` — primary, constraint, and ablation targets
 - [x] `scoring/CONSTRAINTS.md` — what a scientist must hold fixed
 - [x] `scoring/DIRECTION.md` — research direction scope for scientist
@@ -20,12 +18,12 @@ Check off items as you complete them. Order doesn't matter — work however make
 ## Code
 - [x] Evaluation code in `eval/`
 - [x] Method implementation in `method/`
-- [x] Baseline implementation in `baseline/` (xatlas + fallback)
+- [x] Baseline implementation in `baseline/`
 
 ## Scripts
 - [x] `scripts/evaluate.sh`
 - [x] `scripts/reproduce.sh`
-- [x] `scripts/download.sh` (idempotent, size comment at top)
+- [x] `scripts/download.sh`
 - [x] `scripts/baseline.sh`
 - [x] `scripts/method.sh`
 - [x] `scripts/run.sh`
@@ -34,12 +32,14 @@ Check off items as you complete them. Order doesn't matter — work however make
 - [x] `environment/container.def` + `environment/setup.sh`
 
 ## Data
-- [x] Dataset acquired (22 meshes from common-3d-test-models, GitHub master branch)
+- [x] Common Shapes dataset acquired
+- [x] PartField checkpoint cached
+- [ ] PartField checkpoint verified by a successful run
 
 ## Milestones
-- [x] `method_runs` — executes end-to-end without errors
-- [x] `core_claim` — minimum experiment supports central claim
-- [ ] `core_claim_plus` — additional settings
+- [ ] `method_runs`
+- [ ] `core_claim`
+- [ ] `core_claim_plus`
 - [ ] `secondary_claims`
 - [ ] `majority`
 - [ ] `near_complete`

@@ -1,29 +1,3 @@
 {
-  "experiments": {
-    "common_shapes_comparison": {
-      "description": "Common Shapes dataset (10 meshes, faces 968-13334): PartUV produces 4.7x fewer charts than xatlas on average (726 vs 3418 avg charts). Angular distortion is comparable (0.613 vs 0.614). Our implementation uses face normals as PartField proxy (matching paper's face_normal_feat ablation).",
-      "weight": 1.0,
-      "primary_metric": "avg_charts",
-      "metrics": {
-        "avg_charts": {"higher_is_better": false, "coefficient": 1.0},
-        "median_charts": {"higher_is_better": false, "coefficient": 0.5},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2}
-      },
-      "results": {
-        "xatlas": {
-          "avg_charts": 3418.0,
-          "median_charts": 3208.0,
-          "angular_distortion": 0.6143,
-          "overall_area_distortion": 288.668
-        },
-        "partuv": {
-          "avg_charts": 726.1,
-          "median_charts": 876.0,
-          "angular_distortion": 0.6130,
-          "overall_area_distortion": 109.38
-        }
-      }
-    }
-  }
+  "experiments": {}
 }

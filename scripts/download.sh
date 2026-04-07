@@ -1,30 +1,31 @@
 #!/bin/bash
-# Download all data and models needed for this environment.
-#
-# IMPORTANT: Use TMPDIR=/dev/shm because /tmp is a 64MB tmpfs that fills up.
+# Download datasets and model checkpoints needed by this environment.
+# Estimated download: ~1.3 GB (Common Shapes archive + PartField checkpoint).
 set -e
 export TMPDIR=/dev/shm
-cd "$(dirname "$0")"
-cd ..
+cd /home/user
 
 echo "=== Downloading datasets ==="
 
-# Common Shapes dataset
 COMMON_SHAPES_DIR="data/common_shapes"
-python3 -c "
-import urllib.request, zipfile, os, shutil
+python3 - <<'PY'
+import os
+import shutil
+import urllib.request
+import zipfile
 
 url = 'https://github.com/alecjacobson/common-3d-test-models/archive/refs/heads/master.zip'
 zip_path = 'data/common_shapes_temp.zip'
 output_dir = 'data/common_shapes'
+
 os.makedirs(output_dir, exist_ok=True)
 
-if not os.path.exists(zip_path):
-    print(f'Downloading from {url}...')
+if not any(name.endswith('.obj') for name in os.listdir(output_dir)):
+    print(f'Downloading Common Shapes from {url}...')
     urllib.request.urlretrieve(url, zip_path)
-    print('Extracting...')
-    with zipfile.ZipFile(zip_path, 'r') as z:
-        z.extractall('data/')
+    print('Extracting Common Shapes...')
+    with zipfile.ZipFile(zip_path, 'r') as zf:
+        zf.extractall('data/')
     extracted = 'data/common-3d-test-models-master'
     if os.path.exists(extracted):
         for item in os.listdir(extracted):
@@ -34,15 +35,26 @@ if not os.path.exists(zip_path):
                 shutil.move(src, dst)
         os.rmdir(extracted)
     os.remove(zip_path)
-    print('Done!')
 else:
-    print('Already downloaded')
-"
+    print('Common Shapes already present')
+PY
+
+echo ""
+echo "=== Downloading PartField checkpoint ==="
+CKPT_DIR="/home/user/checkpoints/partfield"
+CKPT_PATH="${CKPT_DIR}/model_objaverse.ckpt"
+mkdir -p "$CKPT_DIR"
+if [ ! -f "$CKPT_PATH" ]; then
+  wget -O "$CKPT_PATH" https://huggingface.co/mikaelaangel/partfield-ckpt/resolve/main/model_objaverse.ckpt
+else
+  echo "Checkpoint already present: $CKPT_PATH"
+fi
 
 echo ""
 echo "=== Available meshes ==="
-find data/common_shapes -name "*.obj" 2>/dev/null | wc -l
+find "$COMMON_SHAPES_DIR" -name "*.obj" 2>/dev/null | wc -l
 echo "meshes found"
+du -sh "$CKPT_PATH" 2>/dev/null || true
 
 echo ""
 echo "Download complete!"

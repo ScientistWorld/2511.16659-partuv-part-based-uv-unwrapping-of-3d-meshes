@@ -1,28 +1,27 @@
 # Scientist Constraints
 
 ## Data
-The scientist must use the provided datasets for evaluation:
-- **Common Shapes**: 24 meshes from `alecjacobson/common-3d-test-models` (GitHub). These are the primary benchmark.
-- The system may include additional datasets (Trellis, ABC, PartObjaverseTiny) if accessible.
+The scientist must evaluate on the provided Common Shapes benchmark:
+- **Common Shapes**: meshes from `alecjacobson/common-3d-test-models`, stored under `/home/user/data/common_shapes`
 
-No external 3D mesh datasets may be used. The evaluation must be conducted on the same test meshes used to establish the baseline.
+Additional datasets may be added later, but any claimed improvement over the current reproduction must include the same Common Shapes evaluation.
 
 ## Method
-The scientist must work within the **mesh decomposition and UV unwrapping** problem space. Specifically:
-- The method must produce UV coordinates and chart assignments for input 3D meshes
-- The core algorithmic contribution must involve **mesh decomposition into charts** — not just post-processing or packing improvements alone
-- Using a pretrained part segmentation model is allowed and encouraged (e.g., PartField if available)
-- Using geometric features (normals, curvature, etc.) for decomposition is allowed
-- The distortion threshold mechanism (keeping distortion bounded) is a key design element
+The scientist must stay within the PartUV problem setting:
+- The method must output UV coordinates for each input mesh
+- The method must explicitly address chart decomposition rather than only UV packing
+- Improvements must preserve the chart-count vs distortion tradeoff measured in `scoring/reference.json`
+- A learned part prior is allowed, but a pure surrogate that bypasses the decomposition/search structure is out of scope for comparing against this environment
 
 ## Out of Bounds
-- Switching to fundamentally different UV mapping paradigms (e.g., neural field optimization per mesh) that take >5 minutes per mesh. The paper emphasizes speed as a feature.
-- Using proprietary or paid tools for the core algorithm (the scientist must use open-source or self-implemented methods)
-- Changing the metric definitions (angular distortion = 1 - avg_cosine, area distortion from stretch ratio)
+- Replacing the decomposition-and-search pipeline with a generic end-to-end surrogate
+- Evaluating on a different mesh set without also reporting Common Shapes
+- Changing the metric definitions in `scripts/evaluate.sh` / `eval/`
+- Using proprietary or paid tools for the core method
 
 ## Compliance Checklist
 - [ ] Evaluation conducted on Common Shapes dataset (or equivalent meshes)
 - [ ] UV unwrapping method decomposes meshes into charts and assigns UV coordinates
-- [ ] All five metrics are computed (chart count, seam length, angular distortion, area distortion, success rate)
+- [ ] Report all Common Shapes metrics: success rate, chart counts, seam length, distortion metrics, and runtime
 - [ ] Runtime per mesh is under 5 minutes (preferably under 1 minute)
 - [ ] No proprietary paid tools used for core algorithm

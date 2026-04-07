@@ -17,13 +17,15 @@
 # Putting pip install in %post is the #1 cause of build failures.
 
 Bootstrap: docker
-From: nvidia/cuda:12.1.0-runtime-ubuntu22.04
+From: nvidia/cuda:12.8.1-devel-ubuntu22.04
 
 %post
     apt-get update && apt-get install -y --no-install-recommends \
+        build-essential cmake ninja-build pkg-config \
         python3 python3-pip python3-dev python3-numpy \
-        libomp-dev libgl1-mesa-glx libglib2.0-0 \
-        tmux nano vim-tiny less curl wget git libeigen3-dev && \
+        curl wget git less nano vim-tiny tmux \
+        libomp-dev libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1 \
+        libcgal-dev libyaml-cpp-dev libtbb-dev && \
     ln -sf /usr/bin/vim.tiny /usr/bin/vim && \
     rm -rf /var/lib/apt/lists/*
 
