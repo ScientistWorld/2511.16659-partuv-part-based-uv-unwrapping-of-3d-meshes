@@ -42,4 +42,8 @@
 - The GHCR-based attempt hit the same malformed-registry-response failure before `%post`, confirming the issue is the build-time registry fetch rather than a particular image choice.
 - Downloaded the 66 MB `ghcr.io/astral-sh/uv:python3.12-bookworm-slim` image into `/home/user/environment/base-uv-python312-bookworm-slim.tar` with `crane`, and switched `environment/container.def` to `Bootstrap: docker-archive` so Apptainer reads the base image from the local workspace instead of querying a registry.
 
+### [2026-04-07 23:29] - none
+- The first docker-archive attempt failed because the build worker did not have a `/home/user` path during environment assembly, so the absolute archive path in `container.def` was invalid there.
+- Changed `container.def` to reference the archive via the repo-relative path `environment/base-uv-python312-bookworm-slim.tar` and prepared to include that archive in git so the build worker can read it from its checked-out workspace.
+
 ## Stop Justification
