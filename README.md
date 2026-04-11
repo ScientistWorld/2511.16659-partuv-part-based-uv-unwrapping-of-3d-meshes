@@ -343,6 +343,10 @@ Target levels (from the paper, approximate ranges):
 
 </details>
 
+### Iteration 1: MiniMax-M2.7
+- **Milestone**: `none` | **Status**: done
+- **GPU**: 0.0h
+
 
 ---
 
