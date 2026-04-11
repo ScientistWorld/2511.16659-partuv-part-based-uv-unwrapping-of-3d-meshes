@@ -1,3 +1,8 @@
-action: done
+# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends. Sleeping blocks the entire pipeline.
+action: pending
+gpus: 1
+test: false
 milestone: none
-notes: "System stopped the paper after 10 consecutive environment build/setup failures. No valid run of the official PartUV pipeline was launched, so the milestone remains none."
+notes: ""
