@@ -347,6 +347,10 @@ Target levels (from the paper, approximate ranges):
 - **Milestone**: `none` | **Status**: done
 - **GPU**: 0.0h
 
+### Iteration 2: glm-5.1
+- **Milestone**: `none` | **Status**: done
+- **GPU**: 0.0h
+
 
 ---
 
