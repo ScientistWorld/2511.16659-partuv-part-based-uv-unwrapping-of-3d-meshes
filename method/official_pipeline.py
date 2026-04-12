@@ -14,11 +14,11 @@ import numpy as np
 import torch
 
 import partuv
-from partuv.preprocess import save_results
+from partuv.preprocess_utils.partfield_official.run_PF import PFInferenceModel
 from partuv.preprocess_utils.PartField_pipeline import PF_pipeline
 from partuv.preprocess_utils.manifold import fix_mesh_trimesh
 from partuv.preprocess_utils.merge_V_obj import load_mesh_and_merge
-from partuv.preprocess_utils.partfield_official.run_PF import PFInferenceModel
+from partuv.preprocess import save_results
 
 
 def run_one_mesh(mesh_path: Path, output_dir: Path, pf_model: PFInferenceModel, config_path: str, threshold: float) -> dict:

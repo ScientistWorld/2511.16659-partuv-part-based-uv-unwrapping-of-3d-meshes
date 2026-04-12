@@ -23,6 +23,11 @@ Bootstrap: scratch
     curl -L https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz \
       | tar -xz --no-same-owner --no-same-permissions -C "$APPTAINER_ROOTFS"
 
+# Copy wheel files from the workspace into the container image at build time.
+# The workspace is available during build via the scheduler's checkout.
+%files
+    environment/wheels /wheels
+
 %post
     export DEBIAN_FRONTEND=noninteractive
     apt-get update
@@ -35,7 +40,8 @@ Bootstrap: scratch
         libxext6 \
         libxrender1 \
         python3 \
-        python3-pip
+        python3-pip \
+        curl
     ln -sf /usr/bin/python3 /usr/local/bin/python
     ln -sf /usr/bin/pip3 /usr/local/bin/pip
     apt-get clean
@@ -44,53 +50,54 @@ Bootstrap: scratch
     mkdir -p /home/user/data
     chmod 755 /home/user
 
-
-    # --- Merged from setup.sh ---
-    pip install --break-system-packages uv 2>/dev/null || pip install uv 2>/dev/null || true
-    export UV_SYSTEM_PYTHON=1 UV_BREAK_SYSTEM_PACKAGES=1
+    # --- Python package installation ---
     set -e
     export TMPDIR=/dev/shm
     export UV_CACHE_DIR=/dev/shm/uv-cache
-    
-    cd /home/user
-    
-    if ! command -v uv >/dev/null 2>&1; then
-      uv pip install uv
-    fi
-    
+    export UV_SYSTEM_PYTHON=1
+    export UV_BREAK_SYSTEM_PACKAGES=1
+
+    # Install uv package manager
+    pip install --break-system-packages uv
+
+    # Install build tools
     uv pip install --system -U pip setuptools wheel
     uv pip install --system cmake ninja scikit-build-core "pybind11[global]"
-    
-    # Use prebuilt wheels where available to avoid compiling PartUV from source.
-    # Torch keeps the CUDA 12.8 runtime in Python wheels, so the base image does
-    # not need to provide a CUDA toolkit.
+
+    # PyTorch with CUDA 12.8 (torch keeps CUDA runtime in wheels)
     uv pip install --system torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
-    uv pip install --system /home/user/environment/wheels/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
-    
+
+    # torch_scatter from prebuilt wheel
+    uv pip install --system /wheels/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
+
+    # Scientific Python stack
     uv pip install --system \
-      boto3 \
-      h5py \
-      libigl \
-      lightning==2.2 \
-      loguru \
-      meshio \
-      open3d \
-      opencv-python \
-      pandas \
-      plyfile \
-      pyyaml \
-      scikit-image \
-      scikit-learn \
-      seaborn \
-      tqdm \
-      trimesh==4.9.0 \
-      xatlas \
-      yacs \
-      einops
-    
-    uv pip install --system /home/user/environment/wheels/partuv-0.1.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+        boto3 \
+        h5py \
+        libigl \
+        lightning==2.2 \
+        loguru \
+        meshio \
+        open3d \
+        opencv-python \
+        pandas \
+        plyfile \
+        pyyaml \
+        scikit-image \
+        scikit-learn \
+        seaborn \
+        tqdm \
+        trimesh==4.9.0 \
+        xatlas \
+        yacs \
+        einops
+
+    # PartUV from prebuilt wheel
+    uv pip install --system /wheels/partuv-0.1.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
 
 %environment
     export HOME=/home/user
     export PYTHONUNBUFFERED=1
     export PATH=/usr/local/bin:/usr/bin:$PATH
+    export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+    export TMPDIR=/dev/shm
