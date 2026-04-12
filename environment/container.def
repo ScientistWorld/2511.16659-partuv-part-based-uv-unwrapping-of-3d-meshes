@@ -2,45 +2,52 @@
 #
 # Build:  apptainer build container.sif container.def
 #
-# The container packages everything a scientist agent needs to work on
-# this paper's task. The agent's workspace is bind-mounted at /home/user
-# at runtime — it is NOT baked into the container.
-#
-# Wheels are installed in %post from the build host's workspace path.
-# pip installs also go in %post (not setup.sh) because this is a build-time container.
+# Uses scratch bootstrap with Ubuntu rootfs downloaded at build time.
+# All dependencies installed in %post using pip.
+# Wheels copied into container via %files from the build context.
 
-Bootstrap: docker
-From: nvidia/cuda:12.8.0-runtime-ubuntu22.04
+Bootstrap: scratch
 
-%files
-    # Wheels are in environment/wheels relative to workspace root where build runs.
-    # The build context is the workspace root containing environment/.
-    environment/wheels /wheels
+%setup
+    mkdir -p "$APPTAINER_ROOTFS"
+    curl -sSL https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz \
+      | tar --numeric-owner -xz --no-same-owner --no-same-permissions -C "$APPTAINER_ROOTFS"
+    # Copy wheel files into the container rootfs from the build context
+    cp -r environment/wheels "$APPTAINER_ROOTFS/wheels"
 
 %post
     export DEBIAN_FRONTEND=noninteractive
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+
+    # Install OS packages
     apt-get update
     apt-get install -y --no-install-recommends \
-        git \
+        apt-transport-https \
+        ca-certificates \
         curl \
-        unzip \
-        python3 \
-        python3-pip \
-        python3-venv \
+        gnupg \
+        git \
         libgl1 \
         libglib2.0-0 \
         libgomp1 \
         libsm6 \
         libxext6 \
-        libxrender1
-    ln -sf /usr/bin/python3 /usr/local/bin/python
-    ln -sf /usr/bin/pip3 /usr/local/bin/pip
-    ln -sf /usr/bin/python3 /usr/local/bin/python3
+        libxrender1 \
+        python3 \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        wget
     apt-get clean
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/var/lib/apt/lists/*
 
     mkdir -p /home/user/data
     chmod 755 /home/user
+
+    # Make Python 3 the default
+    ln -sf /usr/bin/python3 /usr/local/bin/python
+    ln -sf /usr/bin/pip3 /usr/local/bin/pip
 
     # --- Python package installation ---
     set -e
@@ -49,17 +56,17 @@ From: nvidia/cuda:12.8.0-runtime-ubuntu22.04
     export UV_SYSTEM_PYTHON=1
     export UV_BREAK_SYSTEM_PACKAGES=1
 
-    # Install uv package manager
-    pip install --break-system-packages uv
+    # Upgrade pip and install uv
+    pip install --no-cache-dir --break-system-packages uv
 
     # Install build tools
     uv pip install --system -U pip setuptools wheel
     uv pip install --system cmake ninja scikit-build-core "pybind11[global]"
 
-    # PyTorch with CUDA 12.8 (torch keeps CUDA runtime in wheels)
+    # PyTorch with CUDA 12.8 (torch keeps CUDA runtime in Python wheels)
     uv pip install --system torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
 
-    # torch_scatter from prebuilt wheel
+    # torch_scatter from prebuilt wheel (CUDA 12.8 compatible)
     uv pip install --system /wheels/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
 
     # Scientific Python stack
