@@ -3,8 +3,7 @@
 # Build:  apptainer build container.sif container.def
 #
 # Uses scratch bootstrap with Ubuntu rootfs downloaded at build time.
-# All dependencies installed in %post using pip.
-# Wheels copied into container via %files from the build context.
+# OS packages installed in %post. Python packages installed via setup.sh.
 
 Bootstrap: scratch
 
@@ -12,15 +11,16 @@ Bootstrap: scratch
     mkdir -p "$APPTAINER_ROOTFS"
     curl -sSL https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz \
       | tar --numeric-owner -xz --no-same-owner --no-same-permissions -C "$APPTAINER_ROOTFS"
-    # Copy wheel files into the container rootfs from the build context
-    cp -r environment/wheels "$APPTAINER_ROOTFS/wheels"
+    # Copy wheel files into the container rootfs from the build context.
+    # The build context is the directory containing container.def (environment/).
+    cp -r wheels "$APPTAINER_ROOTFS/wheels"
 
 %post
     export DEBIAN_FRONTEND=noninteractive
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
 
-    # Install OS packages
+    # Install OS packages only. Python packages go in setup.sh.
     apt-get update
     apt-get install -y --no-install-recommends \
         apt-transport-https \
@@ -45,54 +45,8 @@ Bootstrap: scratch
     mkdir -p /home/user/data
     chmod 755 /home/user
 
-    # Make Python 3 the default
+    # Create pip symlink so setup.sh can use pip3 consistently
     ln -sf /usr/bin/python3 /usr/local/bin/python
-    ln -sf /usr/bin/pip3 /usr/local/bin/pip
-
-    # --- Python package installation ---
-    set -e
-    export TMPDIR=/dev/shm
-    export UV_CACHE_DIR=/dev/shm/uv-cache
-    export UV_SYSTEM_PYTHON=1
-    export UV_BREAK_SYSTEM_PACKAGES=1
-
-    # Upgrade pip and install uv
-    pip install --no-cache-dir --break-system-packages uv
-
-    # Install build tools
-    uv pip install --system -U pip setuptools wheel
-    uv pip install --system cmake ninja scikit-build-core "pybind11[global]"
-
-    # PyTorch with CUDA 12.8 (torch keeps CUDA runtime in Python wheels)
-    uv pip install --system torch==2.7.1 --index-url https://download.pytorch.org/whl/cu128
-
-    # torch_scatter from prebuilt wheel (CUDA 12.8 compatible)
-    uv pip install --system /wheels/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
-
-    # Scientific Python stack
-    uv pip install --system \
-        boto3 \
-        h5py \
-        libigl \
-        lightning==2.2 \
-        loguru \
-        meshio \
-        open3d \
-        opencv-python \
-        pandas \
-        plyfile \
-        pyyaml \
-        scikit-image \
-        scikit-learn \
-        seaborn \
-        tqdm \
-        trimesh==4.9.0 \
-        xatlas \
-        yacs \
-        einops
-
-    # PartUV from prebuilt wheel
-    uv pip install --system /wheels/partuv-0.1.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
 
 %environment
     export HOME=/home/user
