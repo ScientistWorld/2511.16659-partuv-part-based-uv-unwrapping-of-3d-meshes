@@ -2,4 +2,4 @@ action: submit
 gpus: 1
 test: false
 milestone: none
-notes: "Fixed: removed non-existent python3.12-distutils package. All other deps in setup.sh. Build now succeeds through apt-get and venv creation. Previous CUDA pull used cached base SIF."
+notes: "Container built (SIF confirmed). Run PartUV + xatlas on 24 Common Shapes meshes. Pipeline: baseline.sh (xatlas) -> method.sh (PartUV+PartField) -> evaluate.sh -> validate.py. LD_PRELOAD for libstdc++."
