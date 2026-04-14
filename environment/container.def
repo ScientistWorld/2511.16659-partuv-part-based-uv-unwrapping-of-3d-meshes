@@ -1,26 +1,22 @@
 # Apptainer definition file for this environment.
-#
-# Build:  apptainer build container.sif container.def
-#
-# Uses nvidia/cuda Docker image as base (has CUDA runtime).
-# OS packages installed in %post. Python packages in setup.sh.
-# Note: setup.sh runs at job runtime in overlay with full network access.
+# Uses ubuntu:22.04 base. PyTorch pip wheel bundles its own CUDA libs.
+# No CUDA apt packages needed — saves ~2GB of overlay space.
 
 Bootstrap: docker
-From: nvidia/cuda:12.8.0-runtime-ubuntu22.04
+From: ubuntu:22.04
 
 %post
     export DEBIAN_FRONTEND=noninteractive
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
 
-    # OS packages only — Python packages go in setup.sh
+    # Minimal OS packages
     apt-get update
     apt-get install -y --no-install-recommends \
         apt-transport-https \
         ca-certificates \
         curl \
-        git \
+        gnupg \
         libgl1 \
         libglib2.0-0 \
         libgomp1 \
@@ -32,56 +28,29 @@ From: nvidia/cuda:12.8.0-runtime-ubuntu22.04
         python3-pip \
         python3-venv \
         software-properties-common \
-        wget
+        libnsl-dev \
+        libsqlite3-dev
     apt-get clean
-    rm -rf /var/lib/apt/lists/var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
     mkdir -p /home/user/data /home/user/checkpoints/partfield /home/user/checkpoints/xatlas_repro /home/user/checkpoints/partuv_repro
     chmod 755 /home/user
 
-    # Install Python 3.12 from deadsnakes (needed for torch_scatter cp312 wheel)
+    # Python 3.12 from deadsnakes PPA
     add-apt-repository -y ppa:deadsnakes/ppa
     apt-get update
     apt-get install -y --no-install-recommends \
         python3.12 python3.12-dev python3.12-venv
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 
-    # Create venv with Python 3.12
-    python3.12 -m venv /opt/venv
+    # Create venv
+    /usr/bin/python3.12 -m venv /opt/venv
     ln -sf /opt/venv/bin/python /usr/local/bin/python
     ln -sf /opt/venv/bin/python /usr/local/bin/python3
 
-    # Upgrade pip in venv (setup.sh will use this)
-/opt/venv/bin/pip install --no-cache-dir -U pip wheel
-
-
-    # --- Merged from setup.sh ---
-    pip install --break-system-packages uv 2>/dev/null || pip install uv 2>/dev/null || true
-    export UV_SYSTEM_PYTHON=1 UV_BREAK_SYSTEM_PACKAGES=1
-    # Container setup script: installs all Python packages.
-    # Runs in overlay at job runtime.
-    # IMPORTANT: Call venv pip directly to avoid fakeroot issues.
-    set -e
-    export TMPDIR=/dev/shm
-    
-    cd /home/user
-    
-    PIP="/opt/venv/bin/pip"
-    
-    $PIP install -U pip wheel
-    
-    $PIP install cmake ninja scikit-build-core pybind11-global
-    
-    $PIP install torch==2.7.1 -i https://download.pytorch.org/whl/cu128
-    
-    $PIP install https://data.pyg.org/whl/torch-2.7.0+cu128/torch_scatter-2.1.2+pt27cu128-cp312-cp312-linux_x86_64.whl
-    
-    $PIP install \
-        boto3 einops h5py libigl lightning loguru meshio open3d opencv-python \
-        pandas plyfile pyyaml scikit-image scikit-learn seaborn tqdm trimesh xatlas yacs
-    
-    $PIP install partuv==0.1.2
-    
-    echo "Setup complete."
+    # Upgrade pip
+    /opt/venv/bin/pip install --no-cache-dir -U pip wheel
 
 %environment
     export HOME=/home/user

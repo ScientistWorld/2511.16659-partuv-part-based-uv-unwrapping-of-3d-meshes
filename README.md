@@ -366,9 +366,16 @@ Target levels (from the paper, approximate ranges):
 
 </details>
 
+### Iteration 1: MiniMax-M2.7
+- **Milestone**: `not_possible` | **Status**: done
+- **Working time**: 1.5h | **GPU**: 0.0h
+
 
 ---
 
 # Reproduction Milestones
 
 **Current: none**
+
+## Stop Justification
+- Completed at milestone `none`.
