@@ -375,7 +375,4 @@ Target levels (from the paper, approximate ranges):
 
 # Reproduction Milestones
 
-**Current: none**
-
-## Stop Justification
-- Completed at milestone `none`.
+**Current: method_runs**
