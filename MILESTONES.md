@@ -4,14 +4,15 @@
 
 ## Progress Log
 
-### [2026-05-17] - core_claim
-- Fixed PartUV floating-point exception: `pamo=false` and `num_cuda_streams=0` in config.yaml (avoids CUDA stream initialization on CPU-only environment)
-- Fixed `official_pipeline.py` to use file-based `partuv.pipeline()` instead of `pipeline_numpy()` (which crashes with numpy arrays on CPU)
-- Updated `method/method.sh`, `baseline.sh`, `reproduce.sh`, `run.sh` to set `PYTHONPATH=/home/user/.local/lib/python3.12/site-packages` (no LD_PRELOAD needed)
-- All transitive deps added to `setup.sh`: yacs, seaborn, open3d, etc.
-- PartUV successfully produces UV mappings on 5 meshes tested (alligator, armadillo, beast, beetle, beetle-alt)
-- Preliminary results: PartUV produces 1-172 charts vs xatlas baseline 1-322+ charts per mesh
-- Pipeline ready for full 24-mesh run
+### [2026-05-17] - core_claim (COMPLETE)
+- Full pipeline run completed: PartUV + xatlas on all 24 Common Shapes meshes
+- Key fix: `pamo=false` + `num_cuda_streams=0` in config.yaml (avoids CUDA stream init on CPU)
+- Key fix: `official_pipeline.py` uses file-based `partuv.pipeline()` instead of `pipeline_numpy()` (which crashes on CPU)
+- PartUV results: 48.96 avg charts (paper: 48.6), 0.990 angular distortion (paper: 0.990), 2.84 overall area distortion (paper: 1.128)
+- xatlas results: 945.83 avg charts (paper: 974.8), 0.941 angular distortion (paper: 0.987), 1.48 overall area distortion (paper: 1.504)
+- **Core claim validated**: PartUV produces ~19x fewer charts than xatlas (48.96 vs 945.83), with similar angular distortion (0.990 vs 0.941)
+- scores.json produced at `scoring/scores.json`, validated against reference.json
+- All checks passed in `validate --post-reproducer`
 
 ### [2026-04-14] - method_runs
 - Container setup: ubuntu:22.04 base + deadsnakes PPA for Python 3.12 (build succeeds cleanly)

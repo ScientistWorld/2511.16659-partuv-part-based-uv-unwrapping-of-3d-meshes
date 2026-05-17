@@ -1,3 +1,28 @@
 {
-  "experiments": {}
+  "experiments": {
+    "common_shapes_comparison": {
+      "results": {
+        "xatlas": {
+          "success_rate": 100.0,
+          "avg_charts": 945.8333333333334,
+          "median_charts": 128.0,
+          "seam_length": 34.94728565283933,
+          "angular_distortion": 0.94136295743703,
+          "area_distortion": 1.565563672495989,
+          "overall_area_distortion": 1.474716299869889,
+          "avg_time": 77.13185707449884
+        },
+        "partuv": {
+          "success_rate": 100.0,
+          "avg_charts": 48.958333333333336,
+          "median_charts": 18.5,
+          "seam_length": 69.3739254253457,
+          "angular_distortion": 0.9899320513861655,
+          "area_distortion": 1.428936674629517,
+          "overall_area_distortion": 2.837846790887268,
+          "avg_time": 120.65862186108764
+        }
+      }
+    }
+  }
 }
