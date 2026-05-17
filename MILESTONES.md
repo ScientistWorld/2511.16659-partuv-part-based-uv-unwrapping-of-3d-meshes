@@ -1,8 +1,17 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
+
+### [2026-05-17] - core_claim
+- Fixed PartUV floating-point exception: `pamo=false` and `num_cuda_streams=0` in config.yaml (avoids CUDA stream initialization on CPU-only environment)
+- Fixed `official_pipeline.py` to use file-based `partuv.pipeline()` instead of `pipeline_numpy()` (which crashes with numpy arrays on CPU)
+- Updated `method/method.sh`, `baseline.sh`, `reproduce.sh`, `run.sh` to set `PYTHONPATH=/home/user/.local/lib/python3.12/site-packages` (no LD_PRELOAD needed)
+- All transitive deps added to `setup.sh`: yacs, seaborn, open3d, etc.
+- PartUV successfully produces UV mappings on 5 meshes tested (alligator, armadillo, beast, beetle, beetle-alt)
+- Preliminary results: PartUV produces 1-172 charts vs xatlas baseline 1-322+ charts per mesh
+- Pipeline ready for full 24-mesh run
 
 ### [2026-04-14] - method_runs
 - Container setup: ubuntu:22.04 base + deadsnakes PPA for Python 3.12 (build succeeds cleanly)

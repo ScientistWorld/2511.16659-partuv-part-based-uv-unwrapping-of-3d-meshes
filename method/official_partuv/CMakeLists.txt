@@ -4,25 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 # set(ENV{NVCC_PREPEND_FLAGS} "--allow-unsupported-compiler")
 # # (Optional) also initialize CMake's CUDA flags with it
 # set(CMAKE_CUDA_FLAGS_INIT "--allow-unsupported-compiler")
-set(CMAKE_CUDA_ARCHITECTURES 80 89 90)
-if(NOT DEFINED CMAKE_CUDA_COMPILER)
-  find_program(CMAKE_CUDA_COMPILER NAMES nvcc)
-  if(NOT CMAKE_CUDA_COMPILER)
-    set(CMAKE_CUDA_COMPILER /usr/local/cuda-12.1/bin/nvcc)
-    message(WARNING "Could not find 'nvcc' in PATH. Defaulting to /usr/local/cuda-12.1/bin/nvcc.")
-  endif()
-endif()
-
-project(partuv LANGUAGES CXX CUDA)
-
-# Set up shared dependencies at the root level
 set(CMAKE_CXX_STANDARD 17)
-
-
-set(CMAKE_CUDA_STANDARD 14)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-# add_compile_definitions(CUDA_API_PER_THREAD_DEFAULT_STREAM=1)
-add_compile_definitions(CUDA_API_PER_THREAD_DEFAULT_STREAM)
 
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the build type")
 # set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the build type" FORCE)

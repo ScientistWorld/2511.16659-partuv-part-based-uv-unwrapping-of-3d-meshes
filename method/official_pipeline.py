@@ -42,7 +42,7 @@ def run_one_mesh(mesh_path: Path, output_dir: Path, pf_model: PFInferenceModel, 
     timings["export_seconds"] = time.perf_counter() - t2
 
     t3 = time.perf_counter()
-    tree_bin, tree_dict = PF_pipeline(
+    bin_path, _ = PF_pipeline(
         pf_model=pf_model,
         mesh_path=str(processed_mesh),
         mesh=mesh,
@@ -53,18 +53,15 @@ def run_one_mesh(mesh_path: Path, output_dir: Path, pf_model: PFInferenceModel, 
     )
     timings["partfield_seconds"] = time.perf_counter() - t3
 
-    V = np.asarray(mesh.vertices)
-    F = np.asarray(mesh.faces)
-
     t4 = time.perf_counter()
-    final_parts, individual_parts = partuv.pipeline_numpy(
-        V=V,
-        F=F,
-        tree_dict=tree_dict,
+    # Use file-based pipeline (avoids CUDA/stream issues with numpy arrays on CPU)
+    result = partuv.pipeline(
+        tree_filename=str(bin_path),
+        mesh_filename=str(processed_mesh),
         configPath=config_path,
         threshold=threshold,
-        pack_final_mesh=False,
     )
+    final_parts, individual_parts = result[0], result[1]
     timings["unwrap_seconds"] = time.perf_counter() - t4
 
     t5 = time.perf_counter()
@@ -75,7 +72,7 @@ def run_one_mesh(mesh_path: Path, output_dir: Path, pf_model: PFInferenceModel, 
     summary = {
         "mesh": mesh_name,
         "success": True,
-        "tree_bin": str(tree_bin) if tree_bin else None,
+        "tree_bin": str(bin_path),
         "num_components": int(final_parts.num_components),
         "distortion": float(final_parts.distortion),
         **timings,

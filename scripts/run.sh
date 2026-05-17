@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 export TMPDIR=/dev/shm
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+export MPLCONFIGDIR=/dev/shm/matplotlib
 cd /home/user
 
 # Run on all 24 meshes by default; override with PARTUV_LIMIT for quick tests
@@ -11,7 +11,7 @@ export PARTUV_LIMIT
 echo "=== PartUV reproduction run ==="
 echo "Mesh limit: ${LIMIT:-all}"
 echo "Python: $(python3 --version)"
-echo "CUDA available: $(python3 -c 'import torch; print(torch.cuda.is_available())' 2>/dev/null || echo 'unknown')"
+echo "CUDA available: $(python3 -c 'import torch; print(torch.cuda.is_available())' 2>/dev/null || echo 'error')"
 
 # Verify resources exist (these are bind-mounted from workspace at runtime)
 test -f /home/user/checkpoints/partfield/model_objaverse.ckpt || { echo "ERROR: PartField checkpoint missing"; exit 1; }

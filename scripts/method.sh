@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 export TMPDIR=/dev/shm
-export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
+export PYTHONPATH=/home/user/.local/lib/python3.12/site-packages
 cd /home/user
 
 DATA_DIR="${1:-/home/user/data/common_shapes}"

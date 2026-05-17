@@ -2,6 +2,7 @@
 # Container setup script: installs Python packages.
 set -e
 export TMPDIR=/dev/shm
+export MPLCONFIGDIR=/dev/shm/matplotlib
 
 cd /home/user
 
@@ -15,10 +16,10 @@ $PIP install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
 # torch_scatter CPU for cp312
 $PIP install https://data.pyg.org/whl/torch-2.7.0+cpu/torch_scatter-2.1.2+pt27cpu-cp312-cp312-linux_x86_64.whl
 
-# PartUV and dependencies
-$PIP install partuv==0.1.2 trimesh==4.9.0 xatlas scipy opencv-python libigl
+# Core dependencies
+$PIP install partuv==0.1.2 trimesh==4.9.0 xatlas scipy opencv-python libigl einops lightning loguru meshio plyfile pyyaml tqdm numpy
 
-# PartField dependencies
-$PIP install einops lightning loguru meshio plyfile pyyaml tqdm numpy
+# PartField / partuv transitive dependencies
+$PIP install scikit-learn scikit-image h5py boto3 psutil pytz matplotlib pillow imageio kornia yacs seaborn open3d
 
 echo "Setup complete."
