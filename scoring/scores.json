@@ -14,13 +14,13 @@
         },
         "partuv": {
           "success_rate": 100.0,
-          "avg_charts": 48.958333333333336,
-          "median_charts": 18.5,
-          "seam_length": 69.3739254253457,
-          "angular_distortion": 0.9899320513861655,
-          "area_distortion": 1.428936674629517,
-          "overall_area_distortion": 2.837846790887268,
-          "avg_time": 120.65862186108764
+          "avg_charts": 48.75,
+          "median_charts": 20.5,
+          "seam_length": 79.12959257096679,
+          "angular_distortion": 0.9899317329192483,
+          "area_distortion": 1.3433442308330177,
+          "overall_area_distortion": 2.904273415273354,
+          "avg_time": 102.37671872971987
         }
       }
     }
