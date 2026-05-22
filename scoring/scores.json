@@ -14,13 +14,13 @@
         },
         "partuv": {
           "success_rate": 100.0,
-          "avg_charts": 48.75,
+          "avg_charts": 48.708333333333336,
           "median_charts": 20.5,
           "seam_length": 79.12959257096679,
-          "angular_distortion": 0.9899317329192483,
-          "area_distortion": 1.3433442308330177,
-          "overall_area_distortion": 2.904273415273354,
-          "avg_time": 93.68848525139038
+          "angular_distortion": 0.989931732919792,
+          "area_distortion": 1.428750881179918,
+          "overall_area_distortion": 2.904987909063475,
+          "avg_time": 86.9053088844715
         }
       }
     }
