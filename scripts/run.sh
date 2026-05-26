@@ -3,6 +3,7 @@ set -euo pipefail
 export TMPDIR=/dev/shm
 export MPLCONFIGDIR=/dev/shm/matplotlib
 export PYTHONFAULTHANDLER=1
+export PYTHONNOUSERSITE=1
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
 export OPENBLAS_CORETYPE="${OPENBLAS_CORETYPE:-GENERIC}"
@@ -23,9 +24,26 @@ echo "Thread caps: OMP=$OMP_NUM_THREADS OPENBLAS=$OPENBLAS_NUM_THREADS OPENBLAS_
 probe_import() {
   local module="$1"
   echo "Import probe: $module"
-  python3 -m pip show "$module" 2>/dev/null | sed -n '1,6p' || true
+  python3 - <<PY
+import importlib.metadata as metadata
+import importlib.util
+import site
+import sys
+
+module = "$module"
+print("Python executable:", sys.executable, flush=True)
+print("User site enabled:", site.ENABLE_USER_SITE, flush=True)
+print("User site path:", site.getusersitepackages(), flush=True)
+print("Module spec:", importlib.util.find_spec(module), flush=True)
+try:
+    dist = metadata.distribution(module)
+    print("Distribution version:", dist.version, flush=True)
+    print("Distribution location:", dist.locate_file(""), flush=True)
+except metadata.PackageNotFoundError:
+    print("Distribution version: <not found>", flush=True)
+PY
   set +e
-  python3 -X faulthandler -c "import importlib; m = importlib.import_module('$module'); print('Import OK: $module ' + str(getattr(m, '__version__', 'unknown')), flush=True)"
+  python3 -X faulthandler -c "import importlib; m = importlib.import_module('$module'); print('Import OK: $module ' + str(getattr(m, '__version__', 'unknown')), flush=True)" 2>&1
   local status=$?
   set -e
   if [ "$status" -ne 0 ]; then

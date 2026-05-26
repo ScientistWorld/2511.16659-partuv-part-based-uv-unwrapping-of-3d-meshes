@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Retry CPU smoke with OPENBLAS_CORETYPE=GENERIC and richer import diagnostics. Job 354904d4-ab2 still failed during numpy import after setup reran, suggesting OpenBLAS CPU dispatch or another numpy import-time issue."
+notes: "Retry CPU smoke with PYTHONNOUSERSITE=1 and module path diagnostics. Job aa45903e-811 still failed at numpy import with status 1, likely from stale /home/user/.local user-site packages shadowing the overlay."

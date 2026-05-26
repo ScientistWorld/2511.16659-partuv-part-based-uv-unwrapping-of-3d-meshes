@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 18:18] - core_claim
+- CPU smoke job `aa45903e-811` still failed at the isolated `import numpy` probe with exit status 1 and no Python stderr.
+- Disabled automatic Python user-site packages across runtime scripts with `PYTHONNOUSERSITE=1` to prevent stale `/home/user/.local` packages from shadowing the compute overlay.
+- Added pre-import diagnostics for Python executable, user-site status/path, module spec, and package distribution location so the next smoke log identifies the exact NumPy resolution path.
+
 ### [2026-05-26 18:13] - core_claim
 - CPU smoke job `354904d4-ab2` still failed during `import numpy` even after the overlay rebuild timestamp showed the setup step had rerun.
 - Added `OPENBLAS_CORETYPE=GENERIC` across runtime scripts to avoid OpenBLAS CPU dispatch issues on the one-CPU test node.
