@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 17:50] - core_claim
+- CPU smoke job `da43a5da-788` failed before producing xatlas results; logs stopped after environment/resource diagnostics and left only an empty `checkpoints/smoke/xatlas` directory.
+- Added strict shell mode, unbuffered Python, explicit resource/artifact checks, and xatlas progress logging so the next smoke job reports the failing command and missing artifact directly.
+- Hardened `eval.evaluate_uv_outputs` so evaluating a directory with no UV artifacts exits nonzero instead of writing an empty aggregate.
+
 ### [2026-05-26 17:39] - core_claim
 - Continuation audit found the active reproduction path is genuine: `scripts/method.sh` runs `method.official_pipeline`, which calls the released PartUV pipeline with PartField inference, recursive decomposition, Normal/Merge decisions, and ABF/LSCM unwrapping.
 - Confirmed `eval/` remains independent from `method/` and `python3 validate.py --compare` passes on the existing 24-mesh Common Shapes scores.

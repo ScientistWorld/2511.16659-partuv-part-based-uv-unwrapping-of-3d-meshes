@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 export TMPDIR=/dev/shm
 export PYTHONPATH=/home/user/.local/lib/python3.12/site-packages
 cd /home/user
@@ -17,7 +17,8 @@ rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 test -f "$CKPT_PATH" || { echo "ERROR: PartField checkpoint missing. Run scripts/download.sh first."; exit 1; }
 
-python3 -m method.official_pipeline \
+echo "method.sh: data=$DATA_DIR output=$OUTPUT_DIR limit=$LIMIT checkpoint=$CKPT_PATH"
+python3 -u -m method.official_pipeline \
   --data-dir "$DATA_DIR" \
   --output-dir "$OUTPUT_DIR" \
   --checkpoint-path "$CKPT_PATH" \
@@ -26,3 +27,4 @@ python3 -m method.official_pipeline \
   --limit "$LIMIT"
 
 bash scripts/evaluate.sh single partuv "$OUTPUT_DIR" final_components.obj "$OUTPUT_DIR/results.json"
+test -f "$OUTPUT_DIR/results.json" || { echo "ERROR: PartUV evaluation did not write $OUTPUT_DIR/results.json"; exit 1; }

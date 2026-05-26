@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 export TMPDIR=/dev/shm
 export PYTHONPATH=/home/user/.local/lib/python3.12/site-packages
 cd /home/user
@@ -11,9 +11,11 @@ LIMIT="${3:-0}"
 rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 
-python3 -m baseline.export_xatlas_dataset \
+echo "baseline.sh: data=$DATA_DIR output=$OUTPUT_DIR limit=$LIMIT"
+python3 -u -m baseline.export_xatlas_dataset \
   --data-dir "$DATA_DIR" \
   --output-dir "$OUTPUT_DIR" \
   --limit "$LIMIT"
 
 bash scripts/evaluate.sh single xatlas "$OUTPUT_DIR" xatlas.obj "$OUTPUT_DIR/results.json"
+test -f "$OUTPUT_DIR/results.json" || { echo "ERROR: xatlas evaluation did not write $OUTPUT_DIR/results.json"; exit 1; }

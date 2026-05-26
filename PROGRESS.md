@@ -8,6 +8,8 @@
 - `eval/` is method-agnostic: it reads exported OBJ artifacts and does not import `method/`.
 - `scripts/reproduce.sh` now regenerates xatlas and PartUV outputs on the same mesh subset and writes `scoring/scores.json`.
 - `scripts/run.sh` now performs a one-mesh container smoke test in isolated `checkpoints/smoke/` outputs, preserving the canonical 24-mesh `scoring/scores.json`.
+- Smoke scripts now use strict shell settings, unbuffered Python, explicit progress logs, and required artifact checks.
+- Single-method evaluation now fails if no UV OBJ artifacts are found, preventing empty result files from being scored.
 - `scripts/download.sh` verifies and fetches Common Shapes plus the PartField checkpoint into portable workspace paths.
 
 ## Results Achieved
@@ -24,6 +26,7 @@
 
 ## Issues Encountered
 
+- CPU smoke job `da43a5da-788` exited with code 1 after creating an empty `checkpoints/smoke/xatlas` directory. The logs did not include a Python traceback, so the scripts were patched to make the next failure diagnosable at the exact command and artifact boundary.
 - The public pipeline was easier to run via the file-based `partuv.pipeline()` API than `pipeline_numpy()` on CPU.
 - The PartUV configuration disables PaMO (`pamo=false`) and CUDA stream usage so the released pipeline can run reliably in this environment.
 - The evaluator's seam-length and overall-area conventions differ from the paper on some meshes, producing worse PartUV seam and overall area values despite matching the primary chart count and angular distortion claims.

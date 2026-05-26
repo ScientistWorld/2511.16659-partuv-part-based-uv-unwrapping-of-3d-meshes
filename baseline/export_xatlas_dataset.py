@@ -36,6 +36,7 @@ def write_uv_obj(path: Path, vertices: np.ndarray, faces: np.ndarray, uvs: np.nd
 
 
 def run_one(mesh_path: Path, output_dir: Path) -> dict:
+    print(f"xatlas: processing {mesh_path.name}", flush=True)
     vertices, faces = load_obj_mesh(str(mesh_path))
     normals = compute_vertex_normals(vertices, faces).astype(np.float32)
 
@@ -58,6 +59,7 @@ def run_one(mesh_path: Path, output_dir: Path) -> dict:
     summary = {"mesh": mesh_path.stem, "success": True, "runtime_seconds": elapsed}
     with open(mesh_dir / "run_summary.json", "w") as f:
         json.dump(summary, f, indent=2)
+    print(f"xatlas: wrote {mesh_dir / 'xatlas.obj'} in {elapsed:.3f}s", flush=True)
     return summary
 
 
@@ -78,6 +80,7 @@ def main() -> None:
     if not mesh_paths:
         raise SystemExit(f"No OBJ meshes found in {data_dir}")
 
+    print(f"xatlas: {len(mesh_paths)} mesh(es) selected from {data_dir}", flush=True)
     results = [run_one(mesh_path, output_dir) for mesh_path in mesh_paths]
     with open(output_dir / "run_manifest.json", "w") as f:
         json.dump({"results": results, "failures": []}, f, indent=2)

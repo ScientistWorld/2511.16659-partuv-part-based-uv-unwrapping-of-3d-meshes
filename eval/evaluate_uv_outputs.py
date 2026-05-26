@@ -93,6 +93,9 @@ def main() -> None:
             runtime = summary.get("runtime_seconds", summary.get("total_seconds"))
         results.append(evaluate_uv_obj(mesh_dir.name, uv_path, runtime))
 
+    if not results:
+        raise SystemExit(f"No UV outputs named {args.uv_filename} found under {input_root}")
+
     payload = {
         args.method_name: {
             **aggregate(results),
