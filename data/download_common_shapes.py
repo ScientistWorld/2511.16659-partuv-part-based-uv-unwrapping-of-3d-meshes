@@ -13,7 +13,8 @@ import io
 REPO_URL = "https://github.com/alecjacobson/common-3d-test-models"
 ARCHIVE_URL = "https://github.com/alecjacobson/common-3d-test-models/archive/refs/heads/master.zip"
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DIR = os.path.join(DATA_DIR, "common_shapes")
+DOWNLOADS_DIR = os.path.join(DATA_DIR, "downloads")
+OUTPUT_DIR = os.path.join(DOWNLOADS_DIR, "common_shapes")
 
 # Known mesh files in the repo
 MESH_FILES = [
@@ -49,7 +50,7 @@ def download_common_shapes():
     """Download and extract Common Shapes meshes."""
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    archive_path = os.path.join(DATA_DIR, "common_shapes.zip")
+    archive_path = os.path.join(DOWNLOADS_DIR, "common_shapes.zip")
 
     if not os.path.exists(archive_path):
         print(f"Downloading Common Shapes from {ARCHIVE_URL}...")
@@ -65,9 +66,9 @@ def download_common_shapes():
     print("Extracting...")
     try:
         with zipfile.ZipFile(archive_path, 'r') as z:
-            z.extractall(DATA_DIR)
+            z.extractall(DOWNLOADS_DIR)
         # Move extracted content to common_shapes/
-        extracted_root = os.path.join(DATA_DIR, "common-3d-test-models-master")
+        extracted_root = os.path.join(DOWNLOADS_DIR, "common-3d-test-models-master")
         if os.path.exists(extracted_root):
             for item in os.listdir(extracted_root):
                 src = os.path.join(extracted_root, item)

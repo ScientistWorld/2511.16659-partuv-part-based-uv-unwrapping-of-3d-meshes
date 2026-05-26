@@ -207,7 +207,7 @@ def main():
     import argparse
     parser = argparse.ArgumentParser(description='PartUV Evaluation Pipeline')
     parser.add_argument('--data-dir', type=str,
-                        default='/home/user/data/common_shapes',
+                        default='/home/user/data/downloads/common_shapes',
                         help='Directory containing mesh files')
     parser.add_argument('--output-dir', type=str,
                         default='/home/user/checkpoints',

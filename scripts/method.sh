@@ -10,7 +10,7 @@ export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 cd /home/user
 
-DATA_DIR="${1:-/home/user/data/common_shapes}"
+DATA_DIR="${1:-/home/user/data/downloads/common_shapes}"
 OUTPUT_DIR="${2:-/home/user/checkpoints/partuv_repro}"
 LIMIT="${3:-0}"
 CKPT_PATH="${PARTFIELD_CHECKPOINT:-/home/user/data/downloads/partfield/model_objaverse.ckpt}"

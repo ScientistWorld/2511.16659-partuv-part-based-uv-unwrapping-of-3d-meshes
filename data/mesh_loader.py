@@ -240,11 +240,11 @@ def load_all_common_shapes(base_dir: str = None) -> List[Mesh]:
     """Convenience function to load Common Shapes dataset.
 
     Args:
-        base_dir: Base directory (defaults to data/common_shapes)
+        base_dir: Base directory (defaults to data/downloads/common_shapes)
 
     Returns:
         List of Mesh objects
     """
     if base_dir is None:
-        base_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "common_shapes")
+        base_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "downloads", "common_shapes")
     return load_dataset(base_dir)
