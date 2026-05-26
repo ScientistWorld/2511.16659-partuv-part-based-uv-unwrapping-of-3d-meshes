@@ -20,4 +20,4 @@
 - Revalidated the environment with `python3 validate.py --compare`.
 
 ## Stop Justification
-- Stopping at `core_claim`: the reusable environment is packaged, validated, and the minimum paper claim is supported on Common Shapes. Higher milestones would require adding Trellis, ABC, PartObjaverseTiny, Open3D/Nuvo/OptCuts comparisons, and ablations.
+- Completed at milestone `core_claim`.
