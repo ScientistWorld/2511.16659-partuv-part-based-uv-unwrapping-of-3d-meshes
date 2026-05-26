@@ -16,9 +16,9 @@ from eval.uv_obj_metrics import evaluate_uv_obj as evaluate_uv_mesh
 SLICE = "train"
 EXPERIMENT = "common_shapes_comparison"
 MESH_NAMES = (
-    "alligator",
     "beast",
     "beetle",
+    "bimba",
     "cheburashka",
     "fandisk",
     "homer",

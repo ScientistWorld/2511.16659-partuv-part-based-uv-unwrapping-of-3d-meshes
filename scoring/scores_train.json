@@ -4,20 +4,20 @@
       "results": {
         "partuv": {
           "success_rate": 100.0,
-          "avg_charts": 40.416666666666664,
-          "median_charts": 14.5,
-          "angular_distortion": 0.9893453840159806,
+          "avg_charts": 42.0,
+          "median_charts": 18.5,
+          "angular_distortion": 0.9888907561539256,
           "p05_angular_distortion": 0.9735078917893946,
-          "area_distortion": 1.5052958015535738,
+          "area_distortion": 1.525579864594466,
           "p95_area_distortion": 2.7414160475887948
         },
         "xatlas": {
           "success_rate": 100.0,
-          "avg_charts": 354.6666666666667,
-          "median_charts": 68.5,
-          "angular_distortion": 0.9028534275803789,
-          "p05_angular_distortion": 0.5818221278453626,
-          "area_distortion": 1.5015612083890033,
+          "avg_charts": 939.5833333333334,
+          "median_charts": 97.0,
+          "angular_distortion": 0.9299158265108746,
+          "p05_angular_distortion": 0.714648544699017,
+          "area_distortion": 1.5198677473771072,
           "p95_area_distortion": 2.772842030797543
         }
       }

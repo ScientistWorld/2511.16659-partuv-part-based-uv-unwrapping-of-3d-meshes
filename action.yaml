@@ -6,4 +6,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "12/12 Common Shapes split; 14 train/test metric values across partuv+xatlas; PartUV avg_charts 40.42 train vs 57.00 test, angular/area constraints comparable; success_rate saturated and zero-weighted diagnostic."
+notes: "Balanced 12/12 Common Shapes split; 14 train/test metric values across partuv+xatlas; PartUV avg_charts 42.00 train vs 55.42 test, xatlas 939.58 vs 952.08; validate.py --post-design passes."

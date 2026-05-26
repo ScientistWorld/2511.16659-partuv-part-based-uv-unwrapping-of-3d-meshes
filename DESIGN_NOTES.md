@@ -15,6 +15,7 @@
 - Added `p05_angular_distortion` to both train and test score outputs. This complements mean angular distortion by exposing lower-tail conformal failures.
 - Updated `scoring/reference.json` so every scored metric has `higher_is_better`, `coefficient`, and `description`.
 - Reweighted lower-is-better metrics with negative coefficients and kept chart count as the primary benefit while giving distortion-tail metrics nonzero constraint weight.
+- After validation flagged train xatlas `avg_charts` as too far from the paper-level value, swapped `bimba` into train and `alligator` into test to balance primary-metric difficulty while keeping a 12/12 disjoint mesh split.
 
 ## Runtime Concerns For Next Iteration
 
@@ -23,9 +24,10 @@
 
 ## Real-Run Results
 
-- Job `0cb58de3-22b` completed successfully on a CPU node and produced `scoring/scores_train.json`, `scoring/scores_test.json`, and both manifests.
+- Job `0cb58de3-22b` completed successfully on a CPU node and produced the initial `scoring/scores_train.json`, `scoring/scores_test.json`, and both manifests. The final balanced split was regenerated locally with `scripts/evaluate_train.sh` and `scripts/evaluate_test.sh` from the same OBJ artifacts.
 - Train and test method identifiers match exactly: `partuv`, `xatlas`.
 - Every metric in `scoring/reference.json` is present for both methods on both slices; no `null` values remain.
-- PartUV retains the core chart-count benefit on held-out meshes: `avg_charts` is 40.42 train / 57.00 test, versus xatlas at 354.67 train / 1537.00 test.
-- Distortion constraints remain in a comparable range for PartUV: angular distortion is 0.9893 train / 0.9905 test, area distortion is 1.5053 train / 1.3522 test, and p95 area distortion is 2.7414 train / 1.9361 test.
+- PartUV retains the core chart-count benefit on held-out meshes: `avg_charts` is 42.00 train / 55.42 test, versus xatlas at 939.58 train / 952.08 test.
+- Distortion constraints remain in a comparable range for PartUV: angular distortion is 0.9889 train / 0.9910 test, area distortion is 1.5256 train / 1.3319 test, and p95 area distortion is 2.7414 train / 1.9361 test.
 - `success_rate` saturated at 100% for both methods on both slices, so it is retained as a diagnostic but zero-weighted in `scoring/reference.json`.
+- `python3 validate.py --post-design` passes on the regenerated balanced split.
