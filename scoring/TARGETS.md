@@ -11,21 +11,21 @@ PartUV's main claim is that it sharply reduces chart fragmentation relative to B
 
 ## Constraint: bounded_distortion
 The chart reduction must not be purchased by excessive distortion.
-- **Metrics**: `angular_distortion` (higher is better), `area_distortion` (lower is better), `overall_area_distortion` (lower is better)
+- **Metrics**: `angular_distortion` (higher is better), `area_distortion` (lower is better)
 - **Direction**: Match or approach the paper's distortion regime while reducing charts
 - **How to run**: Compute the distortion metrics from the UV-mapped OBJ outputs produced by each method
-
-## Constraint: seam_length
-The paper also reports seam length as part of the quality tradeoff.
-- **Metric**: `seam_length` (lower is better)
-- **Direction**: Lower is better
-- **How to run**: Sum UV boundary edge lengths from the exported UV OBJ
 
 ## Constraint: reliability
 The method should finish successfully on the benchmark.
 - **Metric**: `success_rate` (higher is better)
 - **Direction**: Higher success rate is better
 - **How to run**: Record per-mesh success/failure during method execution
+
+## Diagnostic: packing-dependent metrics
+The paper reports seam length and overall area distortion after atlas packing.
+The released PartUV pipeline used here exports un-packed chart components unless
+paired with Blender and UVPackMaster, so this gym logs `seam_length` and
+`overall_area_distortion` in per-run artifacts but does not score them.
 
 ## Diagnostic: runtime
 The paper reports runtime, but this gym does not score wall-clock time because

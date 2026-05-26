@@ -14,5 +14,10 @@
 - Preserved the main distortion constraint: PartUV angular distortion was 0.990, matching the paper's 0.990 and above the reproduced xatlas value of 0.941.
 - `python3 validate.py --compare` passes with import separation, portable path, and eval-output checks.
 
+### [2026-05-26 18:34] - core_claim
+- Audited the inherited workspace after the milestone reset and confirmed the active method path is the released PartUV algorithm, not a surrogate.
+- Tightened scoring to exclude packing-dependent seam and overall-atlas area metrics from `scores.json`; those metrics remain logged as diagnostics because the reproduced export is the released un-packed chart-component output.
+- Revalidated the environment with `python3 validate.py --compare`.
+
 ## Stop Justification
 - Stopping at `core_claim`: the reusable environment is packaged, validated, and the minimum paper claim is supported on Common Shapes. Higher milestones would require adding Trellis, ABC, PartObjaverseTiny, Open3D/Nuvo/OptCuts comparisons, and ablations.

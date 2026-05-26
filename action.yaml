@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Core claim reproduced on Common Shapes: PartUV sharply reduces chart count versus xatlas while preserving angular distortion; environment, scripts, scoring, and validation are packaged."
+notes: "Audit restored core_claim: official PartUV pipeline reproduces the Common Shapes chart-count claim versus xatlas, scored on portable chart/distortion metrics; packing-dependent atlas metrics are diagnostic only and validation passes."

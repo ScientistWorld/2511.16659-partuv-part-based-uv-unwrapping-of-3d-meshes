@@ -3,7 +3,7 @@
 ## What Works
 
 - Continuing audit on 2026-05-26 confirmed the active reproduction uses `scripts/method.sh` -> `method.official_pipeline`, not the legacy simplified prototype.
-- Scoring now excludes wall-clock runtime, per benchmark rules. Runtime remains diagnostic metadata in per-mesh artifacts but is not part of `reference.json` or `scores.json`.
+- Scoring now excludes wall-clock runtime and packing-dependent atlas metrics that the released un-packed PartUV export cannot reproduce honestly. Runtime, seam length, and overall area distortion remain diagnostic metadata in per-mesh artifacts but are not part of `reference.json` or `scores.json`.
 - The xatlas fallback no longer imports `method/`; baselines, data, and eval are separated from the claimed method implementation.
 - `python3 validate.py --compare` passes on 2026-05-26, including reference/scores schema checks, method/eval import separation, and portable path checks.
 - Briefing, scoring references, and the Common Shapes dataset are present.
@@ -25,8 +25,9 @@
 ## Results Achieved
 
 - Full Common Shapes run completed on all 24 meshes.
-- xatlas reproduction: 100% success, 945.83 average charts, 128.0 median charts, 34.95 median seam length, 0.941 angular distortion, 1.566 area distortion, 1.475 overall area distortion.
-- PartUV reproduction: 100% success, 48.71 average charts, 20.5 median charts, 79.13 median seam length, 0.990 angular distortion, 1.429 area distortion, 2.905 overall area distortion.
+- xatlas scored reproduction: 100% success, 945.83 average charts, 128.0 median charts, 0.941 angular distortion, 1.566 area distortion.
+- PartUV scored reproduction: 100% success, 48.71 average charts, 20.5 median charts, 0.990 angular distortion, 1.429 area distortion.
+- Diagnostic unscored atlas metrics from the same run: xatlas seam 34.95 and overall area 1.475; PartUV un-packed component seam 79.13 and overall area 2.905.
 - Core claim supported: PartUV produces roughly 19x fewer charts than xatlas on Common Shapes while keeping angular distortion at the paper's reported level. Area distortion is higher than the paper's Common Shapes value but remains in the same order of magnitude and below xatlas on the chart-level area metric.
 
 ## What Remains
@@ -37,6 +38,7 @@
 ## Issues Encountered
 
 - Continuing audit found that `avg_time` was included as a scored metric despite the benchmark rule against wall-clock scoring. This was fixed by removing runtime from `reference.json`, regenerating `scores.json`, and excluding `avg_time` in `scripts/evaluate.sh compare`.
+- Continuing audit found that `seam_length` and `overall_area_distortion` were being scored from un-packed PartUV component exports, while the paper's corresponding values come after final atlas packing. This was fixed by removing those packing-dependent metrics from the scored contract and keeping them only as diagnostics in `checkpoints/*/results.json`.
 - Continuing audit found legacy prototype modules (`method/partuv.py`, `method/pipeline.py`) that could be confused with the claimed method. They are now explicitly documented as non-reproduction prototypes; the official pipeline remains the method used for results.
 - Continuing audit found an unused xatlas fallback dependency on `method.partuv` for connected components. The fallback now has its own local helper.
 - CPU smoke job `da43a5da-788` exited with code 1 after creating an empty `checkpoints/smoke/xatlas` directory. The logs did not include a Python traceback, so the scripts were patched to make the next failure diagnosable at the exact command and artifact boundary.

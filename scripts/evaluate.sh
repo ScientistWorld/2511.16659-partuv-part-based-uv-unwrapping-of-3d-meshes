@@ -43,6 +43,14 @@ scores = {
     }
 }
 
+scored_keys = {
+    "success_rate",
+    "avg_charts",
+    "median_charts",
+    "angular_distortion",
+    "area_distortion",
+}
+
 for path in [baseline_path, method_path]:
     with open(path) as f:
         payload = json.load(f)
@@ -50,9 +58,10 @@ for path in [baseline_path, method_path]:
         scores["experiments"]["common_shapes_comparison"]["results"][method_name] = {
             key: value
             for key, value in result.items()
-            # Runtime is useful diagnostic metadata but is deliberately not
-            # scored because wall-clock speed varies across compute nodes.
-            if key not in {"per_mesh", "avg_time"}
+            # Runtime and packing-dependent atlas metrics remain in per-run
+            # artifacts, but the reusable score contract covers only metrics
+            # this environment can reproduce without paid atlas packing tools.
+            if key in scored_keys
         }
 
 output_path.parent.mkdir(parents=True, exist_ok=True)

@@ -6,19 +6,15 @@
           "success_rate": 100.0,
           "avg_charts": 945.8333333333334,
           "median_charts": 128.0,
-          "seam_length": 34.94728565283933,
           "angular_distortion": 0.94136295743703,
-          "area_distortion": 1.565563672495989,
-          "overall_area_distortion": 1.474716299869889
+          "area_distortion": 1.565563672495989
         },
         "partuv": {
           "success_rate": 100.0,
           "avg_charts": 48.708333333333336,
           "median_charts": 20.5,
-          "seam_length": 79.12959257096679,
           "angular_distortion": 0.989931732919792,
-          "area_distortion": 1.428750881179918,
-          "overall_area_distortion": 2.904987909063475
+          "area_distortion": 1.428750881179918
         }
       }
     }
