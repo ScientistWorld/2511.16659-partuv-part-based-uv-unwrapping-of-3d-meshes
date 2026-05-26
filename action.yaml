@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "CPU smoke job for patched scripts: run xatlas + official PartUV + evaluator on one Common Shapes mesh. Core claim already reproduced on all 24 meshes in scoring/scores.json."
+notes: "CPU smoke job for audited scripts: run xatlas + official PartUV + evaluator on one Common Shapes mesh in isolated checkpoints/smoke outputs. Existing 24-mesh scores preserve core_claim."

@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 17:39] - core_claim
+- Continuation audit found the active reproduction path is genuine: `scripts/method.sh` runs `method.official_pipeline`, which calls the released PartUV pipeline with PartField inference, recursive decomposition, Normal/Merge decisions, and ABF/LSCM unwrapping.
+- Confirmed `eval/` remains independent from `method/` and `python3 validate.py --compare` passes on the existing 24-mesh Common Shapes scores.
+- Fixed smoke-run hygiene so limited jobs write isolated outputs, do not overwrite canonical 24-mesh scores, clear stale output directories before generation, and fail if either baseline or method results are missing.
+
 ### [2026-05-26 17:45] - core_claim
 - Cleaned the reusable scripts after the completed run: `reproduce.sh` now regenerates both xatlas and PartUV, method/baseline argument parsing is consistent, and downloads use `data/downloads/`.
 - Confirmed `validate.py --compare` passes with the existing 24-mesh Common Shapes reproduction.

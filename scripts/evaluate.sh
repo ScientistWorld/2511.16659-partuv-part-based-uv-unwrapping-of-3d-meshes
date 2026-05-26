@@ -24,6 +24,9 @@ if [ "$MODE" = "compare" ]; then
   METHOD_JSON="$3"
   OUTPUT_JSON="${4:-/home/user/scoring/scores.json}"
 
+  test -f "$BASELINE_JSON" || { echo "ERROR: missing baseline results: $BASELINE_JSON"; exit 1; }
+  test -f "$METHOD_JSON" || { echo "ERROR: missing method results: $METHOD_JSON"; exit 1; }
+
   python3 - <<PY
 import json
 from pathlib import Path
@@ -41,8 +44,6 @@ scores = {
 }
 
 for path in [baseline_path, method_path]:
-    if not path.exists():
-        continue
     with open(path) as f:
         payload = json.load(f)
     for method_name, result in payload.items():

@@ -7,6 +7,7 @@
 - The PartUV wrapper performs the paper's actual method: PartField feature inference, hierarchical part tree construction, top-down recursive search, Normal/Merge heuristics, ABF flattening, and export of UV OBJ results.
 - `eval/` is method-agnostic: it reads exported OBJ artifacts and does not import `method/`.
 - `scripts/reproduce.sh` now regenerates xatlas and PartUV outputs on the same mesh subset and writes `scoring/scores.json`.
+- `scripts/run.sh` now performs a one-mesh container smoke test in isolated `checkpoints/smoke/` outputs, preserving the canonical 24-mesh `scoring/scores.json`.
 - `scripts/download.sh` verifies and fetches Common Shapes plus the PartField checkpoint into portable workspace paths.
 
 ## Results Achieved
@@ -27,6 +28,7 @@
 - The PartUV configuration disables PaMO (`pamo=false`) and CUDA stream usage so the released pipeline can run reliably in this environment.
 - The evaluator's seam-length and overall-area conventions differ from the paper on some meshes, producing worse PartUV seam and overall area values despite matching the primary chart count and angular distortion claims.
 - Previous script drift meant `scripts/reproduce.sh` did not regenerate the xatlas baseline; this has been corrected.
+- Continuation audit found two smoke-test risks: limited runs could evaluate stale output directories, and `evaluate.sh compare` silently skipped missing JSON files. The scripts now clear generation outputs before reruns and fail fast when either comparison input is absent.
 
 ## Deviations from Paper
 

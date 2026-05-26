@@ -13,6 +13,7 @@ if [ ! -f "$CKPT_PATH" ] && [ -f /home/user/checkpoints/partfield/model_objavers
   CKPT_PATH="/home/user/checkpoints/partfield/model_objaverse.ckpt"
 fi
 
+rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 test -f "$CKPT_PATH" || { echo "ERROR: PartField checkpoint missing. Run scripts/download.sh first."; exit 1; }
 

@@ -8,6 +8,7 @@ DATA_DIR="${1:-/home/user/data/common_shapes}"
 OUTPUT_DIR="${2:-/home/user/checkpoints/xatlas_repro}"
 LIMIT="${3:-0}"
 
+rm -rf "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR"
 
 python3 -m baseline.export_xatlas_dataset \
