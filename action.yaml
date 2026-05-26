@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
-gpus: 0
+action: pending
+gpus: 1
 test: false
-milestone: core_claim
-notes: "Continuing audit fixed scored-runtime and baseline fallback issues. Core claim remains reproduced on Common Shapes with the actual PartField-guided PartUV pipeline; scoring/scores.json regenerated and validate.py --compare passes."
+milestone: method_runs
+notes: ""
