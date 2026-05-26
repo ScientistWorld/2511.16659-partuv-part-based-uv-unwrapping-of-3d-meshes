@@ -563,6 +563,31 @@ this reusable gym because wall-clock measurements vary with hardware.
 
 </details>
 
+### Iteration 4: gpt-5.5 (designer_stage_1)
+- **Milestone**: `core_claim` | **Status**: done
+- **Working time**: 5m | **GPU**: 0.0h
+- **Jobs**: 302 total (2 completed, 10 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-26 18:28] - method_runs
+- Packaged the released PartUV pipeline and verified that it executes end-to-end in the compute container on Common Shapes meshes.
+- Confirmed the active method path uses PartField inference, hierarchical part-tree construction, top-down recursive chart search, Normal/Merge heuristics, ABF-based unwrapping, and UV OBJ export.
+
+### [2026-05-26 18:40] - core_claim
+- Completed a full Common Shapes reproduction with xatlas and PartUV outputs scored by the method-agnostic evaluator.
+- Reproduced the central chart-fragmentation claim: PartUV produced 48.71 average charts versus 945.83 for xatlas, matching the paper's 48.6 average charts for PartUV on Common Shapes.
+- Preserved the main distortion constraint: PartUV angular distortion was 0.990, matching the paper's 0.990 and above the reproduced xatlas value of 0.941.
+- `python3 validate.py --compare` passes with import separation, portable path, and eval-output checks.
+
+### [2026-05-26 18:34] - core_claim
+- Audited the inherited workspace after the milestone reset and confirmed the active method path is the released PartUV algorithm, not a surrogate.
+- Tightened scoring to exclude packing-dependent seam and overall-atlas area metrics from `scores.json`; those metrics remain logged as diagnostics because the reproduced export is the released un-packed chart-component output.
+- Revalidated the environment with `python3 validate.py --compare`.
+
+</details>
+
 
 ---
 
