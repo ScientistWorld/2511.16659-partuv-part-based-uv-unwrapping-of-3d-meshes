@@ -24,5 +24,9 @@
 - Confirmed method-agnostic evaluation separation, portable downloads, train/test split consistency, and score comparability with `python3 validate.py --compare`.
 - Cleaned method-agnostic documentation and moved large fetched data under `data/downloads/`.
 
+### [2026-05-26 19:46] - core_claim
+- Re-ran `python3 validate.py --compare` during autonomous final audit; all scoring, import-separation, portable-path, train/test, and score-discrimination checks passed.
+- Cross-checked paper analysis: the implemented path matches PartUV's PartField-guided tree search with Normal/Merge heuristics, ABF unwrapping, and distortion-bounded chart selection.
+
 ## Stop Justification
 - Completed at milestone `core_claim`.

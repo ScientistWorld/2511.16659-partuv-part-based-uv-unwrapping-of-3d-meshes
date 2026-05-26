@@ -23,6 +23,7 @@
 - `scripts/run.sh` avoids an eager torch diagnostic on CPU test nodes; torch is now exercised only when the actual PartUV method command runs. Lightweight dependency probes now run as isolated Python processes so failed imports are visible in logs.
 - CPU smoke job `d889e35b-d09` completed successfully with the packaged container: dependency probes resolved overlay packages, xatlas produced a UV OBJ, PartUV ran PartField inference and UV export, and `scripts/evaluate.sh compare` scored the smoke outputs.
 - `scripts/download.sh` verifies and fetches Common Shapes plus the PartField checkpoint into portable workspace paths.
+- Final autonomous audit on 2026-05-26 re-ran `python3 validate.py --compare`; all scoring, method/eval separation, portable path, train/test split, and score-discrimination checks passed.
 
 ## Results Achieved
 
