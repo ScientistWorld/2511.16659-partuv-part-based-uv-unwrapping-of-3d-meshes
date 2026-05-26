@@ -28,5 +28,10 @@
 - Re-ran `python3 validate.py --compare` during autonomous final audit; all scoring, import-separation, portable-path, train/test, and score-discrimination checks passed.
 - Cross-checked paper analysis: the implemented path matches PartUV's PartField-guided tree search with Normal/Merge heuristics, ABF unwrapping, and distortion-bounded chart selection.
 
+### [2026-05-26 19:58] - core_claim
+- Completed final verification report.
+- Confirmed `scripts/evaluate.sh compare` works standalone on existing artifacts and regenerates `scoring/scores.json`.
+- Verified both dataset/model download URLs used by `scripts/download.sh` return HTTP 200 responses.
+
 ## Stop Justification
 - Completed at milestone `core_claim`.

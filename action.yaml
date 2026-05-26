@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Autonomous final audit passed: validate.py --compare succeeds and the packaged PartUV Common Shapes gym supports core_claim."
+notes: "Final verification passed: validation, download URL checks, standalone evaluation, and gym documentation review all support core_claim."
