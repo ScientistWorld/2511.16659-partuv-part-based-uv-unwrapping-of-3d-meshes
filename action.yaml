@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Retry CPU smoke after removing the eager torch diagnostic that killed job 3a0fad9c-777 before resource checks. Baseline/eval import probes remain; torch is exercised by the actual PartUV method step."
+notes: "Retry CPU smoke with isolated import probes and one-thread runtime caps. Job 9a38ba97-873 died before the combined numpy/xatlas/trimesh probe printed, so this run should identify the exact failing import or Python startup boundary."

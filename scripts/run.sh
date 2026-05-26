@@ -2,6 +2,11 @@
 set -euo pipefail
 export TMPDIR=/dev/shm
 export MPLCONFIGDIR=/dev/shm/matplotlib
+export PYTHONFAULTHANDLER=1
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 cd /home/user
 
 # Submission smoke: run one mesh through baseline, method, and evaluation.
@@ -12,14 +17,17 @@ SMOKE_ROOT="${PARTUV_SMOKE_ROOT:-/home/user/checkpoints/smoke}"
 echo "=== PartUV reproduction run ==="
 echo "Mesh limit: ${LIMIT:-all}"
 echo "Python: $(python3 --version)"
-python3 - <<'PY'
-import importlib
+echo "Thread caps: OMP=$OMP_NUM_THREADS OPENBLAS=$OPENBLAS_NUM_THREADS MKL=$MKL_NUM_THREADS NUMEXPR=$NUMEXPR_NUM_THREADS"
 
-for name in ["numpy", "xatlas", "trimesh"]:
-    module = importlib.import_module(name)
-    version = getattr(module, "__version__", "unknown")
-    print(f"Import OK: {name} {version}", flush=True)
-PY
+probe_import() {
+  local module="$1"
+  echo "Import probe: $module"
+  python3 -X faulthandler -c "import importlib; m = importlib.import_module('$module'); print('Import OK: $module ' + str(getattr(m, '__version__', 'unknown')), flush=True)"
+}
+
+probe_import numpy
+probe_import xatlas
+probe_import trimesh
 
 # Verify resources exist (these are bind-mounted from workspace at runtime)
 test -f /home/user/checkpoints/partfield/model_objaverse.ckpt || { echo "ERROR: PartField checkpoint missing at /home/user/checkpoints/partfield/model_objaverse.ckpt"; exit 1; }

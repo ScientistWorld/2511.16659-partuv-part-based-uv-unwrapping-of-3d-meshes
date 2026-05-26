@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 18:01] - core_claim
+- CPU smoke job `9a38ba97-873` failed at the same boundary as the prior job: after printing the Python version and before any package import output, with no Python traceback.
+- Replaced the combined heredoc import probe with isolated per-package `python3 -X faulthandler -c` probes that print the module name before import, so the next log identifies the exact failing import or proves Python process startup is failing.
+- Added `PYTHONFAULTHANDLER=1` and single-thread caps for OpenMP/OpenBLAS/MKL/NumExpr across the smoke, baseline, method, and reproduce scripts to reduce one-CPU test-node startup failures and improve crash diagnostics.
+
 ### [2026-05-26 17:57] - core_claim
 - CPU smoke job `3a0fad9c-777` failed immediately after printing Python version, before the non-torch package import probe or resource checks.
 - The only command at that boundary was the torch diagnostic block; removed it from `scripts/run.sh` so CPU smoke can reach xatlas and PartUV pipeline checks.
