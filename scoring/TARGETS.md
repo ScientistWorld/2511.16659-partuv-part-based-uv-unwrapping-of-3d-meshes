@@ -4,7 +4,7 @@
 Compare UV unwrapping methods on the Common Shapes benchmark using the metrics reported in Table 1 of the paper.
 
 ## Primary: chart_count_reduction
-PartUV's main claim is that it sharply reduces chart fragmentation relative to Blender and xatlas.
+The main target is sharply reducing chart fragmentation relative to standard UV unwrapping baselines.
 - **Metrics**: `avg_charts`, `median_charts` (lower is better)
 - **Direction**: Lower is better
 - **How to run**: Run a UV unwrapping method on the Common Shapes meshes, infer connected UV charts from the exported UV OBJ, and aggregate per-mesh chart counts
@@ -24,9 +24,9 @@ The method should finish successfully on the benchmark.
 
 ## Diagnostic: packing-dependent metrics
 The paper reports seam length and overall area distortion after atlas packing.
-The released PartUV pipeline used here exports un-packed chart components unless
-paired with Blender and UVPackMaster, so this gym logs `seam_length` and
-`overall_area_distortion` in per-run artifacts but does not score them.
+The current reproduction artifacts expose chart components before a standardized
+packing pass, so this gym logs `seam_length` and `overall_area_distortion` in
+per-run artifacts but does not score them.
 
 ## Diagnostic: runtime
 The paper reports runtime, but this gym does not score wall-clock time because

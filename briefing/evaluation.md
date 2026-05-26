@@ -1,7 +1,5 @@
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocol for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
 The paper reports the following UV unwrapping metrics:
@@ -17,17 +15,17 @@ This gym scores chart count, success rate, angular distortion, and chart-level a
 ## Baselines and Targets
 
 The paper compares against several widely-used UV unwrapping tools:
-- **Blender Smart UV Project** — clusters triangles by normals, projects onto planes
-- **xatlas** — greedy chart growing with LSCM flattening
-- **Open3D** — region growing with LSCM flattening
-- **Nuvo** — neural field-based UV mapping (optimization-based)
-- **OptCuts** — joint cut and parameterization optimization
+- **Blender Smart UV Project**
+- **xatlas**
+- **Open3D**
+- **Nuvo**
+- **OptCuts**
 
 Target levels (from the paper, approximate ranges):
-- Chart count: PartUV achieves 1/3 to 1/31 fewer charts than Blender/xatlas
+- Chart count: the best reported system achieves roughly 1/3 to 1/31 as many charts as Blender/xatlas
 - Angular distortion: ~0.98-0.99 (near 1.0 is best)
 - Area distortion: ~1.1-1.4 (near 1.0 is best)
-- Success rate: 100% for PartUV, lower for some baselines
+- Success rate: 100% for the best reported system, lower for some baselines
 
 ## Evaluation Protocol
 

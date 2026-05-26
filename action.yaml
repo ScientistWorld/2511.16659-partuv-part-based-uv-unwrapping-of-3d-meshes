@@ -1,9 +1,5 @@
-# This iteration completed the split evaluation.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
 action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Aligned public downloads and method defaults to data/downloads paths; verified URLs and no shared/data/common_shapes references in audited code."
+notes: "Final verification passed; workspace is packaged as a core_claim research gym."

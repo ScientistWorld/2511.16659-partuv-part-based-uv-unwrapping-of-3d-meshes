@@ -19,5 +19,10 @@
 - Tightened scoring to exclude packing-dependent seam and overall-atlas area metrics from `scores.json`; those metrics remain logged as diagnostics because the reproduced export is the released un-packed chart-component output.
 - Revalidated the environment with `python3 validate.py --compare`.
 
+### [2026-05-26 19:45] - core_claim
+- Completed final verification of the gym packaging.
+- Confirmed method-agnostic evaluation separation, portable downloads, train/test split consistency, and score comparability with `python3 validate.py --compare`.
+- Cleaned method-agnostic documentation and moved large fetched data under `data/downloads/`.
+
 ## Stop Justification
 - Completed at milestone `core_claim`.
