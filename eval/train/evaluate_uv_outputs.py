@@ -34,7 +34,9 @@ SCORED_KEYS = {
     "avg_charts",
     "median_charts",
     "angular_distortion",
+    "p05_angular_distortion",
     "area_distortion",
+    "p95_area_distortion",
 }
 CANDIDATE_UV_FILENAMES = (
     "final_components.obj",
@@ -83,7 +85,9 @@ def aggregate(results: list[UVEvalResult]) -> dict:
             "median_charts": float("inf"),
             "seam_length": float("inf"),
             "angular_distortion": 0.0,
+            "p05_angular_distortion": 0.0,
             "area_distortion": float("inf"),
+            "p95_area_distortion": float("inf"),
             "overall_area_distortion": float("inf"),
             "avg_time": 0.0,
         }
@@ -97,7 +101,9 @@ def aggregate(results: list[UVEvalResult]) -> dict:
         "median_charts": float(np.median(arr("num_charts"))),
         "seam_length": float(np.median(arr("seam_length"))),
         "angular_distortion": float(arr("angular_distortion").mean()),
+        "p05_angular_distortion": float(np.percentile(arr("angular_distortion"), 5)),
         "area_distortion": float(arr("area_distortion").mean()),
+        "p95_area_distortion": float(np.percentile(arr("area_distortion"), 95)),
         "overall_area_distortion": float(arr("overall_area_distortion").mean()),
         "avg_time": float(arr("time_seconds").mean()),
     }
@@ -265,4 +271,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
