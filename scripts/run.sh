@@ -5,6 +5,7 @@ export MPLCONFIGDIR=/dev/shm/matplotlib
 export PYTHONFAULTHANDLER=1
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
 export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
+export OPENBLAS_CORETYPE="${OPENBLAS_CORETYPE:-GENERIC}"
 export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 cd /home/user
@@ -17,12 +18,20 @@ SMOKE_ROOT="${PARTUV_SMOKE_ROOT:-/home/user/checkpoints/smoke}"
 echo "=== PartUV reproduction run ==="
 echo "Mesh limit: ${LIMIT:-all}"
 echo "Python: $(python3 --version)"
-echo "Thread caps: OMP=$OMP_NUM_THREADS OPENBLAS=$OPENBLAS_NUM_THREADS MKL=$MKL_NUM_THREADS NUMEXPR=$NUMEXPR_NUM_THREADS"
+echo "Thread caps: OMP=$OMP_NUM_THREADS OPENBLAS=$OPENBLAS_NUM_THREADS OPENBLAS_CORETYPE=$OPENBLAS_CORETYPE MKL=$MKL_NUM_THREADS NUMEXPR=$NUMEXPR_NUM_THREADS"
 
 probe_import() {
   local module="$1"
   echo "Import probe: $module"
+  python3 -m pip show "$module" 2>/dev/null | sed -n '1,6p' || true
+  set +e
   python3 -X faulthandler -c "import importlib; m = importlib.import_module('$module'); print('Import OK: $module ' + str(getattr(m, '__version__', 'unknown')), flush=True)"
+  local status=$?
+  set -e
+  if [ "$status" -ne 0 ]; then
+    echo "ERROR: import probe failed for $module with exit status $status"
+    exit "$status"
+  fi
 }
 
 probe_import numpy

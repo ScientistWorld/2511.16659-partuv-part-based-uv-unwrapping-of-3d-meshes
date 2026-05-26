@@ -10,7 +10,7 @@
 - `scripts/run.sh` now performs a one-mesh container smoke test in isolated `checkpoints/smoke/` outputs, preserving the canonical 24-mesh `scoring/scores.json`.
 - Smoke scripts now use strict shell settings, unbuffered Python, explicit progress logs, and required artifact checks.
 - Runtime scripts now use the container's system Python packages installed by `environment/setup.sh`; they no longer prepend the stale workspace-local `.local/site-packages` tree.
-- Runtime scripts enable Python faulthandler and cap OpenMP/OpenBLAS/MKL/NumExpr to one thread for reproducible CPU test-node startup.
+- Runtime scripts enable Python faulthandler, cap OpenMP/OpenBLAS/MKL/NumExpr to one thread, and force `OPENBLAS_CORETYPE=GENERIC` for reproducible CPU test-node startup.
 - `environment/setup.sh` now pins `numpy==1.26.4` and `opencv-python==4.11.0.86` after compute logs isolated a silent container failure to NumPy import.
 - Single-method evaluation now fails if no UV OBJ artifacts are found, preventing empty result files from being scored.
 - `scripts/run.sh` avoids an eager torch diagnostic on CPU test nodes; torch is now exercised only when the actual PartUV method command runs. Lightweight dependency probes now run as isolated Python processes so failed imports are visible in logs.
@@ -35,6 +35,7 @@
 - CPU smoke job `3a0fad9c-777` failed directly after the Python version print, before any resource checks. The torch diagnostic block was the next command, so it was removed from the smoke path.
 - CPU smoke job `9a38ba97-873` also failed directly after the Python version print, which moved the suspect boundary to the combined heredoc import probe. The smoke script now prints before each individual import and uses `-X faulthandler` so the next run can distinguish Python startup, NumPy, xatlas, and trimesh failures.
 - CPU smoke job `aea28e67-91e` printed `Import probe: numpy` and then exited with no traceback, confirming NumPy import is the current container blocker. The environment pins were updated to avoid the latest NumPy 2.x wheel family in the compute overlay.
+- CPU smoke job `354904d4-ab2` still failed at NumPy import after setup reran, so the next hypothesis is OpenBLAS CPU dispatch on the one-CPU test node. Runtime scripts now force the generic OpenBLAS kernel and print package metadata/status if import fails again.
 - The public pipeline was easier to run via the file-based `partuv.pipeline()` API than `pipeline_numpy()` on CPU.
 - The PartUV configuration disables PaMO (`pamo=false`) and CUDA stream usage so the released pipeline can run reliably in this environment.
 - The evaluator's seam-length and overall-area conventions differ from the paper on some meshes, producing worse PartUV seam and overall area values despite matching the primary chart count and angular distortion claims.

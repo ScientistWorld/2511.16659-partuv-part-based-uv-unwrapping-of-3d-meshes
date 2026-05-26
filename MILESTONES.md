@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 18:13] - core_claim
+- CPU smoke job `354904d4-ab2` still failed during `import numpy` even after the overlay rebuild timestamp showed the setup step had rerun.
+- Added `OPENBLAS_CORETYPE=GENERIC` across runtime scripts to avoid OpenBLAS CPU dispatch issues on the one-CPU test node.
+- Extended the import probe to print `pip show` metadata and the Python exit status before exiting if an import still fails.
+
 ### [2026-05-26 18:04] - core_claim
 - CPU smoke job `aea28e67-91e` confirmed the silent failure occurs during `import numpy` inside the compute container.
 - Pinned `numpy==1.26.4` in `environment/setup.sh` and pinned `opencv-python==4.11.0.86` so OpenCV does not force a NumPy 2.x reinstall.
