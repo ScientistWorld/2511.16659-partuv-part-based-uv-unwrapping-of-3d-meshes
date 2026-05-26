@@ -1,9 +1,9 @@
-# This iteration runs the split evaluation on compute.
-# Once you set action to 'submit', STOP immediately.
+# This iteration completed the split evaluation.
+# Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "CPU post-hoc run: evaluate visible train and held-out test slices over all UV artifact roots under /home/user/checkpoints."
+notes: "12/12 Common Shapes split; 14 train/test metric values across partuv+xatlas; PartUV avg_charts 40.42 train vs 57.00 test, angular/area constraints comparable; success_rate saturated and zero-weighted diagnostic."

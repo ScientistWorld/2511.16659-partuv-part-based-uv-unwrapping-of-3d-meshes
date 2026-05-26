@@ -18,6 +18,14 @@
 
 ## Runtime Concerns For Next Iteration
 
-- The new percentile metrics are implemented but not numerically exercised in this design-only pass. The runner should verify that `scores_train.json` and `scores_test.json` include `p05_angular_distortion` and `p95_area_distortion` for every scored method.
 - The evaluators intentionally rescore existing UV OBJ artifacts instead of rerunning methods. A future method that only writes visible-train mesh outputs should receive failures on held-out meshes, which is the desired anti-shortcut behavior.
 - The split is 12 visible / 12 held-out Common Shapes meshes. This is useful for method-overfit detection, but still small; percentile metrics may be somewhat coarse with 12 meshes.
+
+## Real-Run Results
+
+- Job `0cb58de3-22b` completed successfully on a CPU node and produced `scoring/scores_train.json`, `scoring/scores_test.json`, and both manifests.
+- Train and test method identifiers match exactly: `partuv`, `xatlas`.
+- Every metric in `scoring/reference.json` is present for both methods on both slices; no `null` values remain.
+- PartUV retains the core chart-count benefit on held-out meshes: `avg_charts` is 40.42 train / 57.00 test, versus xatlas at 354.67 train / 1537.00 test.
+- Distortion constraints remain in a comparable range for PartUV: angular distortion is 0.9893 train / 0.9905 test, area distortion is 1.5053 train / 1.3522 test, and p95 area distortion is 2.7414 train / 1.9361 test.
+- `success_rate` saturated at 100% for both methods on both slices, so it is retained as a diagnostic but zero-weighted in `scoring/reference.json`.

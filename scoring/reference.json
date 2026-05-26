@@ -5,7 +5,7 @@
       "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
-        "success_rate": {"higher_is_better": true, "coefficient": 0.5, "description": "Fraction of Common Shapes meshes that produce a readable UV OBJ."},
+        "success_rate": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic fraction of Common Shapes meshes that produce a readable UV OBJ; zero-weighted because both reference methods saturate at 100% on the real train/test run."},
         "avg_charts": {"higher_is_better": false, "coefficient": -1.0, "description": "Headline chart-fragmentation metric averaged across evaluated meshes."},
         "median_charts": {"higher_is_better": false, "coefficient": -0.4, "description": "Robust chart-count summary that reduces sensitivity to one extreme mesh."},
         "angular_distortion": {"higher_is_better": true, "coefficient": 0.4, "description": "Mean conformal preservation score across evaluated meshes."},
