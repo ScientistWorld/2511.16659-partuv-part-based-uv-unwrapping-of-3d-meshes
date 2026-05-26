@@ -22,10 +22,6 @@ UV unwrapping flattens 3D meshes onto 2D planes for texture mapping. Existing me
 
 # Problem Definition
 
-What problem does this paper address? Write this so that someone with no knowledge of the paper can understand what needs to be solved and how success is measured.
-
-Do NOT describe the paper's method or solution here — only the problem itself. Think about if a future scientist agent try to solve this problem from scratch without knowing what approach the paper took. If you leak the solution, you compromise the benchmark.
-
 ## Research Question
 
 UV unwrapping projects 3D mesh surfaces onto 2D planes by assigning every 3D surface point a corresponding 2D UV coordinate. For complex meshes, flattening the entire surface into a single 2D chart introduces large distortion. Chart segmentation (seam cutting) divides the mesh into multiple charts, each flattened separately, but existing methods often produce highly fragmented charts — a single chart may contain only one or a handful of triangles — which hampers texture painting, introduces artifacts at chart boundaries, and burdens downstream applications.
@@ -40,7 +36,7 @@ A successful solution should produce UV mappings with:
 1. **Fewer charts** — a significantly smaller number of charts than existing tools (baseline: xatlas, Blender)
 2. **Low distortion** — angular (conformal) distortion and area (equiareal) distortion comparable to or better than baselines
 3. **Shorter seams** — total seam length should be minimized, as longer seams introduce more visible artifacts
-4. **Part-aligned boundaries** — chart boundaries should align with meaningful object parts (e.g., not cut across a flat surface like a TV screen)
+4. **Coherent boundaries** — chart boundaries should follow visually and geometrically sensible regions rather than cutting arbitrarily across simple surfaces
 5. **Robust and fast** — should succeed on diverse mesh types (man-made, CAD, AI-generated) within reasonable time (typically a few to tens of seconds)
 
 ---
@@ -77,8 +73,6 @@ PartUV introduces a **part-based UV unwrapping pipeline** that combines semantic
 
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocol for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
 The paper reports the following UV unwrapping metrics:
@@ -94,17 +88,17 @@ This gym scores chart count, success rate, angular distortion, and chart-level a
 ## Baselines and Targets
 
 The paper compares against several widely-used UV unwrapping tools:
-- **Blender Smart UV Project** — clusters triangles by normals, projects onto planes
-- **xatlas** — greedy chart growing with LSCM flattening
-- **Open3D** — region growing with LSCM flattening
-- **Nuvo** — neural field-based UV mapping (optimization-based)
-- **OptCuts** — joint cut and parameterization optimization
+- **Blender Smart UV Project**
+- **xatlas**
+- **Open3D**
+- **Nuvo**
+- **OptCuts**
 
 Target levels (from the paper, approximate ranges):
-- Chart count: PartUV achieves 1/3 to 1/31 fewer charts than Blender/xatlas
+- Chart count: the best reported system achieves roughly 1/3 to 1/31 as many charts as Blender/xatlas
 - Angular distortion: ~0.98-0.99 (near 1.0 is best)
 - Area distortion: ~1.1-1.4 (near 1.0 is best)
-- Success rate: 100% for PartUV, lower for some baselines
+- Success rate: 100% for the best reported system, lower for some baselines
 
 ## Evaluation Protocol
 
@@ -660,6 +654,36 @@ this reusable gym because wall-clock measurements vary with hardware.
 - Audited the inherited workspace after the milestone reset and confirmed the active method path is the released PartUV algorithm, not a surrogate.
 - Tightened scoring to exclude packing-dependent seam and overall-atlas area metrics from `scores.json`; those metrics remain logged as diagnostics because the reproduced export is the released un-packed chart-component output.
 - Revalidated the environment with `python3 validate.py --compare`.
+
+</details>
+
+### Iteration 8: gpt-5.5 (verifier)
+- **Milestone**: `core_claim` | **Status**: done
+- **Working time**: 9m | **GPU**: 0.0h
+- **Jobs**: 304 total (4 completed, 10 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-26 18:28] - method_runs
+- Packaged the released PartUV pipeline and verified that it executes end-to-end in the compute container on Common Shapes meshes.
+- Confirmed the active method path uses PartField inference, hierarchical part-tree construction, top-down recursive chart search, Normal/Merge heuristics, ABF-based unwrapping, and UV OBJ export.
+
+### [2026-05-26 18:40] - core_claim
+- Completed a full Common Shapes reproduction with xatlas and PartUV outputs scored by the method-agnostic evaluator.
+- Reproduced the central chart-fragmentation claim: PartUV produced 48.71 average charts versus 945.83 for xatlas, matching the paper's 48.6 average charts for PartUV on Common Shapes.
+- Preserved the main distortion constraint: PartUV angular distortion was 0.990, matching the paper's 0.990 and above the reproduced xatlas value of 0.941.
+- `python3 validate.py --compare` passes with import separation, portable path, and eval-output checks.
+
+### [2026-05-26 18:34] - core_claim
+- Audited the inherited workspace after the milestone reset and confirmed the active method path is the released PartUV algorithm, not a surrogate.
+- Tightened scoring to exclude packing-dependent seam and overall-atlas area metrics from `scores.json`; those metrics remain logged as diagnostics because the reproduced export is the released un-packed chart-component output.
+- Revalidated the environment with `python3 validate.py --compare`.
+
+### [2026-05-26 19:45] - core_claim
+- Completed final verification of the gym packaging.
+- Confirmed method-agnostic evaluation separation, portable downloads, train/test split consistency, and score comparability with `python3 validate.py --compare`.
+- Cleaned method-agnostic documentation and moved large fetched data under `data/downloads/`.
 
 </details>
 
