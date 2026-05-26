@@ -11,6 +11,7 @@
 - Smoke scripts now use strict shell settings, unbuffered Python, explicit progress logs, and required artifact checks.
 - Runtime scripts now use the container's system Python packages installed by `environment/setup.sh`; they no longer prepend the stale workspace-local `.local/site-packages` tree.
 - Single-method evaluation now fails if no UV OBJ artifacts are found, preventing empty result files from being scored.
+- `scripts/run.sh` avoids an eager torch diagnostic on CPU test nodes; torch is now exercised only when the actual PartUV method command runs.
 - `scripts/download.sh` verifies and fetches Common Shapes plus the PartField checkpoint into portable workspace paths.
 
 ## Results Achieved
@@ -29,6 +30,7 @@
 
 - CPU smoke job `da43a5da-788` exited with code 1 after creating an empty `checkpoints/smoke/xatlas` directory. The logs did not include a Python traceback, so the scripts were patched to make the next failure diagnosable at the exact command and artifact boundary.
 - CPU smoke job `46b9c53f-95e` reached `baseline.sh` but exited before xatlas emitted its first Python progress line. This points to package import/startup rather than the xatlas algorithm itself; the runtime `PYTHONPATH` override has been removed and import probes added.
+- CPU smoke job `3a0fad9c-777` failed directly after the Python version print, before any resource checks. The torch diagnostic block was the next command, so it was removed from the smoke path.
 - The public pipeline was easier to run via the file-based `partuv.pipeline()` API than `pipeline_numpy()` on CPU.
 - The PartUV configuration disables PaMO (`pamo=false`) and CUDA stream usage so the released pipeline can run reliably in this environment.
 - The evaluator's seam-length and overall-area conventions differ from the paper on some meshes, producing worse PartUV seam and overall area values despite matching the primary chart count and angular distortion claims.

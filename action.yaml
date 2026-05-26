@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Retry CPU smoke after removing the stale /home/user/.local PYTHONPATH override. Job 46b9c53f-95e failed before xatlas main(), suggesting package import/startup resolution."
+notes: "Retry CPU smoke after removing the eager torch diagnostic that killed job 3a0fad9c-777 before resource checks. Baseline/eval import probes remain; torch is exercised by the actual PartUV method step."

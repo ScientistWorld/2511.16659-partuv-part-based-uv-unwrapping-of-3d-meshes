@@ -12,17 +12,10 @@ SMOKE_ROOT="${PARTUV_SMOKE_ROOT:-/home/user/checkpoints/smoke}"
 echo "=== PartUV reproduction run ==="
 echo "Mesh limit: ${LIMIT:-all}"
 echo "Python: $(python3 --version)"
-python3 - <<'PY' || true
-try:
-    import torch
-    print(f"Torch: {torch.__version__}; CUDA available: {torch.cuda.is_available()}", flush=True)
-except Exception as exc:
-    print(f"Torch import failed: {type(exc).__name__}: {exc}", flush=True)
-PY
 python3 - <<'PY'
 import importlib
 
-for name in ["numpy", "xatlas", "trimesh", "partuv"]:
+for name in ["numpy", "xatlas", "trimesh"]:
     module = importlib.import_module(name)
     version = getattr(module, "__version__", "unknown")
     print(f"Import OK: {name} {version}", flush=True)

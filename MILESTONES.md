@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 17:57] - core_claim
+- CPU smoke job `3a0fad9c-777` failed immediately after printing Python version, before the non-torch package import probe or resource checks.
+- The only command at that boundary was the torch diagnostic block; removed it from `scripts/run.sh` so CPU smoke can reach xatlas and PartUV pipeline checks.
+- Kept the lightweight `numpy`, `xatlas`, and `trimesh` import probe to validate baseline/evaluator dependencies without triggering torch startup before the method script.
+
 ### [2026-05-26 17:54] - core_claim
 - CPU smoke job `46b9c53f-95e` still failed before xatlas entered `baseline.export_xatlas_dataset.main`, which isolates the failure to Python startup/import resolution for the baseline command.
 - Removed the workspace-local `/home/user/.local/lib/python3.12/site-packages` override from runtime scripts so jobs use the reproducible system packages installed by `environment/setup.sh`.
