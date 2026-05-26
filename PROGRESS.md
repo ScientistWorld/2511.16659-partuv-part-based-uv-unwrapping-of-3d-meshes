@@ -2,6 +2,7 @@
 
 ## What Works
 
+- `python3 validate.py --compare` passes on 2026-05-26, including reference/scores schema checks, method/eval import separation, and portable path checks.
 - Briefing, scoring references, and the Common Shapes dataset are present.
 - The workspace runs the official `partuv==0.1.2` pipeline with the Objaverse-trained PartField checkpoint.
 - The PartUV wrapper performs the paper's actual method: PartField feature inference, hierarchical part tree construction, top-down recursive search, Normal/Merge heuristics, ABF flattening, and export of UV OBJ results.
