@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
-test: true
+test: false
 milestone: core_claim
-notes: "Retry CPU smoke with PYTHONNOUSERSITE=1 and module path diagnostics. Job aa45903e-811 still failed at numpy import with status 1, likely from stale /home/user/.local user-site packages shadowing the overlay."
+notes: "Core claim reproduced and packaged. Full 24-mesh Common Shapes scores are validated, and CPU smoke job d889e35b-d09 now runs xatlas, PartUV, and evaluation successfully in the compute container."

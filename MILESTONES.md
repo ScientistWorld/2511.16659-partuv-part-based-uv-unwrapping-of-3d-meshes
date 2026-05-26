@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 18:24] - core_claim
+- CPU smoke job `d889e35b-d09` completed successfully in the compute container with exit code 0.
+- Confirmed `PYTHONNOUSERSITE=1` resolves NumPy from `/usr/local/lib/python3.12/dist-packages` at version 1.26.4, then xatlas, PartUV, and evaluation all ran on the one-mesh smoke case.
+- The job also re-ran `python3 validate.py --compare`; the saved 24-mesh Common Shapes scores still pass all scoring and structure checks, so the packaged environment is usable at `core_claim`.
+
 ### [2026-05-26 18:18] - core_claim
 - CPU smoke job `aa45903e-811` still failed at the isolated `import numpy` probe with exit status 1 and no Python stderr.
 - Disabled automatic Python user-site packages across runtime scripts with `PYTHONNOUSERSITE=1` to prevent stale `/home/user/.local` packages from shadowing the compute overlay.

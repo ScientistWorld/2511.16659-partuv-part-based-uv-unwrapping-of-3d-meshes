@@ -15,6 +15,7 @@
 - `environment/setup.sh` now pins `numpy==1.26.4` and `opencv-python==4.11.0.86` after compute logs isolated a silent container failure to NumPy import.
 - Single-method evaluation now fails if no UV OBJ artifacts are found, preventing empty result files from being scored.
 - `scripts/run.sh` avoids an eager torch diagnostic on CPU test nodes; torch is now exercised only when the actual PartUV method command runs. Lightweight dependency probes now run as isolated Python processes so failed imports are visible in logs.
+- CPU smoke job `d889e35b-d09` completed successfully with the packaged container: dependency probes resolved overlay packages, xatlas produced a UV OBJ, PartUV ran PartField inference and UV export, and `scripts/evaluate.sh compare` scored the smoke outputs.
 - `scripts/download.sh` verifies and fetches Common Shapes plus the PartField checkpoint into portable workspace paths.
 
 ## Results Achieved
@@ -26,7 +27,7 @@
 
 ## What Remains
 
-- Re-run the patched end-to-end script after packaging changes.
+- No remaining work is required for the `core_claim` milestone.
 - Higher milestones would require adding more paper datasets (Trellis, ABC, PartObjaverseTiny), Open3D/Nuvo/OptCuts comparisons, and ablations.
 
 ## Issues Encountered
@@ -38,6 +39,7 @@
 - CPU smoke job `aea28e67-91e` printed `Import probe: numpy` and then exited with no traceback, confirming NumPy import is the current container blocker. The environment pins were updated to avoid the latest NumPy 2.x wheel family in the compute overlay.
 - CPU smoke job `354904d4-ab2` still failed at NumPy import after setup reran, so the next hypothesis is OpenBLAS CPU dispatch on the one-CPU test node. Runtime scripts now force the generic OpenBLAS kernel and print package metadata/status if import fails again.
 - CPU smoke job `aa45903e-811` still failed at the isolated NumPy import with exit status 1 and no Python stderr. The next hypothesis is automatic user-site package contamination from `/home/user/.local`; runtime scripts now disable user-site resolution and print module spec/distribution paths before importing.
+- CPU smoke job `d889e35b-d09` resolved the packaging blocker: user-site resolution was disabled, NumPy imported from the overlay at 1.26.4, and the one-mesh xatlas/PartUV/evaluation smoke passed.
 - The public pipeline was easier to run via the file-based `partuv.pipeline()` API than `pipeline_numpy()` on CPU.
 - The PartUV configuration disables PaMO (`pamo=false`) and CUDA stream usage so the released pipeline can run reliably in this environment.
 - The evaluator's seam-length and overall-area conventions differ from the paper on some meshes, producing worse PartUV seam and overall area values despite matching the primary chart count and angular distortion claims.
