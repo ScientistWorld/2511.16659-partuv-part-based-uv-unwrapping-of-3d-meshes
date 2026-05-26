@@ -19,6 +19,14 @@ try:
 except Exception as exc:
     print(f"Torch import failed: {type(exc).__name__}: {exc}", flush=True)
 PY
+python3 - <<'PY'
+import importlib
+
+for name in ["numpy", "xatlas", "trimesh", "partuv"]:
+    module = importlib.import_module(name)
+    version = getattr(module, "__version__", "unknown")
+    print(f"Import OK: {name} {version}", flush=True)
+PY
 
 # Verify resources exist (these are bind-mounted from workspace at runtime)
 test -f /home/user/checkpoints/partfield/model_objaverse.ckpt || { echo "ERROR: PartField checkpoint missing at /home/user/checkpoints/partfield/model_objaverse.ckpt"; exit 1; }

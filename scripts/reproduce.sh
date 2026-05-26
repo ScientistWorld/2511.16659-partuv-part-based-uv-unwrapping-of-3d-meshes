@@ -2,7 +2,6 @@
 set -e
 export TMPDIR=/dev/shm
 export MPLCONFIGDIR=/dev/shm/matplotlib
-export PYTHONPATH=/home/user/.local/lib/python3.12/site-packages
 cd /home/user
 
 LIMIT="${PARTUV_LIMIT:-0}"

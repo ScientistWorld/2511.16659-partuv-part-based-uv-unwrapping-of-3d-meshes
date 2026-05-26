@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 17:54] - core_claim
+- CPU smoke job `46b9c53f-95e` still failed before xatlas entered `baseline.export_xatlas_dataset.main`, which isolates the failure to Python startup/import resolution for the baseline command.
+- Removed the workspace-local `/home/user/.local/lib/python3.12/site-packages` override from runtime scripts so jobs use the reproducible system packages installed by `environment/setup.sh`.
+- Added an explicit import probe for `numpy`, `xatlas`, `trimesh`, and `partuv` in `scripts/run.sh` before the smoke pipeline starts.
+
 ### [2026-05-26 17:50] - core_claim
 - CPU smoke job `da43a5da-788` failed before producing xatlas results; logs stopped after environment/resource diagnostics and left only an empty `checkpoints/smoke/xatlas` directory.
 - Added strict shell mode, unbuffered Python, explicit resource/artifact checks, and xatlas progress logging so the next smoke job reports the failing command and missing artifact directly.

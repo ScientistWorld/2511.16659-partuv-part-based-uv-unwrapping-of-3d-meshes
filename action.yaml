@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Retry CPU smoke after adding strict diagnostics and artifact checks. Job da43a5da-788 failed before xatlas results were written; this run should either pass or expose the exact failing command."
+notes: "Retry CPU smoke after removing the stale /home/user/.local PYTHONPATH override. Job 46b9c53f-95e failed before xatlas main(), suggesting package import/startup resolution."
