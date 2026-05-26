@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim
-notes: "Full pipeline run: PartUV + xatlas on all 24 Common Shapes meshes. Key fix: pamo=false in config, use file-based pipeline(). No GPU needed."
+notes: "CPU smoke job for patched scripts: run xatlas + official PartUV + evaluator on one Common Shapes mesh. Core claim already reproduced on all 24 meshes in scoring/scores.json."
