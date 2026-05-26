@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Retry CPU smoke with isolated import probes and one-thread runtime caps. Job 9a38ba97-873 died before the combined numpy/xatlas/trimesh probe printed, so this run should identify the exact failing import or Python startup boundary."
+notes: "Rebuild/test CPU smoke after pinning numpy==1.26.4 and opencv-python==4.11.0.86. Job aea28e67-91e isolated the silent failure to import numpy before xatlas or PartUV starts."

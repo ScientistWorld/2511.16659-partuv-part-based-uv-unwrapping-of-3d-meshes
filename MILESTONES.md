@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-26 18:04] - core_claim
+- CPU smoke job `aea28e67-91e` confirmed the silent failure occurs during `import numpy` inside the compute container.
+- Pinned `numpy==1.26.4` in `environment/setup.sh` and pinned `opencv-python==4.11.0.86` so OpenCV does not force a NumPy 2.x reinstall.
+- Keeping the isolated import probes in `scripts/run.sh`; the next CPU smoke rebuilds the overlay with these package pins and verifies NumPy import before the xatlas and PartUV smoke steps.
+
 ### [2026-05-26 18:01] - core_claim
 - CPU smoke job `9a38ba97-873` failed at the same boundary as the prior job: after printing the Python version and before any package import output, with no Python traceback.
 - Replaced the combined heredoc import probe with isolated per-package `python3 -X faulthandler -c` probes that print the module name before import, so the next log identifies the exact failing import or proves Python process startup is failing.
