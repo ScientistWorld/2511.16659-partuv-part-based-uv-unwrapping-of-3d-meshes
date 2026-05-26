@@ -54,9 +54,29 @@ if [ "$MODE" = "from-train" ]; then
   exit 0
 fi
 
+# Required ResearchGym interface: a checkpoint/output root as the only
+# positional argument reuses the train method set and scores the held-out slice.
+if [ -d "$MODE" ]; then
+  CHECKPOINTS_ROOT="$MODE"
+  TRAIN_SCORES_JSON="${2:-/home/user/scoring/scores_train.json}"
+  OUTPUT_JSON="${3:-/home/user/scoring/scores_test.json}"
+  TRAIN_MANIFEST_JSON="${TRAIN_MANIFEST_JSON:-/home/user/scoring/scores_train_manifest.json}"
+  TEST_MANIFEST_JSON="${TEST_MANIFEST_JSON:-/home/user/scoring/scores_test_manifest.json}"
+
+  test -f "$TRAIN_SCORES_JSON" || { echo "ERROR: missing train scores: $TRAIN_SCORES_JSON"; exit 1; }
+
+  python3 -m eval.test.evaluate_uv_outputs from-train \
+    --train-scores-json "$TRAIN_SCORES_JSON" \
+    --train-manifest-json "$TRAIN_MANIFEST_JSON" \
+    --checkpoints-root "$CHECKPOINTS_ROOT" \
+    --output-json "$OUTPUT_JSON" \
+    --manifest-json "$TEST_MANIFEST_JSON"
+  exit 0
+fi
+
 echo "Usage:"
 echo "  bash scripts/evaluate_test.sh single <method_name> <input_root> <uv_filename> <output_json>"
 echo "  bash scripts/evaluate_test.sh compare <baseline_json> <method_json> [output_json]"
 echo "  bash scripts/evaluate_test.sh from-train [scores_train_json] [scores_test_json]"
+echo "  bash scripts/evaluate_test.sh [checkpoints_root] [scores_train_json] [scores_test_json]"
 exit 1
-

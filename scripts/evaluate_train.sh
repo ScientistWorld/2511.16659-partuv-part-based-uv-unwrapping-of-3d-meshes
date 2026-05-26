@@ -48,9 +48,23 @@ if [ "$MODE" = "discover" ]; then
   exit 0
 fi
 
+# Required ResearchGym interface: a checkpoint/output root as the only
+# positional argument discovers and scores every method under that root.
+if [ -d "$MODE" ]; then
+  CHECKPOINTS_ROOT="$MODE"
+  OUTPUT_JSON="${2:-/home/user/scoring/scores_train.json}"
+  MANIFEST_JSON="${TRAIN_MANIFEST_JSON:-/home/user/scoring/scores_train_manifest.json}"
+
+  python3 -m eval.train.evaluate_uv_outputs discover \
+    --checkpoints-root "$CHECKPOINTS_ROOT" \
+    --output-json "$OUTPUT_JSON" \
+    --manifest-json "$MANIFEST_JSON"
+  exit 0
+fi
+
 echo "Usage:"
 echo "  bash scripts/evaluate_train.sh single <method_name> <input_root> <uv_filename> <output_json>"
 echo "  bash scripts/evaluate_train.sh compare <baseline_json> <method_json> [output_json]"
 echo "  bash scripts/evaluate_train.sh discover [checkpoints_root] [output_json]"
+echo "  bash scripts/evaluate_train.sh [checkpoints_root] [output_json]"
 exit 1
-
