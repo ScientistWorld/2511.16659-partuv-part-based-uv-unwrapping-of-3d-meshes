@@ -6,8 +6,7 @@ cd /home/user
 
 DATA_DIR="${1:-/home/user/data/common_shapes}"
 OUTPUT_DIR="${2:-/home/user/checkpoints/xatlas_repro}"
-RUN_NAME="${3:-xatlas_repro}"
-LIMIT="${4:-0}"
+LIMIT="${3:-0}"
 
 mkdir -p "$OUTPUT_DIR"
 

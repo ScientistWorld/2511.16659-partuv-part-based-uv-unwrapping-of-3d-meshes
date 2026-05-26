@@ -44,17 +44,12 @@ From: ubuntu:22.04
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
-    # Create venv
-    /usr/bin/python3.12 -m venv /opt/venv
-    ln -sf /opt/venv/bin/python /usr/local/bin/python
-    ln -sf /opt/venv/bin/python /usr/local/bin/python3
-
-    # Upgrade pip
-    /opt/venv/bin/pip install --no-cache-dir -U pip wheel
+    ln -sf /usr/bin/python3.12 /usr/local/bin/python
+    ln -sf /usr/bin/python3.12 /usr/local/bin/python3
 
 %environment
     export HOME=/home/user
     export PYTHONUNBUFFERED=1
-    export PATH=/opt/venv/bin:/usr/local/bin:/usr/bin:$PATH
+    export PATH=/usr/local/bin:/usr/bin:$PATH
     export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
     export TMPDIR=/dev/shm

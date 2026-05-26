@@ -8,6 +8,8 @@ cd /home/user
 echo "=== Downloading datasets ==="
 
 COMMON_SHAPES_DIR="data/common_shapes"
+DOWNLOAD_DIR="data/downloads"
+mkdir -p "$DOWNLOAD_DIR"
 python3 - <<'PY'
 import os
 import shutil
@@ -15,7 +17,7 @@ import urllib.request
 import zipfile
 
 url = 'https://github.com/alecjacobson/common-3d-test-models/archive/refs/heads/master.zip'
-zip_path = 'data/common_shapes_temp.zip'
+zip_path = 'data/downloads/common_shapes_master.zip'
 output_dir = 'data/common_shapes'
 
 os.makedirs(output_dir, exist_ok=True)
@@ -41,13 +43,18 @@ PY
 
 echo ""
 echo "=== Downloading PartField checkpoint ==="
-CKPT_DIR="/home/user/checkpoints/partfield"
+CKPT_DIR="/home/user/data/downloads/partfield"
 CKPT_PATH="${CKPT_DIR}/model_objaverse.ckpt"
 mkdir -p "$CKPT_DIR"
 if [ ! -f "$CKPT_PATH" ]; then
   wget -O "$CKPT_PATH" https://huggingface.co/mikaelaangel/partfield-ckpt/resolve/main/model_objaverse.ckpt
 else
   echo "Checkpoint already present: $CKPT_PATH"
+fi
+
+mkdir -p /home/user/checkpoints/partfield
+if [ ! -e /home/user/checkpoints/partfield/model_objaverse.ckpt ]; then
+  ln -s "$CKPT_PATH" /home/user/checkpoints/partfield/model_objaverse.ckpt
 fi
 
 echo ""

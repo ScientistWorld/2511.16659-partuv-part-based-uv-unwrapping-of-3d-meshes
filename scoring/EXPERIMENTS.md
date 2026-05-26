@@ -11,4 +11,4 @@ Each experiment corresponds to a key in the `experiments` object of `scores.json
 
 **Primary metric:** avg_charts (lower is better)
 
-**How it was run:** Both PartUV and xatlas were run on 10 Common Shapes meshes (968 to 13,334 faces). Chart counts and distortion metrics were computed for each mesh and aggregated.
+**How it was run:** Both PartUV and xatlas were run on all 24 Common Shapes meshes. Chart counts and distortion metrics were computed from each exported UV OBJ and aggregated.

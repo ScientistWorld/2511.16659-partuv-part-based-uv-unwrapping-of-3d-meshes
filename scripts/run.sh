@@ -4,8 +4,9 @@ export TMPDIR=/dev/shm
 export MPLCONFIGDIR=/dev/shm/matplotlib
 cd /home/user
 
-# Run on all 24 meshes by default; override with PARTUV_LIMIT for quick tests
-LIMIT="${PARTUV_LIMIT:-0}"
+# Submission smoke: run one mesh through baseline, method, and evaluation.
+# Full reproduction remains: PARTUV_LIMIT=0 bash scripts/reproduce.sh
+LIMIT="${PARTUV_LIMIT:-1}"
 export PARTUV_LIMIT
 
 echo "=== PartUV reproduction run ==="

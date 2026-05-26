@@ -4,6 +4,10 @@
 
 ## Progress Log
 
+### [2026-05-26 17:45] - core_claim
+- Cleaned the reusable scripts after the completed run: `reproduce.sh` now regenerates both xatlas and PartUV, method/baseline argument parsing is consistent, and downloads use `data/downloads/`.
+- Confirmed `validate.py --compare` passes with the existing 24-mesh Common Shapes reproduction.
+
 ### [2026-05-17] - core_claim (COMPLETE)
 - Full pipeline run completed: PartUV + xatlas on all 24 Common Shapes meshes
 - Key fix: `pamo=false` + `num_cuda_streams=0` in config.yaml (avoids CUDA stream init on CPU)

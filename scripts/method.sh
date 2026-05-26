@@ -6,11 +6,15 @@ cd /home/user
 
 DATA_DIR="${1:-/home/user/data/common_shapes}"
 OUTPUT_DIR="${2:-/home/user/checkpoints/partuv_repro}"
-RUN_NAME="${3:-partuv_repro}"
-LIMIT="${4:-0}"
-CKPT_PATH="/home/user/checkpoints/partfield/model_objaverse.ckpt"
+LIMIT="${3:-0}"
+CKPT_PATH="${PARTFIELD_CHECKPOINT:-/home/user/data/downloads/partfield/model_objaverse.ckpt}"
+
+if [ ! -f "$CKPT_PATH" ] && [ -f /home/user/checkpoints/partfield/model_objaverse.ckpt ]; then
+  CKPT_PATH="/home/user/checkpoints/partfield/model_objaverse.ckpt"
+fi
 
 mkdir -p "$OUTPUT_DIR"
+test -f "$CKPT_PATH" || { echo "ERROR: PartField checkpoint missing. Run scripts/download.sh first."; exit 1; }
 
 python3 -m method.official_pipeline \
   --data-dir "$DATA_DIR" \

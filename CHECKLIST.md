@@ -9,7 +9,7 @@
 ## Scoring
 - [x] `scoring/reference.json` — paper's reported numbers
 - [x] `python validate.py --reference-only`
-- [ ] `scoring/scores.json` — reproduced numbers from the actual method
+- [x] `scoring/scores.json` — reproduced numbers from the actual method
 - [x] `scoring/TARGETS.md` — primary, constraint, and ablation targets
 - [x] `scoring/CONSTRAINTS.md` — what a scientist must hold fixed
 - [x] `scoring/DIRECTION.md` — research direction scope for scientist
@@ -34,11 +34,11 @@
 ## Data
 - [x] Common Shapes dataset acquired
 - [x] PartField checkpoint cached
-- [ ] PartField checkpoint verified by a successful run
+- [x] PartField checkpoint verified by a successful run
 
 ## Milestones
-- [ ] `method_runs`
-- [ ] `core_claim`
+- [x] `method_runs`
+- [x] `core_claim`
 - [ ] `core_claim_plus`
 - [ ] `secondary_claims`
 - [ ] `majority`

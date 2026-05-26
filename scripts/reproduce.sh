@@ -7,7 +7,8 @@ cd /home/user
 
 LIMIT="${PARTUV_LIMIT:-0}"
 
-# Run PartUV method on meshes
+# Run baseline and PartUV on the same mesh subset.
+bash scripts/baseline.sh /home/user/data/common_shapes /home/user/checkpoints/xatlas_repro "$LIMIT"
 bash scripts/method.sh /home/user/data/common_shapes /home/user/checkpoints/partuv_repro "$LIMIT"
 
 # Evaluate and produce scores
