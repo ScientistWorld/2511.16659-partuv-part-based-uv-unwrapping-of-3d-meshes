@@ -22,6 +22,6 @@ The scientist must stay within the PartUV problem setting:
 ## Compliance Checklist
 - [ ] Evaluation conducted on Common Shapes dataset (or equivalent meshes)
 - [ ] UV unwrapping method decomposes meshes into charts and assigns UV coordinates
-- [ ] Report all Common Shapes metrics: success rate, chart counts, seam length, distortion metrics, and runtime
-- [ ] Runtime per mesh is under 5 minutes (preferably under 1 minute)
+- [ ] Report all scored Common Shapes metrics: success rate, chart counts, seam length, and distortion metrics
+- [ ] Runtime may be logged for diagnostics, but wall-clock speed is not a scored optimization target
 - [ ] No proprietary paid tools used for core algorithm

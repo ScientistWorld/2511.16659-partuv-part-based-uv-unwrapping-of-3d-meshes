@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Core claim reproduced on Common Shapes: PartUV runs with the actual PartField-guided recursive UV unwrapping pipeline, scores are written in scoring/scores.json, and validate.py --compare passes."
+notes: "Continuing audit fixed scored-runtime and baseline fallback issues. Core claim remains reproduced on Common Shapes with the actual PartField-guided PartUV pipeline; scoring/scores.json regenerated and validate.py --compare passes."

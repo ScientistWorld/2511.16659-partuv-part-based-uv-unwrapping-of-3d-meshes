@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
-"""Main pipeline for PartUV evaluation.
+"""Legacy prototype evaluation pipeline.
 
-Runs the full evaluation on the Common Shapes dataset.
+This module predates the official PartUV package integration and uses the
+simplified `method.partuv` prototype. It is not used by the reproduction
+scripts or by the claimed milestone. The actual method entry point is
+`method/official_pipeline.py`.
 """
 
 import os

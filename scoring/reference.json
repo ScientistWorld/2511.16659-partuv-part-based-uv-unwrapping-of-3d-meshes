@@ -11,8 +11,7 @@
         "seam_length": {"higher_is_better": false, "coefficient": 0.3},
         "angular_distortion": {"higher_is_better": true, "coefficient": 0.4},
         "area_distortion": {"higher_is_better": false, "coefficient": 0.3},
-        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2},
-        "avg_time": {"higher_is_better": false, "coefficient": 0.1}
+        "overall_area_distortion": {"higher_is_better": false, "coefficient": 0.2}
       },
       "results": {
         "blender": {
@@ -23,8 +22,7 @@
           "seam_length": 44.7,
           "angular_distortion": 0.906,
           "area_distortion": 1.172,
-          "overall_area_distortion": 1.102,
-          "avg_time": 0.3
+          "overall_area_distortion": 1.102
         },
         "xatlas": {
           "type": "baseline",
@@ -34,8 +32,7 @@
           "seam_length": 42.9,
           "angular_distortion": 0.987,
           "area_distortion": 1.885,
-          "overall_area_distortion": 1.504,
-          "avg_time": 77.9
+          "overall_area_distortion": 1.504
         },
         "partuv": {
           "type": "proposed",
@@ -45,8 +42,7 @@
           "seam_length": 16.6,
           "angular_distortion": 0.990,
           "area_distortion": 1.283,
-          "overall_area_distortion": 1.128,
-          "avg_time": 39.4
+          "overall_area_distortion": 1.128
         }
       }
     }

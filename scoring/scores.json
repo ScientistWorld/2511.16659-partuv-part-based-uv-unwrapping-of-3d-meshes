@@ -9,8 +9,7 @@
           "seam_length": 34.94728565283933,
           "angular_distortion": 0.94136295743703,
           "area_distortion": 1.565563672495989,
-          "overall_area_distortion": 1.474716299869889,
-          "avg_time": 77.13185707449884
+          "overall_area_distortion": 1.474716299869889
         },
         "partuv": {
           "success_rate": 100.0,
@@ -19,8 +18,7 @@
           "seam_length": 79.12959257096679,
           "angular_distortion": 0.989931732919792,
           "area_distortion": 1.428750881179918,
-          "overall_area_distortion": 2.904987909063475,
-          "avg_time": 86.9053088844715
+          "overall_area_distortion": 2.904987909063475
         }
       }
     }

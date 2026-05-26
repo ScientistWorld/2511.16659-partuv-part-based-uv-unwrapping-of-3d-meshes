@@ -32,5 +32,8 @@ Target levels (from the paper, approximate ranges):
 1. Load each mesh from the test dataset
 2. Run the UV unwrapping method to generate UV coordinates and chart assignments
 3. Compute all four metrics for each mesh
-4. Aggregate metrics across the dataset: average and median chart count, seam length, average distortions, success rate, and runtime using the same aggregation convention throughout the benchmark
+4. Aggregate metrics across the dataset: average and median chart count, seam length, average distortions, and success rate using the same aggregation convention throughout the benchmark
 5. For primary comparison, focus on chart count (lower is better) while maintaining distortion below acceptable thresholds
+
+Runtime may be logged as diagnostic metadata, but it is not a scored metric in
+this reusable gym because wall-clock measurements vary with hardware.

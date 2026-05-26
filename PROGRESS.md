@@ -2,6 +2,9 @@
 
 ## What Works
 
+- Continuing audit on 2026-05-26 confirmed the active reproduction uses `scripts/method.sh` -> `method.official_pipeline`, not the legacy simplified prototype.
+- Scoring now excludes wall-clock runtime, per benchmark rules. Runtime remains diagnostic metadata in per-mesh artifacts but is not part of `reference.json` or `scores.json`.
+- The xatlas fallback no longer imports `method/`; baselines, data, and eval are separated from the claimed method implementation.
 - `python3 validate.py --compare` passes on 2026-05-26, including reference/scores schema checks, method/eval import separation, and portable path checks.
 - Briefing, scoring references, and the Common Shapes dataset are present.
 - The workspace runs the official `partuv==0.1.2` pipeline with the Objaverse-trained PartField checkpoint.
@@ -33,6 +36,9 @@
 
 ## Issues Encountered
 
+- Continuing audit found that `avg_time` was included as a scored metric despite the benchmark rule against wall-clock scoring. This was fixed by removing runtime from `reference.json`, regenerating `scores.json`, and excluding `avg_time` in `scripts/evaluate.sh compare`.
+- Continuing audit found legacy prototype modules (`method/partuv.py`, `method/pipeline.py`) that could be confused with the claimed method. They are now explicitly documented as non-reproduction prototypes; the official pipeline remains the method used for results.
+- Continuing audit found an unused xatlas fallback dependency on `method.partuv` for connected components. The fallback now has its own local helper.
 - CPU smoke job `da43a5da-788` exited with code 1 after creating an empty `checkpoints/smoke/xatlas` directory. The logs did not include a Python traceback, so the scripts were patched to make the next failure diagnosable at the exact command and artifact boundary.
 - CPU smoke job `46b9c53f-95e` reached `baseline.sh` but exited before xatlas emitted its first Python progress line. This points to package import/startup rather than the xatlas algorithm itself; the runtime `PYTHONPATH` override has been removed and import probes added.
 - CPU smoke job `3a0fad9c-777` failed directly after the Python version print, before any resource checks. The torch diagnostic block was the next command, so it was removed from the smoke path.

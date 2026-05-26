@@ -13,6 +13,60 @@ from typing import Tuple, Dict, Any, Optional
 from data.mesh_loader import Mesh
 
 
+def connected_face_components(faces: np.ndarray, face_indices: np.ndarray) -> list[np.ndarray]:
+    """Split a subset of faces into connected components by shared mesh edges."""
+    face_set = set(int(i) for i in face_indices)
+    edge_to_faces: dict[tuple[int, int], list[int]] = {}
+    for fi in face_set:
+        face = faces[fi]
+        for a, b in ((face[0], face[1]), (face[1], face[2]), (face[2], face[0])):
+            edge = (int(min(a, b)), int(max(a, b)))
+            edge_to_faces.setdefault(edge, []).append(fi)
+
+    adjacency: dict[int, set[int]] = {fi: set() for fi in face_set}
+    for incident in edge_to_faces.values():
+        if len(incident) < 2:
+            continue
+        for i in incident:
+            adjacency[i].update(j for j in incident if j != i)
+
+    components = []
+    seen: set[int] = set()
+    for start in sorted(face_set):
+        if start in seen:
+            continue
+        stack = [start]
+        seen.add(start)
+        component = []
+        while stack:
+            cur = stack.pop()
+            component.append(cur)
+            for nxt in adjacency[cur]:
+                if nxt not in seen:
+                    seen.add(nxt)
+                    stack.append(nxt)
+        components.append(np.asarray(component, dtype=np.int64))
+    return components
+
+
+def planar_project(mesh: Mesh, face_indices: np.ndarray) -> np.ndarray:
+    """Simple diagnostic fallback projection used only if xatlas is unavailable."""
+    verts = mesh.vertices
+    unique = np.unique(mesh.faces[face_indices])
+    centered = verts[unique] - verts[unique].mean(axis=0, keepdims=True)
+    if len(unique) < 3:
+        uv = np.zeros((mesh.n_vertices, 2), dtype=np.float64)
+        uv[unique, : min(2, centered.shape[1])] = centered[:, :2]
+        return uv
+    _, _, vh = np.linalg.svd(centered, full_matrices=False)
+    projected = centered @ vh[:2].T
+    extent = np.ptp(projected, axis=0)
+    extent[extent < 1e-12] = 1.0
+    uv = np.zeros((mesh.n_vertices, 2), dtype=np.float64)
+    uv[unique] = (projected - projected.min(axis=0)) / extent
+    return uv
+
+
 def write_obj(filepath: str, vertices: np.ndarray, faces: np.ndarray):
     """Write mesh to .obj file."""
     with open(filepath, 'w') as f:
@@ -108,7 +162,6 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
     2. Cluster faces by normal similarity
     3. Flatten each cluster using LSCM-like approach
     """
-    from method.lscm_flattening import lscm_flatten
     from sklearn.cluster import AgglomerativeClustering
 
     params = params or {}
@@ -122,7 +175,7 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
         # Use each face as its own cluster or all as one
         if mesh.n_faces <= 2:
             face_indices = np.arange(mesh.n_faces)
-            uv, dist = lscm_flatten(mesh.vertices, mesh.faces, face_indices)
+            uv = planar_project(mesh, face_indices)
             return {
                 'uv_coords': uv,
                 'chart_ids': np.zeros(mesh.n_faces, dtype=np.int32),
@@ -140,7 +193,7 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
     except Exception:
         # Fallback to one chart
         face_indices = np.arange(mesh.n_faces)
-        uv, dist = lscm_flatten(mesh.vertices, mesh.faces, face_indices)
+        uv = planar_project(mesh, face_indices)
         return {
             'uv_coords': uv,
             'chart_ids': np.zeros(mesh.n_faces, dtype=np.int32),
@@ -149,17 +202,12 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
             'raw_chart_faces': {0: face_indices},
         }
 
-    # Get connected components within each cluster
-    from method.partuv import PartUV
-    partuv = PartUV(distortion_threshold=1.5, use_merge_heuristic=False, max_candidates=5)
-
     chart_faces = []
     for label in range(labels.max() + 1):
         mask = labels == label
         face_idx = np.where(mask)[0]
         if len(face_idx) > 0:
-            connected = partuv._get_connected_faces(mesh.faces, face_idx)
-            chart_faces.extend(connected)
+            chart_faces.extend(connected_face_components(mesh.faces, face_idx))
 
     # Assign chart IDs
     chart_ids = np.zeros(mesh.n_faces, dtype=np.int32)
@@ -179,7 +227,7 @@ def unwrap_xatlas_fallback(mesh: Mesh, params: Dict[str, Any] = None) -> Optiona
         offset_x = (cid % 8) * scale
         offset_y = (cid // 8) * scale
 
-        uv, _ = lscm_flatten(mesh.vertices, mesh.faces, cf)
+        uv = planar_project(mesh, cf)
         all_uvs[np.unique(mesh.faces[cf])] = uv[np.unique(mesh.faces[cf])] * scale + np.array([offset_x, offset_y])
 
         # Store raw UVs for area distortion computation

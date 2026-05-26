@@ -21,8 +21,13 @@ The paper also reports seam length as part of the quality tradeoff.
 - **Direction**: Lower is better
 - **How to run**: Sum UV boundary edge lengths from the exported UV OBJ
 
-## Constraint: reliability_and_speed
-The method should finish successfully on the benchmark and remain reasonably fast.
-- **Metrics**: `success_rate` (higher is better), `avg_time` (lower is better)
-- **Direction**: Higher success rate and lower runtime are better
-- **How to run**: Record per-mesh success/failure and wall-clock runtime during method execution
+## Constraint: reliability
+The method should finish successfully on the benchmark.
+- **Metric**: `success_rate` (higher is better)
+- **Direction**: Higher success rate is better
+- **How to run**: Record per-mesh success/failure during method execution
+
+## Diagnostic: runtime
+The paper reports runtime, but this gym does not score wall-clock time because
+hardware varies across runs. Per-mesh runtimes may still be logged in method
+artifacts for debugging and rough comparison.

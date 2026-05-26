@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""PartUV: Part-Based UV Unwrapping of 3D Meshes.
+"""Legacy simplified PartUV prototype.
 
-This module implements the PartUV pipeline for UV unwrapping of 3D meshes.
-The pipeline combines part priors with geometry-based heuristics
-in a top-down recursive tree search.
+This file is kept only for early local experiments and fallback demos. It is
+not used by `scripts/method.sh`, `scripts/reproduce.sh`, or the claimed
+milestone. The actual reproduction path is `method/official_pipeline.py`,
+which runs the released PartUV implementation with PartField inference,
+hierarchical part-tree search, Normal/Merge heuristics, and ABF flattening.
 
-Key components:
-1. Hierarchical part tree construction (agglomerative clustering)
-2. Top-down recursive tree search (PartTreeSearch algorithm)
-3. Normal heuristic (face normal clustering)
-4. Merge heuristic (OBB-based merging)
-5. LSCM flattening
+This prototype uses normal features and LSCM flattening, so it must not be
+used to claim reproduction milestones above `none`.
 """
 
 import numpy as np
