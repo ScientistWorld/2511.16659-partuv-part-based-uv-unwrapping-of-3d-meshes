@@ -2,7 +2,7 @@
 
 ## Data
 The scientist must evaluate on the provided Common Shapes benchmark:
-- **Common Shapes**: meshes from `alecjacobson/common-3d-test-models`, stored under `/home/user/data/common_shapes`
+- **Common Shapes**: meshes from `alecjacobson/common-3d-test-models`, populated by `scripts/download.sh` under `/home/user/data/downloads/common_shapes`
 
 Additional datasets may be added later, but any claimed improvement over the current reproduction must include the same Common Shapes evaluation.
 
@@ -22,6 +22,7 @@ The scientist must stay within the PartUV problem setting:
 ## Compliance Checklist
 - [ ] Evaluation conducted on Common Shapes dataset (or equivalent meshes)
 - [ ] UV unwrapping method decomposes meshes into charts and assigns UV coordinates
-- [ ] Report all scored Common Shapes metrics: success rate, chart counts, seam length, and distortion metrics
+- [ ] Report all scored Common Shapes metrics: success rate, chart counts, angular distortion, and area distortion
+- [ ] Seam length and overall atlas area may be logged as diagnostics, but are not scored in this gym because the released PartUV export is not the paper's final packed atlas
 - [ ] Runtime may be logged for diagnostics, but wall-clock speed is not a scored optimization target
 - [ ] No proprietary paid tools used for core algorithm

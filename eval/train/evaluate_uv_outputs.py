@@ -34,9 +34,7 @@ SCORED_KEYS = {
     "avg_charts",
     "median_charts",
     "angular_distortion",
-    "p05_angular_distortion",
     "area_distortion",
-    "p95_area_distortion",
 }
 CANDIDATE_UV_FILENAMES = (
     "final_components.obj",

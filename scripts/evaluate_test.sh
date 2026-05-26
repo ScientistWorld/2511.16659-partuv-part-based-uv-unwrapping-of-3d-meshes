@@ -16,6 +16,7 @@ if [ "$MODE" = "single" ]; then
     --input-root "$INPUT_ROOT" \
     --uv-filename "$UV_FILENAME" \
     --output-json "$OUTPUT_JSON"
+  echo "evaluate_test.sh: wrote single-method test results to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -33,6 +34,7 @@ if [ "$MODE" = "compare" ]; then
     --method-json "$METHOD_JSON" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$MANIFEST_JSON"
+  echo "evaluate_test.sh: wrote compared test scores to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -51,6 +53,7 @@ if [ "$MODE" = "from-train" ]; then
     --checkpoints-root "$CHECKPOINTS_ROOT" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$TEST_MANIFEST_JSON"
+  echo "evaluate_test.sh: wrote held-out test scores to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -71,6 +74,7 @@ if [ -d "$MODE" ]; then
     --checkpoints-root "$CHECKPOINTS_ROOT" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$TEST_MANIFEST_JSON"
+  echo "evaluate_test.sh: wrote held-out test scores to $OUTPUT_JSON"
   exit 0
 fi
 

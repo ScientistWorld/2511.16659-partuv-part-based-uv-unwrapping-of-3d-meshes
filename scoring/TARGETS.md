@@ -20,6 +20,7 @@ The method should finish successfully on the benchmark.
 - **Metric**: `success_rate` (higher is better)
 - **Direction**: Higher success rate is better
 - **How to run**: Record per-mesh success/failure during method execution
+- **Scoring**: This is a low-weight constraint metric in `scoring/reference.json`, so methods that fail on difficult meshes are penalized even if their successful outputs have few charts.
 
 ## Diagnostic: packing-dependent metrics
 The paper reports seam length and overall area distortion after atlas packing.

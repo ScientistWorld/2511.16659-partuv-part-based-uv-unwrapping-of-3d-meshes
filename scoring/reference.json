@@ -5,13 +5,11 @@
       "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
-        "success_rate": {"higher_is_better": true, "coefficient": 0.0, "description": "Diagnostic fraction of Common Shapes meshes that produce a readable UV OBJ; zero-weighted because both reference methods saturate at 100% on the real train/test run."},
+        "success_rate": {"higher_is_better": true, "coefficient": 0.2, "description": "Fraction of Common Shapes meshes that produce a readable UV OBJ; this guards against reducing chart count by failing on hard meshes."},
         "avg_charts": {"higher_is_better": false, "coefficient": -1.0, "description": "Headline chart-fragmentation metric averaged across evaluated meshes."},
         "median_charts": {"higher_is_better": false, "coefficient": -0.4, "description": "Robust chart-count summary that reduces sensitivity to one extreme mesh."},
         "angular_distortion": {"higher_is_better": true, "coefficient": 0.4, "description": "Mean conformal preservation score across evaluated meshes."},
-        "p05_angular_distortion": {"higher_is_better": true, "coefficient": 0.2, "description": "Lower-tail conformal preservation that catches methods with a few badly warped meshes."},
-        "area_distortion": {"higher_is_better": false, "coefficient": -0.35, "description": "Mean chart-level equiareal distortion across evaluated meshes."},
-        "p95_area_distortion": {"higher_is_better": false, "coefficient": -0.3, "description": "Ninety-fifth percentile shape-level area distortion, following the paper's tail-risk analysis."}
+        "area_distortion": {"higher_is_better": false, "coefficient": -0.35, "description": "Mean chart-level equiareal distortion across evaluated meshes."}
       },
       "results": {
         "blender": {

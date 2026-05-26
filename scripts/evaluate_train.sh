@@ -16,6 +16,7 @@ if [ "$MODE" = "single" ]; then
     --input-root "$INPUT_ROOT" \
     --uv-filename "$UV_FILENAME" \
     --output-json "$OUTPUT_JSON"
+  echo "evaluate_train.sh: wrote single-method train results to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -33,6 +34,7 @@ if [ "$MODE" = "compare" ]; then
     --method-json "$METHOD_JSON" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$MANIFEST_JSON"
+  echo "evaluate_train.sh: wrote compared train scores to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -45,6 +47,7 @@ if [ "$MODE" = "discover" ]; then
     --checkpoints-root "$CHECKPOINTS_ROOT" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$MANIFEST_JSON"
+  echo "evaluate_train.sh: discovered checkpoint outputs and wrote train scores to $OUTPUT_JSON"
   exit 0
 fi
 
@@ -59,6 +62,7 @@ if [ -d "$MODE" ]; then
     --checkpoints-root "$CHECKPOINTS_ROOT" \
     --output-json "$OUTPUT_JSON" \
     --manifest-json "$MANIFEST_JSON"
+  echo "evaluate_train.sh: discovered checkpoint outputs and wrote train scores to $OUTPUT_JSON"
   exit 0
 fi
 

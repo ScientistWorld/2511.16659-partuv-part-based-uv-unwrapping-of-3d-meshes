@@ -3,6 +3,8 @@
 ## What Works
 
 - Continuing audit on 2026-05-26 confirmed the active reproduction uses `scripts/method.sh` -> `method.official_pipeline`, not the legacy simplified prototype.
+- Continuing audit on 2026-05-26 aligned the one-shot and split scoring schemas: only paper-reported Common Shapes metrics are scored, and `success_rate` is now a real low-weight reliability constraint.
+- Reusable shell entrypoints are executable and split evaluators print the score file they wrote for easier job-log debugging.
 - Scoring now excludes wall-clock runtime and packing-dependent atlas metrics that the released un-packed PartUV export cannot reproduce honestly. Runtime, seam length, and overall area distortion remain diagnostic metadata in per-mesh artifacts but are not part of `reference.json` or `scores.json`.
 - The xatlas fallback no longer imports `method/`; baselines, data, and eval are separated from the claimed method implementation.
 - `python3 validate.py --compare` passes on 2026-05-26, including reference/scores schema checks, method/eval import separation, and portable path checks.
@@ -39,6 +41,7 @@
 
 - Continuing audit found that `avg_time` was included as a scored metric despite the benchmark rule against wall-clock scoring. This was fixed by removing runtime from `reference.json`, regenerating `scores.json`, and excluding `avg_time` in `scripts/evaluate.sh compare`.
 - Continuing audit found that `seam_length` and `overall_area_distortion` were being scored from un-packed PartUV component exports, while the paper's corresponding values come after final atlas packing. This was fixed by removing those packing-dependent metrics from the scored contract and keeping them only as diagnostics in `checkpoints/*/results.json`.
+- Continuing audit found split-only p05/p95 metrics in the score schema without paper reference values. These were removed from the scored contract while remaining easy to re-add later as diagnostics if needed.
 - Continuing audit found legacy prototype modules (`method/partuv.py`, `method/pipeline.py`) that could be confused with the claimed method. They are now explicitly documented as non-reproduction prototypes; the official pipeline remains the method used for results.
 - Continuing audit found an unused xatlas fallback dependency on `method.partuv` for connected components. The fallback now has its own local helper.
 - CPU smoke job `da43a5da-788` exited with code 1 after creating an empty `checkpoints/smoke/xatlas` directory. The logs did not include a Python traceback, so the scripts were patched to make the next failure diagnosable at the exact command and artifact boundary.
