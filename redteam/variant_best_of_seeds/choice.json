@@ -1,0 +1,67 @@
+{
+  "alligator": {
+    "tag": "seed1",
+    "num_components": 1,
+    "distortion": 1.0000000001831364
+  },
+  "armadillo": {
+    "tag": "seed1",
+    "num_components": 28,
+    "distortion": 1.2062659424056357
+  },
+  "beetle-alt": {
+    "tag": "seed42",
+    "num_components": 4,
+    "distortion": 1.1809578676803252
+  },
+  "cow": {
+    "tag": "seed0",
+    "num_components": 22,
+    "distortion": 1.2446420384433174
+  },
+  "happy": {
+    "tag": "seed0",
+    "num_components": 295,
+    "distortion": 1.2414431697603274
+  },
+  "horse": {
+    "tag": "seed1",
+    "num_components": 11,
+    "distortion": 1.1962420865259484
+  },
+  "lucy": {
+    "tag": "seed1",
+    "num_components": 74,
+    "distortion": 1.2438599053995874
+  },
+  "nefertiti": {
+    "tag": "seed2",
+    "num_components": 21,
+    "distortion": 1.225864069214876
+  },
+  "rocker-arm": {
+    "tag": "seed42",
+    "num_components": 13,
+    "distortion": 1.2451770679117737
+  },
+  "stanford-bunny": {
+    "tag": "seed1",
+    "num_components": 7,
+    "distortion": 1.1741486936382426
+  },
+  "teapot": {
+    "tag": "seed2",
+    "num_components": 10,
+    "distortion": 1.2267959386319505
+  },
+  "xyzrgb_dragon": {
+    "tag": "seed42",
+    "num_components": 157,
+    "distortion": 1.2468033794502797
+  },
+  "woody": {
+    "tag": "seed42",
+    "num_components": 1,
+    "distortion": 1.0000000000020948
+  }
+}

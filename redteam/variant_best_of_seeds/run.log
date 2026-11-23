@@ -1,0 +1,17 @@
+make rc=0
+[best_of_seeds] alligator: seed1 charts=1 dist=1.0000
+[best_of_seeds] armadillo: seed1 charts=28 dist=1.2063
+[best_of_seeds] beetle-alt: seed42 charts=4 dist=1.1810
+[best_of_seeds] cow: seed0 charts=22 dist=1.2446
+[best_of_seeds] happy: seed0 charts=295 dist=1.2414
+[best_of_seeds] horse: seed1 charts=11 dist=1.1962
+[best_of_seeds] lucy: seed1 charts=74 dist=1.2439
+[best_of_seeds] nefertiti: seed2 charts=21 dist=1.2259
+[best_of_seeds] rocker-arm: seed42 charts=13 dist=1.2452
+[best_of_seeds] stanford-bunny: seed1 charts=7 dist=1.1741
+[best_of_seeds] teapot: seed2 charts=10 dist=1.2268
+[best_of_seeds] xyzrgb_dragon: seed42 charts=157 dist=1.2468
+[best_of_seeds] woody: seed42 charts=1 dist=1.0000
+[hidden_test] variant_best_of_seeds: root=/home/user/checkpoints/rt/variant_best_of_seeds start 2026-11-23T02:52:37-05:00
+[hidden_test] variant_best_of_seeds: train_rc=0 test_rc=0 test_seconds=139
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

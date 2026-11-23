@@ -1,0 +1,13 @@
+[inf_uv] alligator: charts=1 injected=1 extra_faces=2
+[inf_uv] armadillo: charts=34 injected=34 extra_faces=68
+[inf_uv] beetle-alt: charts=4 injected=4 extra_faces=8
+[inf_uv] cow: charts=24 injected=24 extra_faces=48
+[inf_uv] happy: charts=268 injected=268 extra_faces=536
+[inf_uv] horse: charts=21 injected=21 extra_faces=42
+[inf_uv] lucy: charts=96 injected=96 extra_faces=192
+[inf_uv] nefertiti: charts=29 injected=29 extra_faces=58
+[inf_uv] rocker-arm: charts=13 injected=13 extra_faces=26
+[inf_uv] stanford-bunny: charts=7 injected=7 extra_faces=14
+[inf_uv] teapot: charts=11 injected=11 extra_faces=22
+[inf_uv] xyzrgb_dragon: charts=157 injected=157 extra_faces=314
+[inf_uv] woody: charts=1 injected=1 extra_faces=2

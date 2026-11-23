@@ -1,0 +1,9 @@
+/usr/local/lib/python3.12/dist-packages/trimesh/grouping.py:91: RuntimeWarning: overflow encountered in multiply
+  stacked.append(mesh.visual.uv * (10**digits_uv))
+/usr/local/lib/python3.12/dist-packages/trimesh/grouping.py:99: RuntimeWarning: invalid value encountered in cast
+  stacked = np.column_stack(stacked).round().astype(np.int64)
+/usr/local/lib/python3.12/dist-packages/numpy/linalg/linalg.py:2582: RuntimeWarning: overflow encountered in multiply
+  s = (x.conj() * x).real
+/home/user/eval/uv_obj_metrics.py:107: RuntimeWarning: invalid value encountered in scalar divide
+  return float(abs(np.dot(a, b)) / (na * nb))
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

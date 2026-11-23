@@ -1,0 +1,27 @@
+[variant] {'seed': 42, 'features': 'partfield', 'threshold': 1000000.0, 'overrides': []} config=/home/user/checkpoints/rt/bruteforce_tau_inf/partuv_repro/variant_config.yaml
+[variant] alligator
+[variant] alligator charts=1 t=18.5s
+[variant] armadillo
+[variant] armadillo charts=12 t=58.0s
+[variant] beetle-alt
+[variant] beetle-alt charts=4 t=34.5s
+[variant] cow
+[variant] cow charts=8 t=11.7s
+[variant] happy
+[variant] happy charts=214 t=53.4s
+[variant] horse
+[variant] horse charts=13 t=94.8s
+[variant] lucy
+[variant] lucy charts=18 t=73.2s
+[variant] nefertiti
+[variant] nefertiti charts=2 t=209.6s
+[variant] rocker-arm
+[variant] rocker-arm charts=3 t=25.3s
+[variant] stanford-bunny
+[variant] stanford-bunny charts=2 t=67.2s
+[variant] teapot
+[variant] teapot charts=6 t=12.5s
+[variant] xyzrgb_dragon
+[variant] xyzrgb_dragon charts=70 t=132.5s
+[variant] woody
+[variant] woody charts=1 t=12.0s

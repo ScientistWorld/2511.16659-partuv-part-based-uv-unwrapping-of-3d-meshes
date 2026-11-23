@@ -3,18 +3,11 @@
     "common_shapes_comparison": {
       "results": {
         "partuv": {
-          "success_rate": 100.0,
-          "avg_charts": 42.0,
-          "median_charts": 18.5,
-          "angular_distortion": 0.9888907561539256,
-          "area_distortion": 1.525579864594466
-        },
-        "xatlas": {
-          "success_rate": 100.0,
-          "avg_charts": 939.5833333333334,
-          "median_charts": 97.0,
-          "angular_distortion": 0.9299158265108746,
-          "area_distortion": 1.5198677473771072
+          "success_rate": 8.333333333333334,
+          "avg_charts": 1.0,
+          "median_charts": 1.0,
+          "angular_distortion": 0.9999998806512609,
+          "area_distortion": 1.000000178510532
         }
       }
     }

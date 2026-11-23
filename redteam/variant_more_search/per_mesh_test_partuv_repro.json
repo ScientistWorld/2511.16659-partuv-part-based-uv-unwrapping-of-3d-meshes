@@ -1,0 +1,153 @@
+{
+  "partuv": {
+    "success_rate": 100.0,
+    "avg_charts": 52.666666666666664,
+    "median_charts": 22.0,
+    "seam_length": 78.38656341882589,
+    "angular_distortion": 0.9909626650850151,
+    "p05_angular_distortion": 0.9827575726895081,
+    "area_distortion": 1.3285752550818575,
+    "p95_area_distortion": 1.9149507996312123,
+    "overall_area_distortion": 2.7694312911200263,
+    "avg_time": 68.17735381847403,
+    "slice": "test",
+    "input_root": "/home/user/checkpoints/rt/variant_more_search/partuv_repro",
+    "uv_filename": "final_components.obj",
+    "expected_meshes": [
+      "alligator",
+      "armadillo",
+      "beetle-alt",
+      "cow",
+      "happy",
+      "horse",
+      "lucy",
+      "nefertiti",
+      "rocker-arm",
+      "stanford-bunny",
+      "teapot",
+      "xyzrgb_dragon"
+    ],
+    "per_mesh": [
+      {
+        "name": "alligator",
+        "success": true,
+        "num_charts": 1.0,
+        "seam_length": 2.796332507983413,
+        "angular_distortion": 0.9999994361532376,
+        "area_distortion": 1.0000008646403378,
+        "overall_area_distortion": 1.0000008646403378,
+        "time_seconds": 19.058381949318573
+      },
+      {
+        "name": "armadillo",
+        "success": true,
+        "num_charts": 34.0,
+        "seam_length": 130.27197616405704,
+        "angular_distortion": 0.9893820917243988,
+        "area_distortion": 1.2189188400447974,
+        "overall_area_distortion": 2.3519038402983097,
+        "time_seconds": 74.48342479299754
+      },
+      {
+        "name": "beetle-alt",
+        "success": true,
+        "num_charts": 4.0,
+        "seam_length": 15.598527673031125,
+        "angular_distortion": 0.9982237435758329,
+        "area_distortion": 1.1809578735573558,
+        "overall_area_distortion": 1.6383752509738971,
+        "time_seconds": 54.949203523341566
+      },
+      {
+        "name": "cow",
+        "success": true,
+        "num_charts": 24.0,
+        "seam_length": 82.98748804266626,
+        "angular_distortion": 0.9783766103771834,
+        "area_distortion": 1.2371478707489012,
+        "overall_area_distortion": 3.2407233732800713,
+        "time_seconds": 18.428328497335315
+      },
+      {
+        "name": "happy",
+        "success": true,
+        "num_charts": 248.0,
+        "seam_length": 835.6880984464492,
+        "angular_distortion": 0.9872681665504716,
+        "area_distortion": 2.727798100872445,
+        "overall_area_distortion": 4.921222801375826,
+        "time_seconds": 59.14321937179193
+      },
+      {
+        "name": "horse",
+        "success": true,
+        "num_charts": 20.0,
+        "seam_length": 73.7856387949855,
+        "angular_distortion": 0.9959893607479365,
+        "area_distortion": 1.1874036594989665,
+        "overall_area_distortion": 2.795463583788197,
+        "time_seconds": 111.7424925735686
+      },
+      {
+        "name": "lucy",
+        "success": true,
+        "num_charts": 93.0,
+        "seam_length": 353.06355754870674,
+        "angular_distortion": 0.9884081226839728,
+        "area_distortion": 1.2498939167974783,
+        "overall_area_distortion": 3.955083359197678,
+        "time_seconds": 58.353946345159784
+      },
+      {
+        "name": "nefertiti",
+        "success": true,
+        "num_charts": 24.0,
+        "seam_length": 85.83333947426547,
+        "angular_distortion": 0.992953071415803,
+        "area_distortion": 1.248208840760632,
+        "overall_area_distortion": 2.6986793484905625,
+        "time_seconds": 107.21624959120527
+      },
+      {
+        "name": "rocker-arm",
+        "success": true,
+        "num_charts": 12.0,
+        "seam_length": 51.472608439858774,
+        "angular_distortion": 0.9934307402583029,
+        "area_distortion": 1.249389945176404,
+        "overall_area_distortion": 2.7260906999424437,
+        "time_seconds": 26.13760117487982
+      },
+      {
+        "name": "stanford-bunny",
+        "success": true,
+        "num_charts": 7.0,
+        "seam_length": 27.981537211098498,
+        "angular_distortion": 0.9946355436232951,
+        "area_distortion": 1.1762824767533775,
+        "overall_area_distortion": 1.531901985264899,
+        "time_seconds": 130.50081734010018
+      },
+      {
+        "name": "teapot",
+        "success": true,
+        "num_charts": 11.0,
+        "seam_length": 39.97406958397115,
+        "angular_distortion": 0.986341996399592,
+        "area_distortion": 1.226795935902216,
+        "overall_area_distortion": 3.4766529795834358,
+        "time_seconds": 10.888453195104375
+      },
+      {
+        "name": "xyzrgb_dragon",
+        "success": true,
+        "num_charts": 154.0,
+        "seam_length": 546.2756207768716,
+        "angular_distortion": 0.9865430975101539,
+        "area_distortion": 1.2401047362293784,
+        "overall_area_distortion": 2.89707740660466,
+        "time_seconds": 147.22612746688537
+      }
+    ]
+  }
+}

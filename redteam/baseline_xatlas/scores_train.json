@@ -1,0 +1,15 @@
+{
+  "experiments": {
+    "common_shapes_comparison": {
+      "results": {
+        "xatlas": {
+          "success_rate": 8.333333333333334,
+          "avg_charts": 1.0,
+          "median_charts": 1.0,
+          "angular_distortion": 0.9770261074413148,
+          "area_distortion": 1.000002327993826
+        }
+      }
+    }
+  }
+}

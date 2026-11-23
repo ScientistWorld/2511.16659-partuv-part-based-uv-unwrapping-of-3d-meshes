@@ -1,0 +1,4 @@
+make rc=0
+[hidden_test] shortcut_stale_scores: root=/home/user/checkpoints/rt/shortcut_stale_scores start 2026-11-23T02:16:03-05:00
+[hidden_test] shortcut_stale_scores: train_rc=0 test_rc=1 test_seconds=5
+Could not locate test artifacts for train-scored method zz_ghost

@@ -1,0 +1,104 @@
+{
+  "info": {
+    "seed": 42,
+    "features": "partfield",
+    "threshold": 1.25,
+    "overrides": [
+      "unwrap.agg_parts=20",
+      "unwrap.abf_iters=10"
+    ]
+  },
+  "results": [
+    {
+      "mesh": "rocker-arm",
+      "success": true,
+      "num_components": 12,
+      "distortion": 1.2493899483172686,
+      "seed": 42,
+      "features": "partfield",
+      "threshold": 1.25,
+      "overrides": [
+        "unwrap.agg_parts=20",
+        "unwrap.abf_iters=10"
+      ],
+      "prep_seconds": 0.34432697086595,
+      "partfield_seconds": 19.444639867171645,
+      "unwrap_seconds": 6.213406547904015,
+      "save_results_seconds": 0.13522778893820941,
+      "total_seconds": 26.13760117487982
+    },
+    {
+      "mesh": "stanford-bunny",
+      "success": true,
+      "num_components": 7,
+      "distortion": 1.1762824746168576,
+      "seed": 42,
+      "features": "partfield",
+      "threshold": 1.25,
+      "overrides": [
+        "unwrap.agg_parts=20",
+        "unwrap.abf_iters=10"
+      ],
+      "prep_seconds": 1.5547658121213317,
+      "partfield_seconds": 19.23154008598067,
+      "unwrap_seconds": 109.33269478008151,
+      "save_results_seconds": 0.3818166619166732,
+      "total_seconds": 130.50081734010018
+    },
+    {
+      "mesh": "teapot",
+      "success": true,
+      "num_components": 11,
+      "distortion": 1.2267959386317313,
+      "seed": 42,
+      "features": "partfield",
+      "threshold": 1.25,
+      "overrides": [
+        "unwrap.agg_parts=20",
+        "unwrap.abf_iters=10"
+      ],
+      "prep_seconds": 0.12129880604334176,
+      "partfield_seconds": 9.430794497020543,
+      "unwrap_seconds": 1.1009523160755634,
+      "save_results_seconds": 0.23540757596492767,
+      "total_seconds": 10.888453195104375
+    },
+    {
+      "mesh": "xyzrgb_dragon",
+      "success": true,
+      "num_components": 154,
+      "distortion": 1.2468033794502797,
+      "seed": 42,
+      "features": "partfield",
+      "threshold": 1.25,
+      "overrides": [
+        "unwrap.agg_parts=20",
+        "unwrap.abf_iters=10"
+      ],
+      "prep_seconds": 5.098019518889487,
+      "partfield_seconds": 40.686507613165304,
+      "unwrap_seconds": 99.92050560982898,
+      "save_results_seconds": 1.5210947250016034,
+      "total_seconds": 147.22612746688537
+    },
+    {
+      "mesh": "woody",
+      "success": true,
+      "num_components": 1,
+      "distortion": 1.0000000000020948,
+      "seed": 42,
+      "features": "partfield",
+      "threshold": 1.25,
+      "overrides": [
+        "unwrap.agg_parts=20",
+        "unwrap.abf_iters=10"
+      ],
+      "prep_seconds": 0.040472377091646194,
+      "partfield_seconds": 9.340893826913089,
+      "unwrap_seconds": 0.19523499021306634,
+      "save_results_seconds": 0.8125296370126307,
+      "total_seconds": 10.389130831230432
+    }
+  ],
+  "failures": []
+}

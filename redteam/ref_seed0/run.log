@@ -1,0 +1,4 @@
+method rc=0
+[hidden_test] ref_seed0: root=/home/user/checkpoints/rt/ref_seed0 start 2026-11-23T02:16:19-05:00
+[hidden_test] ref_seed0: train_rc=0 test_rc=0 test_seconds=138
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

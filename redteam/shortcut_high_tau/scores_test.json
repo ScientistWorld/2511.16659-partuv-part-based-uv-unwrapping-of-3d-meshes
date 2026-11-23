@@ -1,0 +1,15 @@
+{
+  "experiments": {
+    "common_shapes_comparison": {
+      "results": {
+        "partuv": {
+          "success_rate": 100.0,
+          "avg_charts": 39.666666666666664,
+          "median_charts": 12.0,
+          "angular_distortion": 0.989592633698073,
+          "area_distortion": 1.5931408371241924
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+make rc=0
+[weld] alligator: charts 1 welded=0 skipped=0 worst_log_scale_err=0.00e+00 faces=5981
+[weld] armadillo: charts 34 welded=33 skipped=0 worst_log_scale_err=5.69e-06 faces=99976
+[weld] beetle-alt: charts 4 welded=3 skipped=0 worst_log_scale_err=7.92e-09 faces=38656
+[weld] cow: charts 24 welded=23 skipped=0 worst_log_scale_err=5.98e-05 faces=5804
+[weld] happy: charts 268 welded=267 skipped=0 worst_log_scale_err=1.93e-04 faces=98601
+[weld] horse: charts 21 welded=20 skipped=0 worst_log_scale_err=5.77e-06 faces=96966
+[weld] lucy: charts 96 welded=95 skipped=0 worst_log_scale_err=3.78e-05 faces=99970
+[weld] nefertiti: charts 29 welded=28 skipped=0 worst_log_scale_err=2.11e-06 faces=99938
+[weld] rocker-arm: charts 13 welded=12 skipped=0 worst_log_scale_err=3.96e-07 faces=20088
+[weld] stanford-bunny: charts 7 welded=6 skipped=0 worst_log_scale_err=2.93e-09 faces=69451
+[weld] teapot: charts 11 welded=10 skipped=0 worst_log_scale_err=1.60e-04 faces=6320
+[weld] xyzrgb_dragon: charts 157 welded=156 skipped=0 worst_log_scale_err=8.67e-05 faces=249881
+[weld] woody: charts 1 welded=0 skipped=0 worst_log_scale_err=0.00e+00 faces=1267
+[hidden_test] shortcut_uv_weld: root=/home/user/checkpoints/rt/shortcut_uv_weld start 2026-11-23T01:59:26-05:00
+[hidden_test] shortcut_uv_weld: train_rc=0 test_rc=0 test_seconds=154
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

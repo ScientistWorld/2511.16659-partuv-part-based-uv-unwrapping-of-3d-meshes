@@ -1,0 +1,17 @@
+make rc=0
+[copy_input] alligator
+[copy_input] armadillo
+[copy_input] beetle-alt
+[copy_input] cow
+[copy_input] happy
+[copy_input] horse
+[copy_input] lucy
+[copy_input] nefertiti
+[copy_input] rocker-arm
+[copy_input] stanford-bunny
+[copy_input] teapot
+[copy_input] xyzrgb_dragon
+[copy_input] woody
+[hidden_test] shortcut_copy_input: root=/home/user/checkpoints/rt/shortcut_copy_input start 2026-11-23T02:15:01-05:00
+[hidden_test] shortcut_copy_input: train_rc=0 test_rc=0 test_seconds=23
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

@@ -1,0 +1,17 @@
+make rc=0
+[constant_uv] alligator: faces=5981
+[constant_uv] armadillo: faces=99976
+[constant_uv] beetle-alt: faces=38656
+[constant_uv] cow: faces=5804
+[constant_uv] happy: faces=98601
+[constant_uv] horse: faces=96966
+[constant_uv] lucy: faces=99970
+[constant_uv] nefertiti: faces=99938
+[constant_uv] rocker-arm: faces=20088
+[constant_uv] stanford-bunny: faces=69451
+[constant_uv] teapot: faces=6320
+[constant_uv] xyzrgb_dragon: faces=249882
+[constant_uv] woody: faces=1267
+[hidden_test] shortcut_constant_uv: root=/home/user/checkpoints/rt/shortcut_constant_uv start 2026-11-23T02:08:17-05:00
+[hidden_test] shortcut_constant_uv: train_rc=0 test_rc=0 test_seconds=80
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

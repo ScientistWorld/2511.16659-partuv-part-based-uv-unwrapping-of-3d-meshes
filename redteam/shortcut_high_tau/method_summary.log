@@ -1,0 +1,27 @@
+[variant] {'seed': 42, 'features': 'partfield', 'threshold': 2.0, 'overrides': []} config=/home/user/checkpoints/rt/shortcut_high_tau/partuv_repro/variant_config.yaml
+[variant] alligator
+[variant] alligator charts=1 t=18.3s
+[variant] armadillo
+[variant] armadillo charts=28 t=61.7s
+[variant] beetle-alt
+[variant] beetle-alt charts=4 t=34.0s
+[variant] cow
+[variant] cow charts=15 t=11.5s
+[variant] happy
+[variant] happy charts=240 t=52.5s
+[variant] horse
+[variant] horse charts=13 t=92.7s
+[variant] lucy
+[variant] lucy charts=34 t=50.5s
+[variant] nefertiti
+[variant] nefertiti charts=11 t=79.4s
+[variant] rocker-arm
+[variant] rocker-arm charts=6 t=17.6s
+[variant] stanford-bunny
+[variant] stanford-bunny charts=4 t=70.8s
+[variant] teapot
+[variant] teapot charts=7 t=12.4s
+[variant] xyzrgb_dragon
+[variant] xyzrgb_dragon charts=128 t=140.7s
+[variant] woody
+[variant] woody charts=1 t=12.6s

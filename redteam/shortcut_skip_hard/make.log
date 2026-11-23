@@ -1,0 +1,13 @@
+[skip_hard] alligator: 1 charts -> keep
+[skip_hard] armadillo: 34 charts -> keep
+[skip_hard] beetle-alt: 4 charts -> keep
+[skip_hard] cow: 24 charts -> keep
+[skip_hard] happy: 268 charts > 200 -> report failure (no OBJ)
+[skip_hard] horse: 21 charts -> keep
+[skip_hard] lucy: 96 charts -> keep
+[skip_hard] nefertiti: 29 charts -> keep
+[skip_hard] rocker-arm: 13 charts -> keep
+[skip_hard] stanford-bunny: 7 charts -> keep
+[skip_hard] teapot: 11 charts -> keep
+[skip_hard] xyzrgb_dragon: 157 charts -> keep
+[skip_hard] woody: 1 charts -> keep

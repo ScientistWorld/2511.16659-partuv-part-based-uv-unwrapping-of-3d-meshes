@@ -4,17 +4,10 @@
       "results": {
         "partuv": {
           "success_rate": 100.0,
-          "avg_charts": 55.416666666666664,
-          "median_charts": 22.5,
-          "angular_distortion": 0.9909727096856583,
-          "area_distortion": 1.3319218977653695
-        },
-        "xatlas": {
-          "success_rate": 100.0,
-          "avg_charts": 952.0833333333334,
-          "median_charts": 397.5,
-          "angular_distortion": 0.9528100883631857,
-          "area_distortion": 1.611259597614871
+          "avg_charts": 136.58333333333334,
+          "median_charts": 48.5,
+          "angular_distortion": 0.9927417289477692,
+          "area_distortion": 1.3431343501766564
         }
       }
     }

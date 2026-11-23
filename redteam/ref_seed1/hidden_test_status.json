@@ -1,0 +1,3 @@
+{"evaluate_train_rc": 0, "after_register_rc": 0, "evaluate_test_rc": 0,
+ "evaluate_train_seconds": 5, "evaluate_test_seconds": 140,
+ "scores_test_json_present": true}

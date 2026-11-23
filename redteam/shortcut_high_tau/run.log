@@ -1,0 +1,4 @@
+method rc=0
+[hidden_test] shortcut_high_tau: root=/home/user/checkpoints/rt/shortcut_high_tau start 2026-11-23T04:07:35-05:00
+[hidden_test] shortcut_high_tau: train_rc=0 test_rc=0 test_seconds=134
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

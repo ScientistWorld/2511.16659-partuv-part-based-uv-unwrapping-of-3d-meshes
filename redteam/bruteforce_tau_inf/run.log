@@ -1,0 +1,4 @@
+method rc=0
+[hidden_test] bruteforce_tau_inf: root=/home/user/checkpoints/rt/bruteforce_tau_inf start 2026-11-23T04:23:41-05:00
+[hidden_test] bruteforce_tau_inf: train_rc=0 test_rc=0 test_seconds=132
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

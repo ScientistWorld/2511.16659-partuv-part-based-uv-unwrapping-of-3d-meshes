@@ -1,0 +1,93 @@
+{
+  "partuv": {
+    "success_rate": 0.0,
+    "avg_charts": Infinity,
+    "median_charts": Infinity,
+    "seam_length": Infinity,
+    "angular_distortion": 0.0,
+    "p05_angular_distortion": 0.0,
+    "area_distortion": Infinity,
+    "p95_area_distortion": Infinity,
+    "overall_area_distortion": Infinity,
+    "avg_time": 0.0,
+    "slice": "test",
+    "input_root": "/home/user/checkpoints/rt/check_all_fail/partuv_repro",
+    "uv_filename": "final_components.obj",
+    "expected_meshes": [
+      "alligator",
+      "armadillo",
+      "beetle-alt",
+      "cow",
+      "happy",
+      "horse",
+      "lucy",
+      "nefertiti",
+      "rocker-arm",
+      "stanford-bunny",
+      "teapot",
+      "xyzrgb_dragon"
+    ],
+    "per_mesh": [
+      {
+        "name": "alligator",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "armadillo",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "beetle-alt",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "cow",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "happy",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "horse",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "lucy",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "nefertiti",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "rocker-arm",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "stanford-bunny",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "teapot",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      },
+      {
+        "name": "xyzrgb_dragon",
+        "success": false,
+        "error": "'ColorVisuals' object has no attribute 'uv'"
+      }
+    ]
+  }
+}

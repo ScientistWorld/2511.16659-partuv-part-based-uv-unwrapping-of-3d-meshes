@@ -1,0 +1,19 @@
+[variant] {'seed': 42, 'features': 'partfield', 'threshold': 1.25, 'overrides': ['unwrap.agg_parts=20', 'unwrap.abf_iters=10']} config=/home/user/checkpoints/rt/variant_more_search/partuv_repro/variant_config.yaml
+[variant] skip alligator (done)
+[variant] skip armadillo (done)
+[variant] skip beetle-alt (done)
+[variant] skip cow (done)
+[variant] skip happy (done)
+[variant] skip horse (done)
+[variant] skip lucy (done)
+[variant] skip nefertiti (done)
+[variant] rocker-arm
+[variant] rocker-arm charts=12 t=26.1s
+[variant] stanford-bunny
+[variant] stanford-bunny charts=7 t=130.5s
+[variant] teapot
+[variant] teapot charts=11 t=10.9s
+[variant] xyzrgb_dragon
+[variant] xyzrgb_dragon charts=154 t=147.2s
+[variant] woody
+[variant] woody charts=1 t=10.4s

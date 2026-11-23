@@ -1,0 +1,4 @@
+method rc=0
+[hidden_test] variant_tau_1p1: root=/home/user/checkpoints/rt/variant_tau_1p1 start 2026-11-23T05:00:49-05:00
+[hidden_test] variant_tau_1p1: train_rc=0 test_rc=0 test_seconds=248
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

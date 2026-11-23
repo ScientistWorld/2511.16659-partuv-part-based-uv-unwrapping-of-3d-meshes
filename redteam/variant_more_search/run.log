@@ -1,0 +1,4 @@
+method rc=0
+[hidden_test] variant_more_search: root=/home/user/checkpoints/rt/variant_more_search start 2026-11-23T03:53:56-05:00
+[hidden_test] variant_more_search: train_rc=0 test_rc=0 test_seconds=133
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

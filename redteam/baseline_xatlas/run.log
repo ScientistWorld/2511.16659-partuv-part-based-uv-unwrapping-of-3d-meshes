@@ -1,0 +1,3 @@
+[hidden_test] baseline_xatlas: root=/home/user/checkpoints/rt/baseline_xatlas start 2026-11-23T02:18:56-05:00
+[hidden_test] baseline_xatlas: train_rc=0 test_rc=0 test_seconds=203
+evaluate_test.sh: wrote held-out test scores to /home/user/scoring/scores_test.json

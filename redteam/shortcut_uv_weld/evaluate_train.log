@@ -1,0 +1,1 @@
+evaluate_train.sh: discovered checkpoint outputs and wrote train scores to /home/user/scoring/scores_train.json

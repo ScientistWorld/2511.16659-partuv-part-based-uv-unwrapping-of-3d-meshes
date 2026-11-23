@@ -1,0 +1,34 @@
+[variant] {'seed': 42, 'features': 'partfield', 'threshold': 1.25, 'overrides': ['unwrap.method=lscm']} config=/home/user/checkpoints/rt/variant_lscm/partuv_repro/variant_config.yaml
+[variant] alligator
+[variant] alligator charts=1 t=19.4s
+[variant] armadillo
+[Error] Could not find distinct min/max X vertices!
+[variant] armadillo charts=110 t=43.7s
+[variant] beetle-alt
+[variant] beetle-alt charts=4 t=30.1s
+[variant] cow
+[Error] Could not find distinct min/max X vertices!
+[variant] cow charts=55 t=12.8s
+[variant] happy
+[variant] happy charts=485 t=47.2s
+[variant] horse
+[Error] Could not find distinct min/max X vertices!
+[variant] horse charts=93 t=41.5s
+[variant] lucy
+[Error] Could not find distinct min/max X vertices!
+[variant] lucy charts=305 t=48.6s
+[variant] nefertiti
+[Error] Could not find distinct min/max X vertices!
+[variant] nefertiti charts=87 t=65.5s
+[variant] rocker-arm
+[Error] Could not find distinct min/max X vertices!
+[variant] rocker-arm charts=16 t=18.5s
+[variant] stanford-bunny
+[variant] stanford-bunny charts=22 t=45.4s
+[variant] teapot
+[variant] teapot charts=16 t=13.8s
+[variant] xyzrgb_dragon
+[Error] Could not find distinct min/max X vertices!
+[variant] xyzrgb_dragon charts=681 t=113.7s
+[variant] woody
+[variant] woody charts=1 t=13.7s
