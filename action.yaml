@@ -1,2 +1,8 @@
-action: done
-notes: "Red-team audit complete (REDTEAM.md). Hidden test is gameable: no input-mesh/coverage/overlap check (unit quad, largest chart, no-cut unfold all dominate the reference), charts counted by UV coincidence (weld), 1e200/NaN UVs force area 1.0 / NaN angular, failed meshes dropped from averages, stale scores_test.json survives an evaluator crash, looser tau outranks. Best-of-seeds scores higher, LSCM lower, but the PartField-removed ablation ties the reference. Seed std: avg charts 1.27, area 0.058; seed-42 rerun reproduces the reference exactly."
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
+gpus: 0
+test: false
+milestone: core_claim
+notes: ""
