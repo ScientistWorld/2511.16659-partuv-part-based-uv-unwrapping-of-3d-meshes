@@ -1,4 +1,2 @@
-action: submit
-gpus: 0
-test: false
-notes: "Red-team audit (CPU, same device as the reference job #292): PartUV seeds 0/1/2/42, best-of-seeds, normals/LSCM/more-search variants, tau sweep, brute force, plus shortcut and check scenarios; each followed by the no-arg hidden test (redteam/run_all.sh, resumable)"
+action: done
+notes: "Red-team audit complete (REDTEAM.md). Hidden test is gameable: no input-mesh/coverage/overlap check (unit quad, largest chart, no-cut unfold all dominate the reference), charts counted by UV coincidence (weld), 1e200/NaN UVs force area 1.0 / NaN angular, failed meshes dropped from averages, stale scores_test.json survives an evaluator crash, looser tau outranks. Best-of-seeds scores higher, LSCM lower, but the PartField-removed ablation ties the reference. Seed std: avg charts 1.27, area 0.058; seed-42 rerun reproduces the reference exactly."
