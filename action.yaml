@@ -1,4 +1,4 @@
 action: submit
-gpus: 1
+gpus: 0
 test: false
-notes: "Resubmit (previous job cancelled in queue). Red-team audit: PartUV seeds/variants/tau sweep + shortcut scenarios, each followed by the no-arg hidden test (redteam/run_all.sh, resumable)"
+notes: "Red-team audit (CPU, same device as the reference job #292): PartUV seeds 0/1/2/42, best-of-seeds, normals/LSCM/more-search variants, tau sweep, brute force, plus shortcut and check scenarios; each followed by the no-arg hidden test (redteam/run_all.sh, resumable)"

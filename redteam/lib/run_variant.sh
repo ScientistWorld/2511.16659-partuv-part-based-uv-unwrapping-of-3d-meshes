@@ -10,7 +10,9 @@ cd /home/user
 CKPT="${PARTFIELD_CHECKPOINT:-/home/user/data/downloads/partfield/model_objaverse.ckpt}"
 [ -f "$CKPT" ] || CKPT=/home/user/checkpoints/partfield/model_objaverse.ckpt
 mkdir -p "$ROOT/partuv_repro"
-python3 -u "$RT/lib/partuv_variant.py" --output-dir "$ROOT/partuv_repro" --checkpoint-path "$CKPT" \
+# A hung variant must not block the rest of the job: cap the method step, then score what exists
+# (missing meshes count as failures in the hidden test).
+timeout "${VARIANT_TIMEOUT:-4500}" python3 -u "$RT/lib/partuv_variant.py" --output-dir "$ROOT/partuv_repro" --checkpoint-path "$CKPT" \
   --meshes $RUN_MESHES "$@" > "$ROOT/method.log" 2>&1
 echo "method rc=$?"
 grep -E "^\[variant\]|Traceback|Error|FAILED" "$ROOT/method.log" | tail -n 60 > "$RT/$NAME/method_summary.log"

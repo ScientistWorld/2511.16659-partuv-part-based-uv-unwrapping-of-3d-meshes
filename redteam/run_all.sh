@@ -11,8 +11,8 @@ echo "nproc=$(nproc)"; free -g | head -2
 nvidia-smi --query-gpu=name,memory.total --format=csv 2>/dev/null || echo "no nvidia-smi"
 python3 -c "import torch; print('cuda', torch.cuda.is_available(), torch.cuda.device_count())" 2>&1 | tail -1
 
-GPU_SCEN="${GPU_SCEN:-ref_seed0 variant_lscm ref_seed1 shortcut_high_tau ref_seed2 variant_more_search variant_normals bruteforce_tau_inf variant_tau_1p5 variant_tau_1p1}"
-CPU_SCEN="${CPU_SCEN:-shortcut_trivial_quad check_all_fail check_unregistered shortcut_stale_scores shortcut_keep_largest_chart shortcut_inf_uv shortcut_uv_weld shortcut_unfold shortcut_skip_hard}"
+GPU_SCEN="${GPU_SCEN:-ref_seed0 ref_seed1 ref_seed2 variant_best_of_seeds variant_normals variant_lscm ref_seed42 variant_more_search shortcut_high_tau bruteforce_tau_inf variant_tau_1p5 variant_tau_1p1}"
+CPU_SCEN="${CPU_SCEN:-shortcut_trivial_quad shortcut_uv_weld shortcut_inf_uv shortcut_unfold shortcut_constant_uv shortcut_constant_uv_nan shortcut_keep_largest_chart shortcut_skip_hard check_all_fail shortcut_copy_input shortcut_stale_scores check_unregistered baseline_xatlas}"
 
 run_one() {
   local n="$1"
