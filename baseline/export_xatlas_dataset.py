@@ -39,10 +39,16 @@ def run_one(mesh_path: Path, output_dir: Path) -> dict:
     print(f"xatlas: processing {mesh_path.name}", flush=True)
     vertices, faces = load_obj_mesh(str(mesh_path))
     normals = compute_vertex_normals(vertices, faces).astype(np.float32)
+    # xatlas uses absolute epsilons; small meshes (bounding-box diagonal < 1) otherwise come back
+    # with degenerate / folded charts. Parametrize a copy scaled to a diagonal of 100 and write
+    # the original positions back (UVs are invariant to this similarity transform).
+    lo, hi = vertices.min(axis=0), vertices.max(axis=0)
+    scale = 100.0 / max(float(np.linalg.norm(hi - lo)), 1e-12)
+    scaled = (vertices - 0.5 * (lo + hi)) * scale
 
     start = time.perf_counter()
     vmapping, atlas_faces, atlas_uvs = xatlas.parametrize(
-        vertices.astype(np.float32),
+        scaled.astype(np.float32),
         faces.astype(np.uint32),
         normals,
     )

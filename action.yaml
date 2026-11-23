@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Hardening: new evaluator self-check on legacy outputs, then reference+xatlas through the new hidden test (method run on held-out meshes) and train eval, then variants and shortcuts through the hidden test (hardening/run_all.sh). CPU only, ~3.5-4 h."
+notes: "Hardening rerun after self-check fixes (polygon/key pairs for overlapping input quads, declared-sharing chart continuity, scale-normalised xatlas): self-check, reference+xatlas through the hidden test and train eval, then variants and shortcuts (hardening/run_all.sh). CPU, ~3.5-4 h."

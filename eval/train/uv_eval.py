@@ -168,6 +168,15 @@ def _keys(a, b, c, n):
     return (t[:, 0] * n + t[:, 1]) * n + t[:, 2]
 
 
+def _heights(canon_pos, a, b, c):
+    P0, P1, P2 = canon_pos[a], canon_pos[b], canon_pos[c]
+    area = _tri_area(P0, P1, P2)
+    emax = np.maximum(np.maximum(np.linalg.norm(P1 - P0, axis=1), np.linalg.norm(P2 - P1, axis=1)),
+                      np.linalg.norm(P0 - P2, axis=1))
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return np.where(emax > 0, 2.0 * area / emax, 0.0)
+
+
 @dataclass
 class InputMesh:
     name: str
@@ -175,15 +184,19 @@ class InputMesh:
     n_canon: int
     diag: float
     tol_match: float
-    allowed_keys: np.ndarray       # sorted triangle keys (canonical ids) the output may contain
-    key_group: np.ndarray          # group id per allowed key
-    group_required: np.ndarray     # triangles that must be present per group (0 = optional group)
-    group_max: np.ndarray          # triangles allowed per group
-    n_required: int                # number of required triangles (worst-case chart count)
+    ukeys: np.ndarray              # sorted distinct triangle keys (canonical ids) the output may contain
+    ukey_mult: np.ndarray          # how many input polygons allow each key (max copies in the output)
+    ukey_nondeg: np.ndarray        # the key's triangle is non-degenerate (scored)
+    pair_ptr: np.ndarray           # first (key, polygon) pair of each key
+    pair_group: np.ndarray         # polygon of each (key, polygon) pair, pairs sorted by key
+    group_required: np.ndarray     # triangles each input polygon needs in the output (0 = optional)
+    n_required: int                # worst-case chart count (one chart per required triangle)
     tree: cKDTree = field(repr=False, default=None)
 
 
 def prepare_input(name: str, text: str) -> InputMesh:
+    """Canonical vertices (positions welded within 1e-6 of the diagonal) and, per input polygon,
+    the triangle keys the output may use for it and how many it must contain."""
     V, _, cv, _, sizes = parse_obj(text)
     if len(V) == 0 or len(sizes) == 0:
         raise OBJError(f"input mesh {name} is empty")
@@ -192,7 +205,6 @@ def prepare_input(name: str, text: str) -> InputMesh:
     if not np.isfinite(diag) or diag <= 0:
         raise OBJError(f"input mesh {name} has zero size")
     tol_weld = max(1e-6 * diag, 2e-7)
-    # canonical vertices: weld positions closer than tol_weld
     pairs = cKDTree(V).query_pairs(tol_weld, output_type="ndarray")
     if len(pairs):
         g = coo_matrix((np.ones(len(pairs)), (pairs[:, 0], pairs[:, 1])), shape=(len(V), len(V)))
@@ -209,71 +221,62 @@ def prepare_input(name: str, text: str) -> InputMesh:
     corner_c = canon[cv - 1]
     starts = np.concatenate([[0], np.cumsum(sizes)[:-1]])
     h_tol = max(1e-6 * diag, 1e-7)   # slivers thinner than this are optional (loaders may drop them)
-
-    keys_all, group_all = [], []
-    req, gmax = [], []
-    gid = 0
+    n_poly = len(sizes)
+    group_required = np.zeros(n_poly, np.int64)
+    pk, pg = [], []
     tri_mask = sizes == 3
-    # triangles (vectorised)
-    if tri_mask.any():
-        st = starts[tri_mask]
+    if tri_mask.any():   # triangles (vectorised)
+        tid = np.flatnonzero(tri_mask)
+        st = starts[tid]
         a, b, c = corner_c[st], corner_c[st + 1], corner_c[st + 2]
-        k = _keys(a, b, c, n_canon)
-        P0, P1, P2 = canon_pos[a], canon_pos[b], canon_pos[c]
-        area = _tri_area(P0, P1, P2)
-        emax = np.maximum(np.maximum(np.linalg.norm(P1 - P0, axis=1), np.linalg.norm(P2 - P1, axis=1)),
-                          np.linalg.norm(P0 - P2, axis=1))
-        with np.errstate(divide="ignore", invalid="ignore"):
-            height = np.where(emax > 0, 2.0 * area / emax, 0.0)
-        collapsed = (a == b) | (b == c) | (c == a)
-        degenerate = collapsed | ~(height > h_tol)
-        uk, inv, mult = np.unique(k, return_inverse=True, return_counts=True)
-        inv = inv.reshape(-1)
-        # a key is required when at least one of its copies is non-degenerate
-        nondeg_key = np.zeros(len(uk), bool)
-        np.logical_or.at(nondeg_key, inv, ~degenerate)
-        keys_all.append(uk)
-        group_all.append(np.arange(len(uk)) + gid)
-        req.append(nondeg_key.astype(np.int64))
-        gmax.append(mult.astype(np.int64))
-        gid += len(uk)
-    # polygons (k >= 4): any triangulation of the polygon's vertices
-    for p in np.flatnonzero(~tri_mask).tolist():
-        st, kk = int(starts[p]), int(sizes[p])
-        poly = corner_c[st:st + kk]
-        if len(set(poly.tolist())) < 3:
-            continue
-        P = canon_pos[poly]
-        fan_area = float(_tri_area(np.repeat(P[:1], kk - 2, 0), P[1:-1], P[2:]).sum())
-        if kk <= 6:
-            idx = [(i, j, l) for i in range(kk) for j in range(i + 1, kk) for l in range(j + 1, kk)]
-        else:
-            idx = [(0, i, i + 1) for i in range(1, kk - 1)]
-        idx = np.asarray(idx, np.int64)
-        a, b, c = poly[idx[:, 0]], poly[idx[:, 1]], poly[idx[:, 2]]
         ok = (a != b) & (b != c) & (c != a)
-        if not ok.any():
+        hgt = _heights(canon_pos, a, b, c)
+        group_required[tid] = (ok & (hgt > h_tol)).astype(np.int64)
+        pk.append(_keys(a[ok], b[ok], c[ok], n_canon))
+        pg.append(tid[ok])
+    for p in np.flatnonzero(~tri_mask).tolist():   # polygons: any triangulation of their vertices
+        st, kk = int(starts[p]), int(sizes[p])
+        seen, poly = set(), []
+        for v in corner_c[st:st + kk].tolist():
+            if v not in seen:
+                seen.add(v)
+                poly.append(v)
+        m = len(poly)
+        if m < 3:
             continue
-        keys_all.append(np.unique(_keys(a[ok], b[ok], c[ok], n_canon)))
-        group_all.append(np.full(len(keys_all[-1]), gid))
-        required = (kk - 2) if fan_area > h_tol * diag else 0
-        req.append(np.asarray([required], np.int64))
-        gmax.append(np.asarray([kk - 2], np.int64))
-        gid += 1
-    keys = np.concatenate(keys_all)
-    groups = np.concatenate(group_all)
-    order = np.argsort(keys, kind="stable")
-    keys, groups = keys[order], groups[order]
-    # a key listed twice (two groups) keeps its first group
-    keep = np.ones(len(keys), bool)
-    keep[1:] = keys[1:] != keys[:-1]
-    keys, groups = keys[keep], groups[keep]
-    group_required = np.concatenate(req)
-    group_max = np.concatenate(gmax)
+        poly = np.asarray(poly, np.int64)
+
+        def nondeg(tris):
+            t = np.asarray(tris, np.int64)
+            return int((_heights(canon_pos, poly[t[:, 0]], poly[t[:, 1]], poly[t[:, 2]]) > h_tol).sum())
+
+        if m == 3:
+            group_required[p] = nondeg([(0, 1, 2)])
+        elif m == 4:
+            group_required[p] = min(nondeg([(0, 1, 2), (0, 2, 3)]), nondeg([(0, 1, 3), (1, 2, 3)]))
+        else:
+            group_required[p] = nondeg([(0, i, i + 1) for i in range(1, m - 1)])
+        if m <= 6:
+            idx = np.asarray([(i, j, l) for i in range(m) for j in range(i + 1, m) for l in range(j + 1, m)], np.int64)
+        else:
+            idx = np.asarray([(0, i, i + 1) for i in range(1, m - 1)], np.int64)
+        kk_ = np.unique(_keys(poly[idx[:, 0]], poly[idx[:, 1]], poly[idx[:, 2]], n_canon))
+        pk.append(kk_)
+        pg.append(np.full(len(kk_), p, np.int64))
+    pair_k = np.concatenate(pk) if pk else np.zeros(0, np.int64)
+    pair_g = np.concatenate(pg) if pg else np.zeros(0, np.int64)
+    order = np.lexsort((pair_g, pair_k))
+    pair_k, pair_g = pair_k[order], pair_g[order]
+    ukeys, ptr, mult = np.unique(pair_k, return_index=True, return_counts=True)
+    c_ = ukeys % n_canon
+    b_ = (ukeys // n_canon) % n_canon
+    a_ = ukeys // (n_canon * n_canon)
+    ukey_nondeg = _heights(canon_pos, a_, b_, c_) > h_tol
     return InputMesh(
         name=name, canon_pos=canon_pos, n_canon=n_canon, diag=diag, tol_match=1e-5 * diag,
-        allowed_keys=keys, key_group=groups, group_required=group_required, group_max=group_max,
-        n_required=int(group_required.sum()), tree=cKDTree(canon_pos),
+        ukeys=ukeys, ukey_mult=mult.astype(np.int64), ukey_nondeg=ukey_nondeg, pair_ptr=ptr.astype(np.int64),
+        pair_group=pair_g, group_required=group_required, n_required=int(group_required.sum()),
+        tree=cKDTree(canon_pos),
     )
 
 
@@ -430,9 +433,9 @@ def evaluate_output(inp: InputMesh, text: str) -> dict:
     n = inp.n_canon
     fk = np.where(bad_corner | collapsed, -1, _keys(np.maximum(cc[:, 0], 0), np.maximum(cc[:, 1], 0),
                                                      np.maximum(cc[:, 2], 0), n))
-    pos = np.searchsorted(inp.allowed_keys, fk)
-    pos = np.minimum(pos, len(inp.allowed_keys) - 1)
-    found = (fk >= 0) & (inp.allowed_keys[pos] == fk)
+    nk = len(inp.ukeys)
+    pos = np.minimum(np.searchsorted(inp.ukeys, fk), nk - 1)
+    found = (fk >= 0) & (inp.ukeys[pos] == fk)
     # output triangles that are not on the input: tolerated only when degenerate in 3-D
     # (they are then ignored entirely: no metric and no chart connectivity uses them)
     if (~found).any():
@@ -444,23 +447,23 @@ def evaluate_output(inp: InputMesh, text: str) -> dict:
             return failed_mesh(inp, f"{len(off)} output triangles are not triangles of the input mesh "
                                     f"(vertices must keep the input positions)")
     fidx = np.flatnonzero(found)
-    grp = inp.key_group[pos[fidx]]
-    gcount = np.bincount(grp, minlength=len(inp.group_required))
-    over = gcount > inp.group_max
+    copies = np.bincount(pos[fidx], minlength=nk)
+    over = copies > inp.ukey_mult
     if over.any():
-        return failed_mesh(inp, f"{int(over.sum())} input faces appear more often than in the input")
-    # distinct keys per group must cover the requirement
-    gk = np.unique(np.stack([grp, fk[fidx]], 1), axis=0)
-    gdistinct = np.bincount(gk[:, 0], minlength=len(inp.group_required))
+        return failed_mesh(inp, f"{int(over.sum())} input triangles appear more often than in the input")
+    # every input polygon needs enough distinct triangles among those it allows
+    present = np.flatnonzero(copies > 0)
+    m = inp.ukey_mult[present]
+    tot = int(m.sum())
+    sel = np.repeat(inp.pair_ptr[present], m) + (np.arange(tot) - np.repeat(np.cumsum(m) - m, m))
+    gdistinct = np.bincount(inp.pair_group[sel], minlength=len(inp.group_required))
     missing = gdistinct < inp.group_required
     if missing.any():
-        return failed_mesh(inp, f"{int(inp.group_required[missing].sum() - gdistinct[missing].sum())} "
+        return failed_mesh(inp, f"{int((inp.group_required[missing] - gdistinct[missing]).sum())} "
                                 f"input triangles are missing from the output")
-    # metric faces: one copy per key, in required groups
-    req_face = inp.group_required[grp] > 0
-    fidx, grp = fidx[req_face], grp[req_face]
-    fkeys = fk[fidx]
-    _, first_copy = np.unique(fkeys, return_index=True)
+    # scored faces: one copy per non-degenerate input triangle
+    fidx = fidx[inp.ukey_nondeg[pos[fidx]]]
+    _, first_copy = np.unique(fk[fidx], return_index=True)
     fidx = fidx[np.sort(first_copy)]
     nf = len(fidx)
     if nf == 0:
@@ -478,11 +481,16 @@ def evaluate_output(inp: InputMesh, text: str) -> dict:
     he_o = np.tile(np.array([2, 0, 1]), nf)          # opposite corner
     he_ua = UV[:, [0, 1, 2]].reshape(-1, 2)
     he_ub = UV[:, [1, 2, 0]].reshape(-1, 2)
+    OV, OT = cvi[fidx], cti[fidx]        # the output's own vertex / vt indices
+    he_va, he_vb = OV[:, [0, 1, 2]].reshape(-1), OV[:, [1, 2, 0]].reshape(-1)
+    he_ta, he_tb = OT[:, [0, 1, 2]].reshape(-1), OT[:, [1, 2, 0]].reshape(-1)
     swap = he_a > he_b
     lo = np.where(swap, he_b, he_a)
     hi = np.where(swap, he_a, he_b)
     u_lo = np.where(swap[:, None], he_ub, he_ua)
     u_hi = np.where(swap[:, None], he_ua, he_ub)
+    v_lo, v_hi = np.where(swap, he_vb, he_va), np.where(swap, he_va, he_vb)
+    t_lo, t_hi = np.where(swap, he_tb, he_ta), np.where(swap, he_ta, he_tb)
     ekey = lo * n + hi
     order = np.argsort(ekey, kind="stable")
     ek = ekey[order]
@@ -498,7 +506,10 @@ def evaluate_output(inp: InputMesh, text: str) -> dict:
     L = np.maximum(np.linalg.norm(u_lo[h1] - u_hi[h1], axis=1), np.linalg.norm(u_lo[h2] - u_hi[h2], axis=1))
     scale = 1.0 + np.maximum(np.abs(u_lo[h1]).max(1), np.abs(u_hi[h1]).max(1))
     tol = 1e-5 * L + 1e-12 * scale
-    cont = (d_lo <= tol) & (d_hi <= tol) & (f1 != f2)
+    # an edge is continuous when the output joins the two triangles there (same vertex or same vt
+    # index at both endpoints) and the UVs agree; separate copies that happen to coincide do not join
+    shared = (((v_lo[h1] == v_lo[h2]) & (v_hi[h1] == v_hi[h2])) | ((t_lo[h1] == t_lo[h2]) & (t_hi[h1] == t_hi[h2])))
+    cont = shared & (d_lo <= tol) & (d_hi <= tol) & (f1 != f2)
     f1c, f2c, h1c, h2c = f1[cont], f2[cont], h1[cont], h2[cont]
     g = coo_matrix((np.ones(len(f1c)), (f1c, f2c)), shape=(nf, nf))
     n_charts, lab = connected_components(g, directed=False)
@@ -555,7 +566,7 @@ def evaluate_output(inp: InputMesh, text: str) -> dict:
 
     n_invalid = int(invalid_c.sum())
     valid_c = ~invalid_c
-    charts = float(valid_c.sum() + nface_c[invalid_c].sum())
+    charts = float(min(valid_c.sum() + nface_c[invalid_c].sum(), max(inp.n_required, 1)))
     area = float(dist_c[valid_c].max()) if valid_c.any() else WORST_AREA
     if n_invalid:
         area = WORST_AREA
