@@ -1,8 +1,4 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
-gpus: 0
+action: submit
+gpus: 1
 test: false
-milestone: core_claim
-notes: ""
+notes: "Red-team audit: 10 PartUV variants (3 seeds, LSCM, normals ablation, more search, tau sweep) + 9 shortcut/check scenarios, each followed by the no-arg hidden test (redteam/run_all.sh)"
