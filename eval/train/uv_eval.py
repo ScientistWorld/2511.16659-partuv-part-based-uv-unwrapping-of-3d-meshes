@@ -16,9 +16,10 @@ Per mesh
    failed mesh: it gets the worst value of every metric (charts = number of input
    triangles, area distortion = 10, angular score = 0).
 2. Charts. Two input triangles that share an input edge are in the same chart when the
-   output gives both endpoints of that edge the same UV in both triangles (the map is
-   continuous across the edge). Charts are the connected components of this relation.
-   UV coincidence between triangles that are not neighbours on the surface joins nothing.
+   output joins them there (both endpoints are the same output vertex, or carry the same vt
+   index, in the two triangles) and the UVs agree (the map is continuous across the edge).
+   Charts are the connected components of this relation. Separate vertex copies that happen
+   to coincide in UV, and triangles that are not neighbours on the surface, join nothing.
 3. Constraints (the paper's admissibility test, Algorithm 1 / Eq. 3): a chart is valid
    when (a) its area distortion (Eq. 3, per-triangle values clipped at 10, degenerate UV
    triangles count 10) is at most TAU = 1.25 (+1e-3 numerical slack), (b) no interior

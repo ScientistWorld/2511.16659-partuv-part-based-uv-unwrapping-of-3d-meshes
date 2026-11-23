@@ -12,14 +12,16 @@
   `<output_dir>/<id>/uv.obj` (OBJ with `v`, `vt`, `f v/vt` records).
 - The output must keep the input surface: input vertex positions and input triangles (vertices
   may be duplicated along seams; quads may be split along either diagonal). Every corner needs a
-  finite UV.
+  finite UV. Triangles of one chart must share vertex (or `vt`) indices along their common edges;
+  coincident UVs on separate vertex copies do not join charts.
 - It must run offline inside the gym container (no internet at test time) and finish; runtime is
   not scored.
 
 ## Fixed by the evaluator (not tunable by the method)
 - The per-chart area-distortion threshold 1.25, the fold and self-overlap checks, the chart
-  definition (surface edges + UV continuity), the clipping at 10, the held-out meshes, and the
-  worst values given to failed charts and failed meshes.
+  definition (input-surface edges joined by the output's shared vertices with equal UVs), the
+  clipping at 10, the held-out meshes, and the worst values given to failed charts and failed
+  meshes.
 
 ## Method scope
 - The method must decompose meshes into charts and flatten them; packing alone does not change

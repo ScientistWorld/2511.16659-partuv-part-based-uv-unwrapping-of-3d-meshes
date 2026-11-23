@@ -5,22 +5,45 @@
       "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
-        "success_rate": {"higher_is_better": true, "coefficient": 0.2, "description": "% of meshes whose output keeps the input surface and has only valid charts."},
-        "avg_charts": {"higher_is_better": false, "coefficient": -1.0, "description": "Headline metric: mean per-mesh chart count; an invalid chart counts one chart per triangle, a failed mesh one chart per input triangle."},
-        "median_charts": {"higher_is_better": false, "coefficient": -0.4, "description": "Median per-mesh chart count (same counting)."},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.2, "description": "Mean per-mesh angular score 1 - mean|cos(tangent, bitangent)| (paper Sec. 4.1); triangles of invalid charts count |cos| = 1, failed meshes 0."},
-        "area_distortion": {"higher_is_better": false, "coefficient": -0.35, "description": "Mean per-mesh worst-chart area distortion (paper Eq. 3, triangle values clipped at 10); 10 for a mesh with an invalid chart or a failed output."}
+        "success_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.2,
+          "description": "% of meshes whose output keeps the input surface and has only valid charts."
+        },
+        "avg_charts": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Headline metric: mean per-mesh chart count; an invalid chart counts one chart per triangle, a failed mesh one chart per input triangle."
+        },
+        "median_charts": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Median per-mesh chart count (same counting)."
+        },
+        "angular_distortion": {
+          "higher_is_better": true,
+          "coefficient": 0.04,
+          "description": "Mean per-mesh angular score 1 - mean|cos(tangent, bitangent)| (paper Sec. 4.1); triangles of invalid charts count |cos| = 1, failed meshes 0. Guards against trading conformality for fewer charts."
+        },
+        "area_distortion": {
+          "higher_is_better": false,
+          "coefficient": -0.01,
+          "description": "Mean per-mesh worst-chart area distortion (paper Eq. 3, triangle values clipped at 10); 10 for a mesh with an invalid chart or a failed output. Low weight: the tau = 1.25 bound is enforced per chart, so below it this mostly rewards extra charts."
+        }
       },
       "results": {
-        "blender": {
-          "type": "baseline",
+        "partuv": {
+          "type": "proposed",
           "success_rate": 100.0,
-          "avg_charts": 1360.3,
-          "median_charts": 332.5,
-          "angular_distortion": 0.906,
-          "area_distortion": 1.172
+          "avg_charts": 48.6,
+          "median_charts": 16.5,
+          "angular_distortion": 0.99,
+          "area_distortion": 1.283
         },
         "xatlas": {
+          "type": "baseline"
+        },
+        "_xatlas": {
           "type": "baseline",
           "success_rate": 100.0,
           "avg_charts": 974.8,
@@ -28,16 +51,16 @@
           "angular_distortion": 0.987,
           "area_distortion": 1.885
         },
-        "partuv": {
-          "type": "proposed",
+        "_blender": {
+          "type": "baseline",
           "success_rate": 100.0,
-          "avg_charts": 48.6,
-          "median_charts": 16.5,
-          "angular_distortion": 0.990,
-          "area_distortion": 1.283
+          "avg_charts": 1360.3,
+          "median_charts": 332.5,
+          "angular_distortion": 0.906,
+          "area_distortion": 1.172
         }
       },
-      "_notes": "results = paper Table 1 (Common Shapes, all 24 meshes, packed atlases, the paper's own chart counting and success criterion; tau is not enforced on baselines there). The gym scores 12 held-out meshes, un-packed outputs, charts from input-surface edges with UV continuity, and enforces tau = 1.25 per chart on every method, so baseline rows are not on the gym's scale."
+      "_notes": "results = paper Table 1 (Common Shapes, all 24 meshes, packed atlases, the paper's own chart counting; tau is not enforced on baselines there). The gym scores 12 held-out meshes, un-packed outputs, charts from input-surface edges joined by the output's own shared vertices with equal UVs, and enforces tau = 1.25, fold- and overlap-freedom per chart on every method. The paper's baseline numbers are kept under _xatlas and _blender because they are not on the gym's scale; the 'xatlas' row only registers the gym's baseline method (no paper number to match): the gym's xatlas fails tau on 9/12 held-out meshes. Coefficients (hardening iteration): chart count dominates (paper headline); distortion is held by the hard per-chart constraints, so area/angular keep small coefficients (see HARDENING.md)."
     }
   }
 }

@@ -35,3 +35,8 @@
 
 ## Stop Justification
 - Completed at milestone `core_claim`.
+
+### [2026-11-23] - core_claim (hardening, iteration 11)
+- Hidden test now runs every method folder (`checkpoints/<dir>/unwrap.sh`) on 12 held-out Common Shapes meshes held only by `eval/test/`; the evaluator checks input identity, builds charts from surface edges with the output's shared vertices, enforces the paper's tau = 1.25 per chart plus fold/overlap checks, uses the paper's angular metric, and gives finite worst values to failed charts/meshes.
+- Reference PartUV (hidden test): success 100, 57.75 avg / 22.5 median charts, angular 0.9854, area 1.2047 (rerun identical); xatlas: success 25, 10149 avg charts (its charts break tau on 9/12 meshes).
+- Better variants (best-of-seeds, more search) score above the reference beyond seed noise; the paper's ablations (normals, LSCM, tau 1.1) score below; every red-team shortcut now scores far below. Details in HARDENING.md.

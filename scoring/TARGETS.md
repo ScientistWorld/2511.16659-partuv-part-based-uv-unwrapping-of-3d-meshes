@@ -8,9 +8,10 @@ per-chart distortion threshold (tau = 1.25).
 ## Primary: chart_count_reduction
 Sharply fewer charts than standard UV unwrapping tools.
 - **Metrics**: `avg_charts`, `median_charts` (lower is better)
-- **How measured**: charts are connected sets of input triangles whose shared edges keep the same
-  UVs; a chart that fails a constraint below counts as one chart per triangle; a failed mesh
-  counts one chart per input triangle.
+- **How measured**: charts are connected sets of input triangles joined along input edges where the
+  output shares the edge's vertices (or vt indices) with equal UVs; a chart that fails a
+  constraint below counts as one chart per triangle; a failed mesh counts one chart per input
+  triangle.
 - **Reference (hidden test)**: see `scores_test.json` entry `partuv`; baseline `xatlas`.
 
 ## Constraint: bounded_distortion

@@ -1,8 +1,6 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: submit
-gpus: 0
-test: false
+action: done
 milestone: core_claim
-notes: "Hardening rerun after self-check fixes (polygon/key pairs for overlapping input quads, declared-sharing chart continuity, scale-normalised xatlas): self-check, reference+xatlas through the hidden test and train eval, then variants and shortcuts (hardening/run_all.sh). CPU, ~3.5-4 h."
+notes: "Hardened: hidden test runs methods on held-out meshes only eval/test holds; evaluator checks input identity, seam-based charts, tau=1.25/fold/overlap per chart, paper angular metric, finite worst values; all red-team shortcuts now far below the reference, better variants above it beyond seed noise, paper ablations below; see HARDENING.md."

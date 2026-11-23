@@ -1,3 +1,5 @@
+> **Superseded (iteration 11):** the evaluator and the hidden-test interface described below were replaced; `redteam/` targets the old interface (pre-made outputs, `evaluate_train.sh <root>`). Fixes and re-run scores for every scenario: `HARDENING.md`, harness `hardening/run_all.sh`.
+
 # Red-team audit: PartUV gym (Common Shapes, hidden test = 12 held-out meshes)
 
 All numbers come from a single CPU job, `e499d15e-182`, run on the same device class as the gym's reference job #292.
