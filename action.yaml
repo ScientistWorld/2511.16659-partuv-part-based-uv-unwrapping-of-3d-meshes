@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
 milestone: core_claim
-notes: ""
+notes: "Hardening: new evaluator self-check on legacy outputs, then reference+xatlas through the new hidden test (method run on held-out meshes) and train eval, then variants and shortcuts through the hidden test (hardening/run_all.sh). CPU only, ~3.5-4 h."

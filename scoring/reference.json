@@ -1,15 +1,15 @@
 {
   "experiments": {
     "common_shapes_comparison": {
-      "description": "Common Shapes dataset comparison: PartUV vs xatlas/Blender (Table 1 from paper)",
+      "description": "Common Shapes: UV unwrapping with the fewest valid charts (paper Table 1, Common Shapes rows). Charts must be continuous, fold- and overlap-free and within the paper's per-chart area-distortion threshold tau = 1.25 (fixed by the evaluator). Hidden test: 12 held-out meshes run through each method's unwrap.sh.",
       "weight": 1.0,
       "primary_metric": "avg_charts",
       "metrics": {
-        "success_rate": {"higher_is_better": true, "coefficient": 0.2, "description": "Fraction of Common Shapes meshes that produce a readable UV OBJ; this guards against reducing chart count by failing on hard meshes."},
-        "avg_charts": {"higher_is_better": false, "coefficient": -1.0, "description": "Headline chart-fragmentation metric averaged across evaluated meshes."},
-        "median_charts": {"higher_is_better": false, "coefficient": -0.4, "description": "Robust chart-count summary that reduces sensitivity to one extreme mesh."},
-        "angular_distortion": {"higher_is_better": true, "coefficient": 0.4, "description": "Mean conformal preservation score across evaluated meshes."},
-        "area_distortion": {"higher_is_better": false, "coefficient": -0.35, "description": "Mean chart-level equiareal distortion across evaluated meshes."}
+        "success_rate": {"higher_is_better": true, "coefficient": 0.2, "description": "% of meshes whose output keeps the input surface and has only valid charts."},
+        "avg_charts": {"higher_is_better": false, "coefficient": -1.0, "description": "Headline metric: mean per-mesh chart count; an invalid chart counts one chart per triangle, a failed mesh one chart per input triangle."},
+        "median_charts": {"higher_is_better": false, "coefficient": -0.4, "description": "Median per-mesh chart count (same counting)."},
+        "angular_distortion": {"higher_is_better": true, "coefficient": 0.2, "description": "Mean per-mesh angular score 1 - mean|cos(tangent, bitangent)| (paper Sec. 4.1); triangles of invalid charts count |cos| = 1, failed meshes 0."},
+        "area_distortion": {"higher_is_better": false, "coefficient": -0.35, "description": "Mean per-mesh worst-chart area distortion (paper Eq. 3, triangle values clipped at 10); 10 for a mesh with an invalid chart or a failed output."}
       },
       "results": {
         "blender": {
@@ -36,7 +36,8 @@
           "angular_distortion": 0.990,
           "area_distortion": 1.283
         }
-      }
+      },
+      "_notes": "results = paper Table 1 (Common Shapes, all 24 meshes, packed atlases, the paper's own chart counting and success criterion; tau is not enforced on baselines there). The gym scores 12 held-out meshes, un-packed outputs, charts from input-surface edges with UV continuity, and enforces tau = 1.25 per chart on every method, so baseline rows are not on the gym's scale."
     }
   }
 }

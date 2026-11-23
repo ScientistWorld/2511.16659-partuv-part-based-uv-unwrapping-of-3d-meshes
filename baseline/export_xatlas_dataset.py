@@ -54,12 +54,12 @@ def run_one(mesh_path: Path, output_dir: Path) -> dict:
 
     mesh_dir = output_dir / mesh_path.stem
     mesh_dir.mkdir(parents=True, exist_ok=True)
-    write_uv_obj(mesh_dir / "xatlas.obj", atlas_vertices, atlas_faces, atlas_uvs)
+    write_uv_obj(mesh_dir / "uv.obj", atlas_vertices, atlas_faces, atlas_uvs)
 
     summary = {"mesh": mesh_path.stem, "success": True, "runtime_seconds": elapsed}
     with open(mesh_dir / "run_summary.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print(f"xatlas: wrote {mesh_dir / 'xatlas.obj'} in {elapsed:.3f}s", flush=True)
+    print(f"xatlas: wrote {mesh_dir / 'uv.obj'} in {elapsed:.3f}s", flush=True)
     return summary
 
 

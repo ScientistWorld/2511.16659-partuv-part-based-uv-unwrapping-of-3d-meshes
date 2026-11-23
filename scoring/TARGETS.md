@@ -1,34 +1,35 @@
 # Evaluation Targets
 
 ## Experiment: common_shapes_comparison
-Compare UV unwrapping methods on the Common Shapes benchmark using the metrics reported in Table 1 of the paper.
+Compare UV unwrapping methods on Common Shapes meshes (12 visible training meshes; 12 held-out
+meshes for the hidden test) with the quantities of the paper's Table 1, under the paper's fixed
+per-chart distortion threshold (tau = 1.25).
 
 ## Primary: chart_count_reduction
-The main target is sharply reducing chart fragmentation relative to standard UV unwrapping baselines.
+Sharply fewer charts than standard UV unwrapping tools.
 - **Metrics**: `avg_charts`, `median_charts` (lower is better)
-- **Direction**: Lower is better
-- **How to run**: Run a UV unwrapping method on the Common Shapes meshes, infer connected UV charts from the exported UV OBJ, and aggregate per-mesh chart counts
+- **How measured**: charts are connected sets of input triangles whose shared edges keep the same
+  UVs; a chart that fails a constraint below counts as one chart per triangle; a failed mesh
+  counts one chart per input triangle.
+- **Reference (hidden test)**: see `scores_test.json` entry `partuv`; baseline `xatlas`.
 
 ## Constraint: bounded_distortion
-The chart reduction must not be purchased by excessive distortion.
-- **Metrics**: `angular_distortion` (higher is better), `area_distortion` (lower is better)
-- **Direction**: Match or approach the paper's distortion regime while reducing charts
-- **How to run**: Compute the distortion metrics from the UV-mapped OBJ outputs produced by each method
+Fewer charts must not be bought with distortion.
+- **Hard bound**: every chart's area distortion (paper Eq. 3, triangle values clipped at 10)
+  must be <= 1.25; otherwise the chart is failed (one chart per triangle, mesh area
+  distortion 10, worst angular value for its triangles).
+- **Metrics**: `area_distortion` (lower; mean over meshes of the worst chart), `angular_distortion`
+  (higher; 1 - mean |cos(tangent, bitangent)|, paper Sec. 4.1).
+
+## Constraint: valid_parameterization
+Charts must be usable texture charts and cover the input.
+- **Hard checks**: no folded interior edge, no self-overlap within a chart, the output keeps the
+  input's vertex positions and triangles, finite UVs. Fold/overlap failures fail the chart;
+  surface or UV failures fail the mesh (worst value in every metric).
 
 ## Constraint: reliability
-The method should finish successfully on the benchmark.
-- **Metric**: `success_rate` (higher is better)
-- **Direction**: Higher success rate is better
-- **How to run**: Record per-mesh success/failure during method execution
-- **Scoring**: This is a low-weight constraint metric in `scoring/reference.json`, so methods that fail on difficult meshes are penalized even if their successful outputs have few charts.
+- **Metric**: `success_rate` (higher): % of meshes with intact output and only valid charts.
 
-## Diagnostic: packing-dependent metrics
-The paper reports seam length and overall area distortion after atlas packing.
-The current reproduction artifacts expose chart components before a standardized
-packing pass, so this gym logs `seam_length` and `overall_area_distortion` in
-per-run artifacts but does not score them.
-
-## Diagnostic: runtime
-The paper reports runtime, but this gym does not score wall-clock time because
-hardware varies across runs. Per-mesh runtimes may still be logged in method
-artifacts for debugging and rough comparison.
+## Not scored
+- Seam length and overall atlas area distortion (need a standardised packing stage).
+- Runtime (hardware dependent).

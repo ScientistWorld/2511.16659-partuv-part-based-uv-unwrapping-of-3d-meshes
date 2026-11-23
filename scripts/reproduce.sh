@@ -1,24 +1,12 @@
 #!/bin/bash
+# Reproduce the gym reference end to end: register PartUV and xatlas as methods, score them on
+# the visible training meshes and on the hidden held-out meshes.
 set -euo pipefail
-export TMPDIR=/dev/shm
-export MPLCONFIGDIR=/dev/shm/matplotlib
-export PYTHONFAULTHANDLER=1
-export PYTHONNOUSERSITE=1
-export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
-export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
-export OPENBLAS_CORETYPE="${OPENBLAS_CORETYPE:-GENERIC}"
-export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
-export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 cd /home/user
-
-LIMIT="${PARTUV_LIMIT:-0}"
-
-# Run baseline and PartUV on the same mesh subset.
-bash scripts/baseline.sh /home/user/data/downloads/common_shapes /home/user/checkpoints/xatlas_repro "$LIMIT"
-bash scripts/method.sh /home/user/data/downloads/common_shapes /home/user/checkpoints/partuv_repro "$LIMIT"
-
-# Evaluate and produce scores
-bash scripts/evaluate.sh compare \
-  /home/user/checkpoints/xatlas_repro/results.json \
-  /home/user/checkpoints/partuv_repro/results.json \
-  /home/user/scoring/scores.json
+export TMPDIR=/dev/shm
+bash scripts/install_methods.sh
+bash scripts/evaluate_test.sh
+bash scripts/evaluate_train.sh
+cp scoring/scores_test.json scoring/scores.json
+python3 -m json.tool scoring/scores_train.json > /dev/null
+python3 -m json.tool scoring/scores_test.json > /dev/null

@@ -1,0 +1,77 @@
+{
+  "description": "Held-out Common Shapes meshes (alecjacobson/common-3d-test-models, master). Anonymous ids; source names kept for provenance.",
+  "meshes": [
+    {
+      "id": "mesh_01",
+      "file": "mesh_01.obj.xz",
+      "sha256": "108a1f4319e4a069b2bfbee3b5f278551501d75c473bb705c62e2bef872ad544",
+      "source": "common-3d-test-models/data/alligator.obj"
+    },
+    {
+      "id": "mesh_02",
+      "file": "mesh_02.obj.xz",
+      "sha256": "19e39748b145092878cc4faafd050505eb5991c5d3e497be2b4575673fa87968",
+      "source": "common-3d-test-models/data/nefertiti.obj"
+    },
+    {
+      "id": "mesh_03",
+      "file": "mesh_03.obj.xz",
+      "sha256": "1b5396fedd74b577e32cef41146582c2f2e1a050d5b4915193c0ac1ad4187ed4",
+      "source": "common-3d-test-models/data/teapot.obj"
+    },
+    {
+      "id": "mesh_04",
+      "file": "mesh_04.obj.xz",
+      "sha256": "1eb35d1e21ce99e5ce911353b6be278990713448dd9e8f5c9387f9de39b32205",
+      "source": "common-3d-test-models/data/stanford-bunny.obj"
+    },
+    {
+      "id": "mesh_05",
+      "file": "mesh_05.obj.xz",
+      "sha256": "4528700590e20363b27e8ab77a4af6199a59b94ab6b849c9ba5a4a36f7c5b8cd",
+      "source": "common-3d-test-models/data/beetle-alt.obj"
+    },
+    {
+      "id": "mesh_06",
+      "file": "mesh_06.obj.xz",
+      "sha256": "590257e6d01e689354821d807854306c3bfbb02d9cca73404d5a4924f105c287",
+      "source": "common-3d-test-models/data/rocker-arm.obj"
+    },
+    {
+      "id": "mesh_07",
+      "file": "mesh_07.obj.xz",
+      "sha256": "5d7106b58f2ac0d017758480fe607c5b6bf7d6201d930d2dd1ba7022c4d281c0",
+      "source": "common-3d-test-models/data/xyzrgb_dragon.obj"
+    },
+    {
+      "id": "mesh_08",
+      "file": "mesh_08.obj.xz",
+      "sha256": "69afce548640bc2beb0c44894d1a24d5766cc9cd3fd74f3ec55b4e229104b23f",
+      "source": "common-3d-test-models/data/cow.obj"
+    },
+    {
+      "id": "mesh_09",
+      "file": "mesh_09.obj.xz",
+      "sha256": "8ce5a4a7161efd97dabc8eeb281824fac1b17c9ba2cb0c2c6f350cd05982058c",
+      "source": "common-3d-test-models/data/happy.obj"
+    },
+    {
+      "id": "mesh_10",
+      "file": "mesh_10.obj.xz",
+      "sha256": "d2e1beaa7e366b61746192345f552f09056c97bbd096cb31eac4b9fe467fa7aa",
+      "source": "common-3d-test-models/data/horse.obj"
+    },
+    {
+      "id": "mesh_11",
+      "file": "mesh_11.obj.xz",
+      "sha256": "d2fd040334c12b16804fbcb9962391232cc24708244617f931baaa871210563e",
+      "source": "common-3d-test-models/data/armadillo.obj"
+    },
+    {
+      "id": "mesh_12",
+      "file": "mesh_12.obj.xz",
+      "sha256": "ea54611a3466bc903a107fd825409344562b8c4a8f191bbdc88ce380bebd0911",
+      "source": "common-3d-test-models/data/lucy.obj"
+    }
+  ]
+}

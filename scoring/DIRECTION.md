@@ -1,21 +1,27 @@
 # Research Direction
 
 ## Research Problem
-This paper improves UV unwrapping of 3D meshes — specifically, how to decompose a mesh into charts (disconnected regions) that can each be flattened to 2D with low distortion. The core challenge is that naive decomposition produces over-fragmented charts (hundreds or thousands), while optimal decomposition requires balancing chart count against distortion.
+UV unwrapping of 3D meshes: decompose a mesh into charts that can each be flattened to 2D with
+low distortion. Naive decompositions produce hundreds or thousands of charts; the challenge is to
+use as few charts as possible while every chart stays injective and within a distortion bound.
 
 ## Direction
-Future work should improve mesh-to-chart decomposition for UV mapping: produce fewer disconnected charts while preserving low angular and area distortion. The scoring rewards improvements that keep the same benchmark, output format, and metric definitions, so better methods should be evaluated through the existing UV OBJ artifact interface rather than by changing the evaluator.
+Produce fewer charts on unseen meshes while keeping every chart valid (continuous, fold- and
+overlap-free, area distortion <= 1.25) and angular distortion low. The bound is fixed by the
+evaluator: raising it, or outputting charts that break it, is scored as failure, not as fewer
+charts.
 
 ## Approach Scope
 The scientist may:
 - Use geometry-only, learning-based, optimization-based, or hybrid chart decomposition methods
-- Design new mesh features, region objectives, or search strategies for reducing chart count
-- Change flattening or packing components if the output remains a valid UV-mapped OBJ
-- Add additional training data or pretraining only if Common Shapes remains the reported benchmark
-- Log extra diagnostics, as long as the scored metrics stay unchanged
+- Design new mesh features, part priors, region objectives or search strategies
+- Change the flattening algorithm, or post-process charts (e.g. merging neighbours) as long as the
+  merged charts stay valid
+- Spend more computation per mesh (runtime is not scored), as long as the method runs offline on
+  meshes it has not seen
 
 ## Out of Bounds
-- Pure packing-only improvements without addressing the chart decomposition problem
-- Switching to fundamentally different UV mapping approaches that ignore mesh structure
-- Methods that drastically increase distortion to reduce chart count (the constraint is distortion ≤ ~1.4)
-- Changing the benchmark meshes, metric definitions, or score files instead of improving the method outputs
+- Packing-only changes (they do not change any scored metric)
+- Altering the input surface (vertex positions, triangles) or dropping parts of it
+- Changing the benchmark meshes, metric definitions, thresholds or score files
+- Per-mesh tuning keyed on the identity of held-out meshes

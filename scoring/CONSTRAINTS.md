@@ -1,28 +1,38 @@
 # Scientist Constraints
 
 ## Data
-The scientist must evaluate on the provided Common Shapes benchmark:
-- **Common Shapes**: meshes from `alecjacobson/common-3d-test-models`, populated by `scripts/download.sh` under `/home/user/data/downloads/common_shapes`
+- **Development**: the 12 visible Common Shapes training meshes in `data/downloads/common_shapes/`
+  (from `alecjacobson/common-3d-test-models`, fetched by `scripts/download.sh`).
+- **Hidden test**: 12 other Common Shapes meshes held only by `eval/test/`. The method is run on
+  them by `scripts/evaluate_test.sh`; it must not depend on knowing which meshes they are.
 
-Additional datasets may be added later, but any claimed improvement over the current reproduction must include the same Common Shapes evaluation.
+## Method interface
+- A method is a folder `checkpoints/<name>/` with `unwrap.sh`, called as
+  `bash unwrap.sh <input_dir> <output_dir>`; for every `<id>.obj` in the input it writes
+  `<output_dir>/<id>/uv.obj` (OBJ with `v`, `vt`, `f v/vt` records).
+- The output must keep the input surface: input vertex positions and input triangles (vertices
+  may be duplicated along seams; quads may be split along either diagonal). Every corner needs a
+  finite UV.
+- It must run offline inside the gym container (no internet at test time) and finish; runtime is
+  not scored.
 
-## Method
-The scientist must stay within the UV unwrapping problem setting:
-- The method must output UV coordinates for each input mesh
-- The method must explicitly address chart decomposition rather than only UV packing
-- Improvements must preserve the chart-count vs distortion tradeoff measured in `scoring/reference.json`
-- The method must operate on mesh geometry and output real UV-mapped mesh artifacts that `scripts/evaluate.sh` can score
+## Fixed by the evaluator (not tunable by the method)
+- The per-chart area-distortion threshold 1.25, the fold and self-overlap checks, the chart
+  definition (surface edges + UV continuity), the clipping at 10, the held-out meshes, and the
+  worst values given to failed charts and failed meshes.
+
+## Method scope
+- The method must decompose meshes into charts and flatten them; packing alone does not change
+  any scored metric.
 
 ## Out of Bounds
-- Returning score files or chart counts without producing corresponding UV OBJ outputs
-- Evaluating on a different mesh set without also reporting Common Shapes
-- Changing the metric definitions in `scripts/evaluate.sh` / `eval/`
-- Using proprietary or paid tools for the core method
+- Writing score files or numbers instead of UV OBJs (only `scripts/evaluate_*.sh` write scores).
+- Changing `eval/`, `scripts/evaluate_*.sh`, the held-out meshes or the metric definitions.
+- Detecting the held-out meshes by name/content to apply per-mesh hand-tuned settings.
+- Proprietary or paid tools for the core method.
 
 ## Compliance Checklist
-- [ ] Evaluation conducted on Common Shapes dataset (or equivalent meshes)
-- [ ] UV unwrapping method decomposes meshes into charts and assigns UV coordinates
-- [ ] Report all scored Common Shapes metrics: success rate, chart counts, angular distortion, and area distortion
-- [ ] Seam length and overall atlas area may be logged as diagnostics, but are not scored in this gym because packing is not standardized
-- [ ] Runtime may be logged for diagnostics, but wall-clock speed is not a scored optimization target
-- [ ] No proprietary paid tools used for core algorithm
+- [ ] Method folder with `unwrap.sh` under `checkpoints/`
+- [ ] Every training mesh scored by `scripts/evaluate_train.sh` with success
+- [ ] Charts within the 1.25 bound, no folds / overlaps
+- [ ] No proprietary paid tools in the core algorithm

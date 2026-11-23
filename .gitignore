@@ -219,3 +219,6 @@ python_wheels/
 *.bundle
 *.bundle.lock
 core.[0-9]*
+
+# hardening scratch (cache, per-scenario roots and outputs)
+hardening_work/
